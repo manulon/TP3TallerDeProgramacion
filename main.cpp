@@ -1,8 +1,8 @@
-#include "TaTeTi.h"
+#include "common_TaTeTi.h"
 #include "GameFinishedException.h"
 
 int main(int argc, char const *argv[]){
-    TaTeTi tateti;
+    TaTeTi tateti("Partida 1");
     bool keep_playing = true;
 
     while(keep_playing){
@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]){
             tateti.setNewPosition(79,3,3);
             tateti.printBoard();
             tateti.checkGameStatus();
-            tateti.setNewPosition(88,3,1);
+            tateti.setNewPosition(79,3,1);
             tateti.printBoard();
             tateti.checkGameStatus();
             tateti.setNewPosition(79,2,3);

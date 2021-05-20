@@ -1,14 +1,16 @@
-#include "TaTeTi.h"
-#include "GameFinishedException.h"
+#include "common_TaTeTi.h"
+#include "GameWonException.h"
+#include "GameTiedException.h"
 #include <iostream>
 
-TaTeTi:: TaTeTi(){
+TaTeTi:: TaTeTi(std::string name){
     for (int i=0 ; i<ROW_LENGTH; i++){
         for (int j=0 ; j<COLUMN_LENGTH ; j++){
             /*Empty space*/
             this->board[i][j] = 32;
         }
     }
+    this->name = name;
 }
 
 void TaTeTi:: printBoard(){
@@ -26,6 +28,8 @@ void TaTeTi:: printBoard(){
     std::cout << this->board[2][1] <<" | ";
     std::cout << this->board[2][2] <<" |"<<std::endl;
     std::cout <<"  +---+---+---+"<<std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
 }
 
 void TaTeTi:: setNewPosition(char character, int row, int column){
@@ -41,13 +45,28 @@ void TaTeTi:: checkGameStatus(){
 
     is_there_a_winner = is_there_a_winner || check_diagonals();
 
-    gameFinished(is_there_a_winner);
+    game_finished_with_a_winner(is_there_a_winner);
+
+    if ( game_tied() ){
+        std::cout << "Empate !" << std::endl;
+        throw GameTiedException();
+    }
 }
 
-void TaTeTi:: gameFinished(bool status){
+bool TaTeTi:: game_tied(){
+    for (int i=0 ; i<ROW_LENGTH; i++){
+        for (int j=0 ; j<COLUMN_LENGTH ; j++){
+            if ( this->board[i][j] == 32 )
+                return false;
+        }
+    }
+    return true;
+}
+
+void TaTeTi:: game_finished_with_a_winner(bool status){   
     if( status == true ){
         std::cout << "Felicitaciones, eres el ganador !" << std::endl;
-        throw GameFinishedException();
+        throw GameWonException();
     }
 }
 
@@ -55,10 +74,10 @@ bool TaTeTi:: check_rows(){
     int row = 0;
 
     while (row < 3) {
-        if ( (this->board[0][row] == this->board[1][row])
-          && (this->board[1][row] == this->board[2][row])
-          && (this->board[0][row] != 32 ) )
-            return true;
+        if ( (this->board[row][0] == this->board[row][1])
+          && (this->board[row][1] == this->board[row][2])
+          && (this->board[row][0] != 32 ) ){
+            return true;}
         row++;
     }
     return false;
