@@ -17,7 +17,9 @@ private:
     short int _char_to_short(const char* buffer);
 
 public:
+    CommunicationProtocol();
     CommunicationProtocol(const Socket& socket);
+    void init(const Socket& socket);
     ssize_t send_message(const char* msg, int length);
     int receive_size();
     ssize_t receive_message(int length, char* buffer);

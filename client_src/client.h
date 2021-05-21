@@ -2,7 +2,7 @@
 #define CLIENT_H
 
 #include "../common_src/Socket.h"
-#include "../common_src/CommunicationProtocol.h"
+#include "clientProtocol.h"
 #include <string>
 #include <iostream>
 
@@ -11,6 +11,7 @@ private:
     const char* hostname;
     const char* servicename;
     Socket socket;
+    Client_Protocol protocol;
     //CommunicationProtocol comm;
 
 public:

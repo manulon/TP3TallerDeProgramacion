@@ -10,29 +10,8 @@ void Client:: init_connection(){
 }
 
 void Client:: communicate_with_server(){
-    CommunicationProtocol commu(std::move(this->socket));
-    
-    std::string line = "";
-    std::getline(std::cin, line);
-    
-    if (line.find("jugar") != std::string::npos){
-        std::string line_to_send = "p";
-        std::string jugar = "jugar";
-
-        size_t p = -1;
-
-        std::string tempWord = jugar + " ";
-        while ((p = line.find(jugar)) != std::string::npos)
-            line.replace(p, tempWord.length(), "");
-  
-        tempWord = " " + jugar;
-        while ((p = line.find(jugar)) != std::string::npos)
-            line.replace(p, tempWord.length(), "");
-
-
-        line_to_send = line_to_send + line;
-        commu.send_message(line_to_send.c_str(),line_to_send.length());
-    }
+    this->protocol.init(std::move(this->socket));
+    this->protocol.start_communication_protocol();
 }
 
 void Client:: set_message_length(int len){

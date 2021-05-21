@@ -1,7 +1,13 @@
 #include "CommunicationProtocol.h"
 #include <iostream>
 
+CommunicationProtocol:: CommunicationProtocol(){}
+
 CommunicationProtocol:: CommunicationProtocol(const Socket& socket){
+    this->socket = socket;
+}
+
+void CommunicationProtocol:: init(const Socket& socket){
     this->socket = socket;
 }
 

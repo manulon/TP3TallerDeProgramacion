@@ -3,6 +3,7 @@
 
 #include "../common_src/Socket.h"
 #include "../common_src/CommunicationProtocol.h"
+//#include "clientProtocol.h"
 #include <string>
 
 class Server{
@@ -12,6 +13,7 @@ private:
     short int message_read_length;
     Socket socket;
     Socket peer;
+    //Client_Protocol protocol;
 
     bool start_connection(Socket& socket,Socket& peer);
 
