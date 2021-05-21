@@ -18,9 +18,9 @@ private:
 
 public:
     CommunicationProtocol(Socket socket);
-    ssize_t communication_protocol_send_message(char* msg, int length);
-    int communication_protocol_receive_size();
-    ssize_t communication_protocol_receive_message(int length, char* buffer);
+    ssize_t send_message(char* msg, int length);
+    int receive_size();
+    ssize_t receive_message(int length, char* buffer);
     ~CommunicationProtocol();
 };
 

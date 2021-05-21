@@ -6,7 +6,7 @@ Socket:: Socket(int family, int socktype, int protocol){
     this->fd = socket(family,socktype,protocol);
 }
 
-bool Socket:: socket_bind_and_listen(const char* hostname, const char* servicename){
+bool Socket:: bind_and_listen(const char* hostname, const char* servicename){
     bool is_connected = false;
 	int val = 1;
 	struct addrinfo *addr, *addr_list;

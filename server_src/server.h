@@ -9,14 +9,13 @@ private:
     char* message_read;
     short int message_read_length;
 
-    bool _server_init_connection(Socket socket,Socket peer);
+    bool start_connection(Socket socket,Socket peer);
 
 public:
     Server(char* const* argv);
     ~Server();
 
-    bool server_init_connection(Socket socket,Socket peer);
-    void server_communicate_with_client();
+    void communicate_with_client();
 };
 
 #endif

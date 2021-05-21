@@ -16,12 +16,12 @@ public:
     Client();
     ~Client();
 
-    void client_communicate_with_server();
-    void client_init_connection(Socket socket);
-    void client_set_message_length(int len);
-    void client_set_message(char* msg);
-    char* client_get_message();
-    int client_get_message_length();
+    void communicate_with_server();
+    void init_connection(Socket socket);
+    void set_message_length(int len);
+    void set_message(char* msg);
+    char* get_message();
+    int get_message_length();
 };
 
 #endif

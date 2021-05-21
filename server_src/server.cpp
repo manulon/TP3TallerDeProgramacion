@@ -7,23 +7,23 @@ Server:: Server(char* const* argv){
 
 Server:: ~Server(){}
 
-bool Server:: server_init_connection(Socket socket,Socket peer){
+bool Server:: start_connection(Socket socket,Socket peer){
     bool bind_and_listen_ok = false;
 
     bind_and_listen_ok =
-        socket.socket_bind_and_listen(NULL, this->servicename);
+        socket.bind_and_listen(NULL, this->servicename);
     socket.socket_accept(peer);
 
     return bind_and_listen_ok;
 }
 
-void Server:: server_communicate_with_client(){
+void Server:: communicate_with_client(){
     Socket socket;
 	Socket peer;
 
     //server_protocol_init(&protocol,&peer,self);
 
-    if ( server_init_connection(socket,peer) )
+    if ( start_connection(socket,peer) )
         //server_protocol_start(&protocol,&socket,&encryptor);
         printf("hola");
     

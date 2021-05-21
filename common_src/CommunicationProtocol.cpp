@@ -4,7 +4,7 @@ CommunicationProtocol:: CommunicationProtocol(Socket socket){
     this->socket = socket;
 }
 
-ssize_t CommunicationProtocol:: communication_protocol_send_message(char* msg, int length){
+ssize_t CommunicationProtocol:: send_message(char* msg, int length){
     ssize_t total_bytes_sent = 0;
     _send_size(length);
     _send_message(msg,length);
@@ -54,7 +54,7 @@ ssize_t CommunicationProtocol:: _send_message(char* msg, int size){
     return total_bytes_sent;
 }
 
-int CommunicationProtocol:: communication_protocol_receive_size(){
+int CommunicationProtocol:: receive_size(){
     char buffer[2] = "";                    
     int remaining_bytes = 2;
     int total_bytes_received = 0;
@@ -75,7 +75,7 @@ int CommunicationProtocol:: communication_protocol_receive_size(){
     return size;
 }
 
-ssize_t CommunicationProtocol:: communication_protocol_receive_message(int length, char* buffer){
+ssize_t CommunicationProtocol:: receive_message(int length, char* buffer){
     if (length == 0){ return 0; }
     int remaining_bytes = length;
     int total_bytes_received = 0;
