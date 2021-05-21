@@ -1,7 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "common_Socket.h"
+#include "../common_src/Socket.h"
 
 class Client{
 private:

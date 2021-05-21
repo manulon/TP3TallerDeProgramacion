@@ -1,4 +1,4 @@
-#include "common_TaTeTi.h"
+#include "TaTeTi.h"
 #include "GameWonException.h"
 #include "GameTiedException.h"
 #include <iostream>

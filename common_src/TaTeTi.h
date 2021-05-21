@@ -1,5 +1,5 @@
-#ifndef COMMON_TA_TE_TI_H
-#define COMMON_TA_TE_TI_H
+#ifndef TA_TE_TI_H
+#define TA_TE_TI_H
 
 #define ROW_LENGTH 3
 #define COLUMN_LENGTH 3

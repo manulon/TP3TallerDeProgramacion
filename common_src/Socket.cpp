@@ -1,4 +1,4 @@
-#include "common_Socket.h"
+#include "Socket.h"
 
 Socket:: Socket(){}
 
@@ -40,10 +40,10 @@ bool Socket:: socket_bind_and_listen(const char* hostname, const char* servicena
 	return true;
 }
 
-int Socket:: socket_accept(Socket listener, Socket peer){
+int Socket:: socket_accept(Socket peer){
 	int fd = -1;
     
-	if ((peer.fd = accept(listener.fd, NULL, NULL)) < 0) {
+	if ((peer.fd = accept(this->fd, NULL, NULL)) < 0) {
 		fprintf(stderr, "socket_accept-->accept: %s\n", strerror(errno));
         return fd;
 	}

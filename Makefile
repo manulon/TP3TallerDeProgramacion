@@ -6,10 +6,6 @@
 # CONFIGURACION
 ################
 
-# Nombre del ejecutable.
-target = tp
-target-tsan = tp-tsan
-
 # ExtensiÃ³n de los archivos a compilar (c para C, cpp o cc o cxx para C++).
 extension = cpp
 
@@ -103,7 +99,9 @@ COMPILERFLAGS = $(CXXFLAGS)
 endif
 
 # Si no especifica archivos, tomo todos.
-fuentes ?= $(wildcard *.$(extension))
+fuentes_client ?= $(wildcard ./client_src/*.$(extension))
+fuentes_server ?= $(wildcard ./server_src/*.$(extension))
+fuentes_common ?= $(wildcard ./common_src/*.$(extension))
 directorios = $(shell find . -type d -regex '.*\w+')
 
 occ := $(CC)
@@ -126,39 +124,46 @@ COMPILERFLAGS-TSAN = $(COMPILERFLAGS) -fsanitize=thread
 # REGLAS
 #########
 
-.PHONY: all clean
+all: client server
 
-all: $(target) $(target-tsan)
+o_common_files = $(patsubst %.$(extension),%.o,$(fuentes_common))
+o_client_files = $(patsubst %.$(extension),%.o,$(fuentes_client))
+o_server_files = $(patsubst %.$(extension),%.o,$(fuentes_server))
+o-tsan_files = $(patsubst %.$(extension),%.o-tsan,$(fuentes_server) $(fuentes_common))
 
-o_files = $(patsubst %.$(extension),%.o,$(fuentes))
-o-tsan_files = $(patsubst %.$(extension),%.o-tsan,$(fuentes))
-
-$(target): $(o_files)
-	@if [ -z "$(o_files)" ]; \
+client: $(o_common_files) $(o_client_files)
+	@if [ -z "$(o_client_files)" ]; \
 	then \
-		echo "No hay archivos de entrada en el directorio actual. Recuerde que la extensiÃ³n debe ser '.$(extension)' y que no se aceptan directorios anidados."; \
+		echo "No hay archivos de entrada en el directorio actual para el cliente. Recuerde que los archivos deben respetar la forma 'client*.$(extension)' y que no se aceptan directorios anidados."; \
 		if [ -n "$(directorios)" ]; then echo "Directorios encontrados: $(directorios)"; fi; \
 		false; \
 	fi >&2
-	$(LD) $(o_files) -o $(target) $(LDFLAGS)
+	$(LD) $(o_common_files) $(o_client_files) -o $@ $(LDFLAGS)
 
-$(target-tsan): $(o-tsan_files)
+server: $(o_common_files) $(o_server_files)
+	@if [ -z "$(o_server_files)" ]; \
+	then \
+		echo "No hay archivos de entrada en el directorio actual para el servidor. Recuerde que los archivos deben respetar la forma 'server*.$(extension)' y que no se aceptan directorios anidados."; \
+		if [ -n "$(directorios)" ]; then echo "Directorios encontrados: $(directorios)"; fi; \
+		false; \
+	fi >&2
+	$(LD) $(o_common_files) $(o_server_files) -o $@ $(LDFLAGS)
+
+%.o-tsan: %.$(extension)
+	$(COMPILER) $(COMPILERFLAGS-TSAN) -o $@ -c $<
+
+
+server-tsan: $(o-tsan_files)
 	@if [ -z "$(o-tsan_files)" ]; \
 	then \
 		echo "No hay archivos de entrada en el directorio actual. Recuerde que la extensiÃ³n debe ser '.$(extension)' y que no se aceptan directorios anidados."; \
 		if [ -n "$(directorios)" ]; then echo "Directorios encontrados: $(directorios)"; fi; \
 		false; \
 	fi >&2
-	$(LD) $(o-tsan_files) -o $(target-tsan) $(LDFLAGS-TSAN)
+	$(LD) $(o-tsan_files) -o $@ $(LDFLAGS-TSAN)
 
-%.o-tsan: %.$(extension)
-	$(COMPILER) $(COMPILERFLAGS-TSAN) -o $@ -c $<
-
-%.o: %.$(extension)
-	$(COMPILER) $(COMPILERFLAGS) -o $@ -c $<
+clean: clean-obj
+	$(RM) -f $(o_common_files) $(o_client_files) $(o_server_files) $(target-tsan) client server server-tsan
 
 clean-obj:
 	$(RM) -f $(o_files) $(o-tsan_files)
-
-clean: clean-obj
-	$(RM) -f $(target) $(target-tsan)

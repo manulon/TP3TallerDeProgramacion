@@ -1,7 +1,7 @@
-#ifndef COMMON_COMMUNICATION_PROTOCOL_H
-#define COMMON_COMMUNICATION_PROTOCOL_H
+#ifndef COMMUNICATION_PROTOCOL_H
+#define COMMUNICATION_PROTOCOL_H
 
-#include "common_Socket.h"
+#include "Socket.h"
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>

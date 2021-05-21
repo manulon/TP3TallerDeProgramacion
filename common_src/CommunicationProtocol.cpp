@@ -1,4 +1,4 @@
-#include "common_CommunicationProtocol.h"
+#include "CommunicationProtocol.h"
 
 CommunicationProtocol:: CommunicationProtocol(Socket socket){
     this->socket = socket;

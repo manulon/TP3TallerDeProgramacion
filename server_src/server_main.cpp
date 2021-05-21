@@ -1,5 +1,5 @@
-#include "common_TaTeTi.h"
-#include "GameFinishedException.h"
+#include "../common_src/TaTeTi.h"
+#include "../common_src/GameFinishedException.h"
 
 int main(int argc, char const *argv[]){
     TaTeTi tateti("Partida 1");
