@@ -1,12 +1,25 @@
 #include "client.h"
 
-Client:: Client(){}
+Client:: Client(char const *argv[]){
+    this->hostname = argv[1];
+    this->servicename = argv[2];
+}
 
-void Client:: init_connection(Socket socket){
+void Client:: init_connection(){
     this->socket.socket_connect(this->hostname,this->servicename);
 }
 
-void Client:: communicate_with_server(){}
+void Client:: communicate_with_server(){
+    std::string line;
+
+    CommunicationProtocol commu(this->socket);
+
+    std::getline(std::cin, line);    
+    
+    commu.send_message(line.c_str(),line.length());
+        
+    shutdown(this->socket.fd, SHUT_WR);
+}
 
 void Client:: set_message_length(int len){
     this->message_length = len;
@@ -27,3 +40,5 @@ char* Client:: get_message(){
 int Client:: get_message_length(){
     return this->message_length;
 }
+
+Client:: ~Client(){}

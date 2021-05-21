@@ -1,10 +1,10 @@
 #include "CommunicationProtocol.h"
 
-CommunicationProtocol:: CommunicationProtocol(Socket socket){
+CommunicationProtocol:: CommunicationProtocol(Socket& socket){
     this->socket = socket;
 }
 
-ssize_t CommunicationProtocol:: send_message(char* msg, int length){
+ssize_t CommunicationProtocol:: send_message(const char* msg, int length){
     ssize_t total_bytes_sent = 0;
     _send_size(length);
     _send_message(msg,length);
@@ -34,7 +34,7 @@ ssize_t CommunicationProtocol:: _send_size(int size){
     return total_bytes_sent;
 }
 
-ssize_t CommunicationProtocol:: _send_message(char* msg, int size){
+ssize_t CommunicationProtocol:: _send_message(const char* msg, int size){
     int remaining_bytes = size;
     int total_bytes_sent = 0;
 
@@ -92,6 +92,9 @@ ssize_t CommunicationProtocol:: receive_message(int length, char* buffer){
         total_bytes_received += bytes;
         remaining_bytes -= bytes;
     }
+
+    printf("EL MESNAJHE RECIBIDO ES %s \n", buffer);
+
     return total_bytes_received;
 }
 
@@ -100,7 +103,7 @@ void CommunicationProtocol:: _short_to_char(short int size,char* buffer){
     buffer[1] = size & 0xff;
 }
 
-short int CommunicationProtocol:: _char_to_short(char* buffer){  
+short int CommunicationProtocol:: _char_to_short(const char* buffer){  
     short int pshort;
 
     pshort = (buffer[0] << 8) | buffer[1];

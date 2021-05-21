@@ -1,13 +1,13 @@
 #include "server.h"
 #include <stdio.h>
-
-Server:: Server(char* const* argv){
+#include <iostream>
+Server:: Server(char const* argv[]){
     this->servicename = argv[1];
 }
 
 Server:: ~Server(){}
 
-bool Server:: start_connection(Socket socket,Socket peer){
+bool Server:: start_connection(Socket& socket,Socket& peer){
     bool bind_and_listen_ok = false;
 
     bind_and_listen_ok =
@@ -18,13 +18,18 @@ bool Server:: start_connection(Socket socket,Socket peer){
 }
 
 void Server:: communicate_with_client(){
-    Socket socket;
-	Socket peer;
-
+    CommunicationProtocol commu(this->socket);
     //server_protocol_init(&protocol,&peer,self);
 
-    if ( start_connection(socket,peer) )
+    if ( start_connection(this->socket,this->peer) ){
         //server_protocol_start(&protocol,&socket,&encryptor);
-        printf("hola");
+        printf("La conexion fue establecida ......\n");
+        int size = 0;
+        size = commu.receive_size();
+        char* mensaje = (char*)malloc((size+1)*sizeof(char));
+        commu.receive_message(size,mensaje);
+        free(mensaje);
+    }
+
     
 }

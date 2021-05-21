@@ -1,9 +1,10 @@
 #include "../common_src/TaTeTi.h"
 #include "../common_src/GameFinishedException.h"
+#include "server.h"
 
 int main(int argc, char const *argv[]){
     TaTeTi tateti("Partida 1");
-    bool keep_playing = true;
+    /*bool keep_playing = true;
 
     while(keep_playing){
         try{
@@ -39,7 +40,11 @@ int main(int argc, char const *argv[]){
         } catch ( GameFinishedException &error ){
             keep_playing = false;
         }
-    }
+    }*/
+
+    Server server(argv);
+
+    server.communicate_with_client();
 
     return 0;
 }

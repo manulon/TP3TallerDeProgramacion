@@ -25,6 +25,8 @@ public:
 
     Socket();
     Socket(int family, int socktype, int protocol);
+
+    void socket_init(int family, int socktype, int protocol);
     bool bind_and_listen(const char *hostname,const char *servicename);
     int socket_accept(Socket peer);
     void socket_connect(const char* hostname, const char* servicename);
