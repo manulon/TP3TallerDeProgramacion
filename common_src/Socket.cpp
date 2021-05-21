@@ -40,9 +40,6 @@ bool Socket:: bind_and_listen(const char* hostname, const char* servicename){
     }
 
 	if (listen(this->fd, 10) < 0) {
-        std::cout<<"ENTRE ACA JAJAJA"<<std::endl;
-	    //socket_uninit(self);
-        //this->~Socket;
 		fprintf(stderr, "socket_bind_and_listen-->listen: %s\n", strerror(errno));
 		return false;
 	}
@@ -107,10 +104,6 @@ void Socket:: socket_connect(const char* hostname, const char* servicename){
 }
 
 Socket:: ~Socket(){
-    /*if (*/shutdown(this->fd, SHUT_RDWR);/* == -1) {
-		fprintf(stderr, "socket_uninit-->shutdown: %s\n", strerror(errno));
-    }*/ 
-    /*if (*/close(this->fd);/* == -1) {
-		fprintf(stderr, "socket_uninit-->close: %s\n", strerror(errno));
-    }*/
+   shutdown(this->fd, SHUT_RDWR);
+   close(this->fd);
 }
