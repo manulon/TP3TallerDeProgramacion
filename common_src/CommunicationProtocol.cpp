@@ -1,6 +1,7 @@
 #include "CommunicationProtocol.h"
+#include <iostream>
 
-CommunicationProtocol:: CommunicationProtocol(Socket& socket){
+CommunicationProtocol:: CommunicationProtocol(const Socket& socket){
     this->socket = socket;
 }
 
@@ -17,7 +18,6 @@ ssize_t CommunicationProtocol:: _send_size(int size){
     char buffer[2];
 
     _short_to_char(size,buffer);
-
     while (total_bytes_sent < 2) {
         ssize_t bytes = send(this->socket.fd, 
                             &buffer[total_bytes_sent],

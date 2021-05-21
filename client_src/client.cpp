@@ -10,15 +10,14 @@ void Client:: init_connection(){
 }
 
 void Client:: communicate_with_server(){
-    std::string line;
+    std::string line = "";
 
-    CommunicationProtocol commu(this->socket);
+    CommunicationProtocol commu(std::move(this->socket));
 
     std::getline(std::cin, line);    
-    
     commu.send_message(line.c_str(),line.length());
-        
-    shutdown(this->socket.fd, SHUT_WR);
+
+    //shutdown(this->socket.fd, SHUT_WR);
 }
 
 void Client:: set_message_length(int len){
