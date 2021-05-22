@@ -11,6 +11,16 @@ void Client_Protocol:: init(const Socket& socket){
 void Client_Protocol:: start_communication_protocol(){
     std::string line = "";
     std::getline(std::cin, line);
+  
+    unsigned char row = line[line.length()-1];
+    unsigned char column = line[line.length()-2];
+
+    column = column << 4;
+
+    unsigned char aux = 15; // 0x0F
+    row = row & aux;
+
+    unsigned char final = column | row;
 
     this->comm.init(std::move(this->socket));
 
@@ -26,10 +36,12 @@ void Client_Protocol:: start_communication_protocol(){
   
         tempWord = " " + jugar;
         while ((p = line.find(jugar)) != std::string::npos)
-            line.replace(p, tempWord.length(), "");
+            line.replace(p, tempWord.length(), "");       
 
+        std::string str(1,final);
 
-        line_to_send = line_to_send + line;
+        line_to_send += str;
+
         this->comm.send_message(line_to_send.c_str(),line_to_send.length());
     }
 }
