@@ -8,8 +8,7 @@
 class Server{
 private:
     const char*  servicename;
-    char* message_read;
-    short int message_read_length;
+    std::string message_read;
     Socket socket;
     Socket peer;
     Server_Protocol protocol;

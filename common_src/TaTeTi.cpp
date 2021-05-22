@@ -3,6 +3,15 @@
 #include "GameTiedException.h"
 #include <iostream>
 
+TaTeTi:: TaTeTi(){
+    for (int i=0 ; i<ROW_LENGTH; i++){
+        for (int j=0 ; j<COLUMN_LENGTH ; j++){
+            /*Empty space*/
+            this->board[i][j] = 32;
+        }
+    }
+}
+
 TaTeTi:: TaTeTi(std::string name){
     for (int i=0 ; i<ROW_LENGTH; i++){
         for (int j=0 ; j<COLUMN_LENGTH ; j++){
@@ -32,7 +41,11 @@ void TaTeTi:: printBoard(){
     std::cout << std::endl;
 }
 
-void TaTeTi:: setNewPosition(char character, int row, int column){
+void TaTeTi:: setName(std::string name){
+    this->name = name;
+}
+
+void TaTeTi:: setNewPosition(char character, int column, int row){
     this->board[row-1][column-1] = character;
 }
 

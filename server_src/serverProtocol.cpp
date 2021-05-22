@@ -17,27 +17,39 @@ void Server_Protocol:: start_communication_protocol(){
     tateti.printBoard();
     
     this->comm.init(std::move(this->socket));
-    int size = 0;
-    size = comm.receive_size();
-    char* mensaje = (char*)calloc((size+1),sizeof(char));
-    comm.receive_message(size,mensaje);
     
+    int size = 0;
+    size = receive_size();
+
+    receive_message(size);
+}
+
+int Server_Protocol:: receive_size(){
+    return comm.receive_size();
+}   
+
+void Server_Protocol:: receive_message(int size){
+    char* message = (char*)calloc((size+2),sizeof(char));
+    comm.receive_message(size,message);
+    
+    makePlay(message);
+    free(message);
+}
+
+void Server_Protocol:: makePlay(const char* message){
     unsigned char aux = 15; //0x0F
     unsigned char aux2 = 48; //0x30
 
-    unsigned char column = mensaje[1] >> 4;
+    int column = message[1] >> 4;
     
-    unsigned char row = mensaje[1] & aux;
+    int row = message[1] & aux;
     
-    mensaje[1] = column | aux2;
-    mensaje[2] = row | aux2;
+    column = (column | aux2)-48;
+    row = (row | aux2)-48;
 
-    mensaje[size] = 0;
-
-    free(mensaje);
+    this->game.setNewPosition(88,column,row);
+    this->game.printBoard();
 }
-    
-    
-    
+
 Server_Protocol:: ~Server_Protocol(){}
 

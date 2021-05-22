@@ -9,6 +9,7 @@ void Client_Protocol:: init(const Socket& socket){
     
     
 void Client_Protocol:: start_communication_protocol(){
+    std::cout<<"Ingrese uno de los comandos designados por favor: "<<std::endl;
     std::string line = "";
     std::getline(std::cin, line);
   

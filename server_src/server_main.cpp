@@ -2,6 +2,8 @@
 #include "../common_src/GameFinishedException.h"
 #include "server.h"
 
+#include <iostream>
+
 int main(int argc, char const *argv[]){
     TaTeTi tateti("Partida 1");
     /*bool keep_playing = true;

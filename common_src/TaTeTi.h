@@ -19,9 +19,11 @@ private:
     bool check_diagonals();
 
 public:
+    TaTeTi();
     TaTeTi(std::string name);
     void printBoard();
-    void setNewPosition(char character, int row, int column);
+    void setNewPosition(char character, int column, int row);
+    void setName(std::string name);
     void checkGameStatus();
     ~TaTeTi();
 };

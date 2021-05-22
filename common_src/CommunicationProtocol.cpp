@@ -99,8 +99,6 @@ ssize_t CommunicationProtocol:: receive_message(int length, char* buffer){
         remaining_bytes -= bytes;
     }
 
-    printf("EL MESNAJHE RECIBIDO ES %s \n", buffer);
-
     return total_bytes_received;
 }
 
