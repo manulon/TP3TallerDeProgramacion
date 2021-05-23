@@ -10,7 +10,7 @@ private:
     CommunicationProtocol comm;
     TaTeTi game;
     int receive_size();
-    void receive_message(int size);
+    int receive_message(int size);
     void makePlay(const char* message);
 public:
     Server_Protocol();

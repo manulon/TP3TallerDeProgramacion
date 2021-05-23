@@ -13,30 +13,7 @@ void CommunicationProtocol:: init(const Socket& socket){
 
 ssize_t CommunicationProtocol:: send_message(const char* msg, int length){
     ssize_t total_bytes_sent = 0;
-    _send_size(length);
     _send_message(msg,length);
-    return total_bytes_sent;
-}
-
-ssize_t CommunicationProtocol:: _send_size(int size){
-    int remaining_bytes = 2;       
-    int total_bytes_sent = 0;
-    char buffer[2];
-
-    _short_to_char(size,buffer);
-    while (total_bytes_sent < 2) {
-        ssize_t bytes = send(this->socket.fd, 
-                            &buffer[total_bytes_sent],
-                            remaining_bytes, MSG_NOSIGNAL);
-        
-        if (bytes == -1) {
-			fprintf(stderr, "socket_send-->send: %s\n", strerror(errno));
-            return bytes;
-        }
-        if (bytes == 0) break;
-        total_bytes_sent += bytes;
-        remaining_bytes -= bytes;
-    }
     return total_bytes_sent;
 }
 
@@ -58,27 +35,6 @@ ssize_t CommunicationProtocol:: _send_message(const char* msg, int size){
         remaining_bytes -= bytes;
     }
     return total_bytes_sent;
-}
-
-int CommunicationProtocol:: receive_size(){
-    char buffer[2] = "";                    
-    int remaining_bytes = 2;
-    int total_bytes_received = 0;
-    while (total_bytes_received < 2) {
-        ssize_t bytes = recv(this->socket.fd, &buffer[total_bytes_received],
-                        remaining_bytes, 0);
-        if (bytes == -1) {
-            fprintf(stderr, "socket_receive-->recv: %s\n", strerror(errno));
-            return bytes;
-        }
-        if (bytes == 0) break;
-        
-        total_bytes_received += bytes;
-        remaining_bytes -= bytes;
-    }
-
-    int size = _char_to_short(buffer);
-    return size;
 }
 
 ssize_t CommunicationProtocol:: receive_message(int length, char* buffer){

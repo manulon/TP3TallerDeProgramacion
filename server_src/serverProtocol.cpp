@@ -1,7 +1,6 @@
 #include "serverProtocol.h"
-
-/*Solo pa este caso */
 #include "../common_src/TaTeTi.h"
+#include "../common_src/GameFinishedException.h"
 
 #include <iostream>
 
@@ -12,28 +11,34 @@ void Server_Protocol:: init(const Socket& socket){
 }
 
 void Server_Protocol:: start_communication_protocol(){
-    /*solo pa este caso*/
     TaTeTi tateti("Partida 1");
     tateti.printBoard();
     
     this->comm.init(std::move(this->socket));
     
     int size = 0;
-    size = receive_size();
-
-    receive_message(size);
+    size = receive_message(2);
+    while( size != 0){
+        size = receive_message(2);
+    }
 }
 
-int Server_Protocol:: receive_size(){
-    return comm.receive_size();
-}   
+int Server_Protocol:: receive_message(int size){
+    int bytes_received = 0;
 
-void Server_Protocol:: receive_message(int size){
     char* message = (char*)calloc((size+2),sizeof(char));
-    comm.receive_message(size,message);
+    bytes_received = comm.receive_message(size,message);
     
-    makePlay(message);
+    if( bytes_received > 0){
+        try{    
+            makePlay(message);
+        } catch( GameFinishedException &error ){}
+    }
+    
     free(message);
+
+    return bytes_received;
+
 }
 
 void Server_Protocol:: makePlay(const char* message){
@@ -49,6 +54,7 @@ void Server_Protocol:: makePlay(const char* message){
 
     this->game.setNewPosition(88,column,row);
     this->game.printBoard();
+    this->game.checkGameStatus();
 }
 
 Server_Protocol:: ~Server_Protocol(){}
