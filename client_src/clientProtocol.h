@@ -9,10 +9,10 @@ class Client_Protocol{
     CommunicationProtocol comm;
 
 private:
-    void select_execution_mode(std::string line);
-    std::string get_execution_mode(std::string line);
-    void mode_play(std::string line);
-    void mode_create(std::string line);
+    void select_execution_mode(std::string& line);
+    std::string get_execution_mode(const std::string& line);
+    void mode_play(std::string& line);
+    void mode_create(const std::string& line);
 
 public:
     Client_Protocol();

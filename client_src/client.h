@@ -12,7 +12,6 @@ private:
     const char* servicename;
     Socket socket;
     Client_Protocol protocol;
-    //CommunicationProtocol comm;
 
 public:
     char* message;
@@ -23,8 +22,8 @@ public:
 
     void communicate_with_server();
     void init_connection();
-    void set_message_length(int len);
-    void set_message(char* msg);
+    void set_message_length(const int& len);
+    void set_message(const char* msg);
     char* get_message();
     int get_message_length();
 };

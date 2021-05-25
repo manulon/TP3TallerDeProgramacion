@@ -7,8 +7,7 @@ Client_Protocol:: Client_Protocol(){}
 void Client_Protocol:: init(const Socket& socket){
    this->socket = socket;
 }
-    
-    
+       
 void Client_Protocol:: start_communication_protocol(){
     std::cout<<"Ingrese uno de los comandos designados por favor: "<<std::endl;
     std::string line = "";
@@ -18,7 +17,7 @@ void Client_Protocol:: start_communication_protocol(){
 
 }
 
-void Client_Protocol:: select_execution_mode(std::string line){
+void Client_Protocol:: select_execution_mode(std::string& line){
     std::string mode = "";
     mode = get_execution_mode(line);
 
@@ -35,7 +34,7 @@ void Client_Protocol:: select_execution_mode(std::string line){
     }
 }
     
-void Client_Protocol:: mode_play(std::string line){
+void Client_Protocol:: mode_play(std::string& line){
     bool keep_reading_from_cin = true;
 
     while(keep_reading_from_cin){
@@ -80,11 +79,11 @@ void Client_Protocol:: mode_play(std::string line){
     }
 }
 
-void Client_Protocol:: mode_create(std::string line){
+void Client_Protocol:: mode_create(const std::string& line){
 
 }
 
-std::string Client_Protocol:: get_execution_mode(std::string line){
+std::string Client_Protocol:: get_execution_mode(const std::string& line){
     std::istringstream iss(line);
     std::string word = "";
     iss >> word;

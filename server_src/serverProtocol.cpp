@@ -23,7 +23,7 @@ void Server_Protocol:: start_communication_protocol(){
     }
 }
 
-int Server_Protocol:: receive_message(int size){
+int Server_Protocol:: receive_message(const int& size){
     int bytes_received = 0;
 
     char* message = (char*)calloc((size+2),sizeof(char));

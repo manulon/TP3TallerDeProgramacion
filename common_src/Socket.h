@@ -24,9 +24,10 @@ public:
     int fd;
 
     Socket();
-    Socket(int family, int socktype, int protocol);
+    Socket(const int& family,const int& socktype,const int& protocol);
 
-    void socket_init(int family, int socktype, int protocol);
+    void socket_init
+    (const int& family,const int& socktype,const int& protocol);
     bool bind_and_listen(const char *hostname,const char *servicename);
     int socket_accept(Socket& peer);
     void socket_connect(const char* hostname, const char* servicename);

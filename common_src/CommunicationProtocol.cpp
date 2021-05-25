@@ -11,13 +11,13 @@ void CommunicationProtocol:: init(const Socket& socket){
     this->socket = socket;
 }
 
-ssize_t CommunicationProtocol:: send_message(const char* msg, int length){
+ssize_t CommunicationProtocol:: send_message(const char* msg,const int& length){
     ssize_t total_bytes_sent = 0;
     _send_message(msg,length);
     return total_bytes_sent;
 }
 
-ssize_t CommunicationProtocol:: _send_message(const char* msg, int size){
+ssize_t CommunicationProtocol:: _send_message(const char* msg,const int& size){
     int remaining_bytes = size;
     int total_bytes_sent = 0;
 
@@ -37,7 +37,7 @@ ssize_t CommunicationProtocol:: _send_message(const char* msg, int size){
     return total_bytes_sent;
 }
 
-ssize_t CommunicationProtocol:: receive_message(int length, char* buffer){
+ssize_t CommunicationProtocol:: receive_message(const int& length, char* buffer){
     if (length == 0){ return 0; }
     int remaining_bytes = length;
     int total_bytes_received = 0;
@@ -58,7 +58,7 @@ ssize_t CommunicationProtocol:: receive_message(int length, char* buffer){
     return total_bytes_received;
 }
 
-void CommunicationProtocol:: _short_to_char(short int size,char* buffer){
+void CommunicationProtocol:: _short_to_char(const short int& size,char* buffer){
     buffer[0] = (size >> 8) & 0xff;
     buffer[1] = size & 0xff;
 }

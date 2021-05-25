@@ -12,7 +12,7 @@ private:
     char board[ROW_LENGTH][COLUMN_LENGTH];
     std::string name;
     
-    void game_finished_with_a_winner(bool status);
+    void game_finished_with_a_winner(const bool& status);
     bool game_tied();
     bool check_rows();
     bool check_columns();
@@ -20,10 +20,11 @@ private:
 
 public:
     TaTeTi();
-    TaTeTi(std::string name);
+    TaTeTi(const std::string& name);
     void printBoard();
-    void setNewPosition(char character, int column, int row);
-    void setName(std::string name);
+    void setNewPosition
+    (const char& character,const int& column,const int& row);
+    void setName(const std::string& name);
     void checkGameStatus();
     ~TaTeTi();
 };

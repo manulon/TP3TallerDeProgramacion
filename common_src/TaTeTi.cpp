@@ -13,7 +13,7 @@ TaTeTi:: TaTeTi(){
     }
 }
 
-TaTeTi:: TaTeTi(std::string name){
+TaTeTi:: TaTeTi(const std::string& name){
     for (int i=0 ; i<ROW_LENGTH; i++){
         for (int j=0 ; j<COLUMN_LENGTH ; j++){
             /*Empty space*/
@@ -42,11 +42,13 @@ void TaTeTi:: printBoard(){
     std::cout << std::endl;
 }
 
-void TaTeTi:: setName(std::string name){
+void TaTeTi:: setName
+(const std::string& name){
     this->name = name;
 }
 
-void TaTeTi:: setNewPosition(char character, int column, int row){
+void TaTeTi:: setNewPosition
+(const char& character,const int& column,const int& row){
     this->board[row-1][column-1] = character;
 }
 
@@ -77,7 +79,7 @@ bool TaTeTi:: game_tied(){
     return true;
 }
 
-void TaTeTi:: game_finished_with_a_winner(bool status){   
+void TaTeTi:: game_finished_with_a_winner(const bool& status){
     if( status == true ){
         std::cout << "Felicitaciones, eres el ganador !" << std::endl;
         throw GameWonException();

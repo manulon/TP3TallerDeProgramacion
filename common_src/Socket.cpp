@@ -3,11 +3,13 @@
 
 Socket:: Socket(){}
 
-Socket:: Socket(int family, int socktype, int protocol){
+Socket:: Socket
+(const int& family,const int& socktype,const int& protocol){
     socket_init(family,socktype,protocol);
 }
 
-void Socket:: socket_init(int family, int socktype, int protocol){
+void Socket:: socket_init
+(const int& family,const int& socktype,const int& protocol){
     this->fd = socket(family,socktype,protocol);
 }
 
