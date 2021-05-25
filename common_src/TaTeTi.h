@@ -24,7 +24,8 @@ public:
     void printBoard();
     void setNewPosition
     (const char& character,const int& column,const int& row);
-    void setName(const std::string& name);
+    void set_name(const std::string& name);
+    std::string get_name();
     void checkGameStatus();
     ~TaTeTi();
 };

@@ -58,6 +58,49 @@ ssize_t CommunicationProtocol:: receive_message(const int& length, char* buffer)
     return total_bytes_received;
 }
 
+ssize_t CommunicationProtocol:: send_size(int size){
+    int remaining_bytes = 2;       
+    int total_bytes_sent = 0;
+    char buffer[2];
+
+    _short_to_char(size,buffer);
+    while (total_bytes_sent < 2) {
+        ssize_t bytes = send(this->socket.fd, 
+                            &buffer[total_bytes_sent],
+                            remaining_bytes, MSG_NOSIGNAL);
+
+        if (bytes == -1) {
+			fprintf(stderr, "socket_send-->send: %s\n", strerror(errno));
+            return bytes;
+        }
+        if (bytes == 0) break;
+        total_bytes_sent += bytes;
+        remaining_bytes -= bytes;
+    }
+    return total_bytes_sent;
+}
+
+int CommunicationProtocol:: receive_size(){
+    char buffer[2] = "";                    
+    int remaining_bytes = 2;
+    int total_bytes_received = 0;
+    while (total_bytes_received < 2) {
+        ssize_t bytes = recv(this->socket.fd, &buffer[total_bytes_received],
+                        remaining_bytes, 0);
+        if (bytes == -1) {
+            fprintf(stderr, "socket_receive-->recv: %s\n", strerror(errno));
+            return bytes;
+        }
+        if (bytes == 0) break;
+
+        total_bytes_received += bytes;
+        remaining_bytes -= bytes;
+    }
+
+    int size = _char_to_short(buffer);
+    return size;
+}
+
 void CommunicationProtocol:: _short_to_char(const short int& size,char* buffer){
     buffer[0] = (size >> 8) & 0xff;
     buffer[1] = size & 0xff;

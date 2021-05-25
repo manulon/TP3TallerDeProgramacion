@@ -13,6 +13,8 @@ void Client_Protocol:: start_communication_protocol(){
     std::string line = "";
     std::getline(std::cin, line);
 
+    this->comm.init(std::move(this->socket));
+
     select_execution_mode(line);
 
 }
@@ -30,7 +32,7 @@ void Client_Protocol:: select_execution_mode(std::string& line){
     }else if (mode == "jugar"){
         mode_play(line);
     }else{
-        //hel_mode()
+        //help_mode()
     }
 }
     
@@ -49,28 +51,12 @@ void Client_Protocol:: mode_play(std::string& line){
 
             unsigned char final = column | row;
 
-            this->comm.init(std::move(this->socket));
-
-            std::string line_to_send = "p";
-            std::string jugar = "jugar";
-
-            size_t p = -1;
-
-            std::string tempWord = jugar + " ";
-            
-            while ((p = line.find(jugar)) != std::string::npos)
-                line.replace(p, tempWord.length(), "");
-        
-            tempWord = " " + jugar;
-            while ((p = line.find(jugar)) != std::string::npos)
-                line.replace(p, tempWord.length(), "");       
-
             std::string str(1,final);
 
-            line_to_send += str;
-            
-            this->comm.send_message(line_to_send.c_str(),line_to_send.length());
-            
+            std::string key = "p";
+            this->comm.send_message(key.c_str(),key.length());
+            this->comm.send_message(str.c_str(),str.length());
+
             std::getline(std::cin, line);
             
         }else{
@@ -79,8 +65,26 @@ void Client_Protocol:: mode_play(std::string& line){
     }
 }
 
-void Client_Protocol:: mode_create(const std::string& line){
+void Client_Protocol:: mode_create(std::string& line){
+    std::string crear = "crear";
 
+    size_t p = -1;
+
+    std::string tempWord = crear + " ";
+            
+    while ((p = line.find(crear)) != std::string::npos)
+        line.replace(p, tempWord.length(), "");
+        
+    tempWord = " " + crear;
+    while ((p = line.find(crear)) != std::string::npos)
+        line.replace(p, tempWord.length(), "");       
+
+    
+    std::string key = "n";
+
+    this->comm.send_message(key.c_str(),key.length());
+    this->comm.send_size((int)(line.length()));
+    this->comm.send_message(line.c_str(),line.length());
 }
 
 std::string Client_Protocol:: get_execution_mode(const std::string& line){

@@ -42,9 +42,13 @@ void TaTeTi:: printBoard(){
     std::cout << std::endl;
 }
 
-void TaTeTi:: setName
+void TaTeTi:: set_name
 (const std::string& name){
     this->name = name;
+}
+
+std::string TaTeTi::get_name(){
+    return this->name;
 }
 
 void TaTeTi:: setNewPosition
