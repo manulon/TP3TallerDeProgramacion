@@ -4,6 +4,7 @@
 #include <iostream>
 
 TaTeTi:: TaTeTi(){
+    /*funcion*/
     for (int i=0 ; i<ROW_LENGTH; i++){
         for (int j=0 ; j<COLUMN_LENGTH ; j++){
             /*Empty space*/

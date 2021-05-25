@@ -1,9 +1,7 @@
 #include "client.h"
 
-Client:: Client(char const *argv[]){
-    this->hostname = argv[1];
-    this->servicename = argv[2];
-}
+Client:: Client(char const *argv[]):
+hostname(argv[1]),servicename(argv[2]){}
 
 void Client:: init_connection(){
     this->socket.socket_connect(this->hostname,this->servicename);

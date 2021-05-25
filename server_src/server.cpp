@@ -1,9 +1,8 @@
 #include "server.h"
 #include <stdio.h>
 #include <iostream>
-Server:: Server(char const* argv[]){
-    this->servicename = argv[1];
-}
+Server:: Server(char const* argv[]):
+servicename(argv[1]){}
 
 Server:: ~Server(){}
 

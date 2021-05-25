@@ -40,7 +40,6 @@ void Client_Protocol:: mode_play(std::string line){
 
     while(keep_reading_from_cin){
         if (line != "q"){
-            std::cout<<"Entro al loop"<<std::endl;
             unsigned char row = line[line.length()-1];
             unsigned char column = line[line.length()-2];
 
