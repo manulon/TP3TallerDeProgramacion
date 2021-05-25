@@ -16,6 +16,7 @@ public:
     bool contains(const std::string& key);
     void set_name(const std::string& key);
     std::string get_name(const std::string& key);
+    void print_all_values();
 };
 
 #endif

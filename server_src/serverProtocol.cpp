@@ -15,17 +15,6 @@ void Server_Protocol:: start_communication_protocol(){
     this->comm.init(std::move(this->socket));
 
     select_execution_mode();
-
-    /*TaTeTi tateti("Partida 1");
-    tateti.printBoard(); 
-    
-    int size = 0;
-    size = receive_message(1);
-    size = receive_message(size);
-    while( size != 0){
-        size = receive_message(1);
-        size = receive_message(size);*/
-    //}
 }
 
 void Server_Protocol:: select_execution_mode(){
@@ -35,11 +24,12 @@ void Server_Protocol:: select_execution_mode(){
     bytes_received = get_execution_mode(mode.data());
 
     while (bytes_received > 0){
-        if ( strcmp(mode.data(),"n") == 0){
+        if ( strcmp(mode.data(),CREAR_KEY) == 0){
             receive_game_name();
-        }else if ( strcmp(mode.data(),"listar") == 0){
+        }else if ( strcmp(mode.data(),LISTAR_KEY) == 0){
+            receive_list_command();
         }else if ( strcmp(mode.data(),"unirse") == 0){
-        }else if ( strcmp(mode.data(),"p") == 0){
+        }else if ( strcmp(mode.data(),JUGAR_KEY) == 0){
             receive_play();
         }
         bytes_received = get_execution_mode(mode.data());
@@ -55,9 +45,14 @@ void Server_Protocol:: receive_game_name(){
     std::vector<char> message(game_name_size);
     bytes_received = comm.receive_message(game_name_size,message.data());
 
-    if( bytes_received > 0){
+    if( bytes_received > 0)
         this->gc.create_new_game(message.data());
-    }
+    
+}
+
+void Server_Protocol:: receive_list_command(){
+    this->gc.print_all_values();
+    
 }
 
 void Server_Protocol::receive_play(){

@@ -1,6 +1,10 @@
 #ifndef SERVER_PROTOCOL_H
 #define SERVER_PROTOCOL_H
 
+#define LISTAR_KEY "l"
+#define JUGAR_KEY "p"
+#define CREAR_KEY "n"
+
 #include "../common_src/CommunicationProtocol.h"
 #include "../common_src/TaTeTi.h"
 #include "serverGameContainer.h"
@@ -19,6 +23,7 @@ private:
     void select_execution_mode();
     void receive_play();
     void receive_game_name();
+    void receive_list_command();
 
 public:
     Server_Protocol();

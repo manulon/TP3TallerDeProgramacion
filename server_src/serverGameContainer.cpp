@@ -17,4 +17,8 @@ std::string GameContainer::get_game_name(const std::string& key){
     return this->map.get_name(key);
 }
 
+void GameContainer:: print_all_values(){
+    this->map.print_all_values();
+}
+
 GameContainer:: ~GameContainer(){}
