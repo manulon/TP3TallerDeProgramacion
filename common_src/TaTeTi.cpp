@@ -45,17 +45,31 @@ void TaTeTi:: printBoard(){
 std::string TaTeTi::get_board(){
     std::string board("");
 
-    board += ("    1 . 2 . 3 .\n  +---+---+---+");
-    board += ("1 | " + this->board[0][0]);
-    board += (" | " + this->board[0][1]);
-    board += (" | " + this->board[0][2]);
-    board += ("  +---+---+---+\n2 | " + this->board[1][0]);
-    board += (" | " + this->board[1][1]);
-    board += (" | " + this->board[1][2]);
-    board += (" |\n   +---+---+---+\n3 | " + this->board[2][0]);
-    board += (" | " + this->board[2][1]);
-    board += (" | " + this->board[2][2]);
-    board += (" |\n +---+---+---+");
+    board += ("    1 . 2 . 3 .\n");
+    board += ("  +---+---+---+\n");
+    board += ("1 | ");
+    board += this->board[0][0];
+    board += (" | ");
+    board += this->board[0][1];
+    board += (" | ");
+    board += this->board[0][2];
+    board += (" |\n  +---+---+---+\n");
+    board += ("2 | ");
+    board += this->board[1][0];
+    board += (" | ");
+    board += this->board[1][1];
+    board += (" | ");
+    board += this->board[1][2];
+    board += (" |\n");
+    board += ("  +---+---+---+\n");
+    board += ("3 | ");
+    board += this->board[2][0];
+    board += (" | ");
+    board += this->board[2][1];
+    board += (" | ");
+    board += this->board[2][2];
+    board += (" |\n");
+    board += ("  +---+---+---+");
 
     return board;
 }
