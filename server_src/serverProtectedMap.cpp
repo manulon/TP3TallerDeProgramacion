@@ -15,11 +15,12 @@ std::string ProtectedMap::get_name(const std::string& key){
     return this->internal[key].get_name();
 }
 
-void ProtectedMap:: print_all_values(){
-    std::cout << "Partidas: " << std::endl;
-    for ( auto& element: internal ){
-        std::cout<< "- "<< element.second.get_name() << std::endl;
+std::string ProtectedMap::get_all_values(){
+    std::string all_games_name("Partidas : \n");
+    for (auto& element: internal){
+        all_games_name += ("- " + element.second.get_name() + "\n");
     }
+    return all_games_name;
 }
 
 ProtectedMap:: ~ProtectedMap() {}

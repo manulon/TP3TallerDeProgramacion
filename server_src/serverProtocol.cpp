@@ -51,8 +51,11 @@ void Server_Protocol:: receive_game_name(){
 }
 
 void Server_Protocol:: receive_list_command(){
-    this->gc.print_all_values();
+    std::string all_games_name("");
+    all_games_name = this->gc.get_all_values();
     
+    this->comm.send_size((int)all_games_name.length());
+    this->comm.send_message(all_games_name.c_str(),all_games_name.length());
 }
 
 void Server_Protocol::receive_play(){

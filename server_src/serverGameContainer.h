@@ -14,7 +14,7 @@ public:
     
     void create_new_game(const std::string& key);
     std::string get_game_name(const std::string& key);
-    void print_all_values();
+    std::string get_all_values();
 };
 
 #endif

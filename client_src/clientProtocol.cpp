@@ -1,6 +1,7 @@
 #include "clientProtocol.h"
 #include <iostream>
 #include <sstream> 
+#include <vector>
 
 Client_Protocol:: Client_Protocol(){}
 
@@ -35,7 +36,7 @@ void Client_Protocol:: select_execution_mode(std::string& line){
     }else if (mode == LISTAR_KEYWORD){
         mode_list();
     }else if (mode == UNIRSE_KEYWORD){
-
+        mode_join();
     }else if (mode == JUGAR_KEYWORD){
         mode_play(line);
     }else{
@@ -43,27 +44,42 @@ void Client_Protocol:: select_execution_mode(std::string& line){
     }
 }
 
+void Client_Protocol:: mode_join(){}
+
 void Client_Protocol:: mode_list(){
     std::string key = LISTAR_KEY;
     this->comm.send_message(key.c_str(),key.length());
+
+    int size(0);
+    std::vector<char> all_games_name(size+1);
+
+    size = this->comm.receive_size();
+    this->comm.receive_message(size,all_games_name.data());
+
+    std::cout<<all_games_name.data()<< std::endl;
 }
 
 void Client_Protocol:: mode_play(std::string& line){
-    unsigned char row = line[line.length()-1];
-    unsigned char column = line[line.length()-2];
+    unsigned char final(0);
 
-    column = column << 4;
-
-    unsigned char aux = 15; // 0x0F
-    row = row & aux;
-
-    unsigned char final = column | row;
+    final = put_position_in_one_byte(line[line.length()-1],
+                                     line[line.length()-2]);
 
     std::string str(1,final);
 
     std::string key = JUGAR_KEY;
     this->comm.send_message(key.c_str(),key.length());
     this->comm.send_message(str.c_str(),str.length());
+}
+
+unsigned char Client_Protocol:: put_position_in_one_byte
+(unsigned char row, unsigned char column){
+    column = column << 4;
+
+    unsigned char aux = 15; // 0x0F
+    row = row & aux;
+
+    return (column | row);
 }
 
 void Client_Protocol:: mode_create(std::string& line){
