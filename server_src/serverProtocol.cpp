@@ -50,8 +50,10 @@ void Server_Protocol:: receive_game_name(){
     std::vector<char> message(game_name_size+1);
     bytes_received = comm.receive_message(game_name_size,message.data());
 
-    if( bytes_received > 0)
+    if( bytes_received > 0){
         this->gc.create_new_game(message.data());
+        this->game.set_name(message.data());
+    }
     
 }
 
@@ -69,31 +71,31 @@ void Server_Protocol::receive_play(){
     bytes_received = comm.receive_message(1,message.data());
 
     if( bytes_received > 0){
-        try{    
-            makePlay(message.data());
-            check_game_status();
-            send_board();
+        try{
+            makePlay(message.data(),this->game.get_name());
+            check_game_status(this->game.get_name());
+            send_board(this->game.get_name());
         } catch( GameFinishedException &error ){
-            send_board_with_message();
+            send_board_with_message(this->game.get_name());
         }
     }
 }
 
-void Server_Protocol:: check_game_status(){
-    this->game.checkGameStatus();
+void Server_Protocol:: check_game_status(const std::string& game_name){
+    this->gc.check_game_status(game_name);
 }
 
-void Server_Protocol:: send_board(){
+void Server_Protocol:: send_board(const std::string& game_name){
     std::string board("");
-    board = this->game.get_board();
+    board = this->gc.get_board(game_name);
 
     this->comm.send_size((int)board.length());
     this->comm.send_message(board.c_str(),board.length());
 }
 
-void Server_Protocol:: send_board_with_message(){
+void Server_Protocol:: send_board_with_message(const std::string& game_name){
     std::string board("");
-    board = this->game.get_board();
+    board = this->gc.get_board(game_name);
     board += "\nFelicitaciones! Ganaste! \n";
 
     this->comm.send_size((int)board.length());
@@ -106,7 +108,8 @@ int Server_Protocol::get_execution_mode(char* mode){
     return bytes_received;
 }
 
-void Server_Protocol:: makePlay(const char* message){
+void Server_Protocol:: makePlay
+(const char* message, const std::string& game_name){
     unsigned char aux = 15; //0x0F
     unsigned char aux2 = 48; //0x30
 
@@ -117,7 +120,7 @@ void Server_Protocol:: makePlay(const char* message){
     column = (column | aux2)-48;
     row = (row | aux2)-48;
 
-    this->game.setNewPosition(this->token,column,row);
+    this->gc.make_play(this->token,column,row,game_name);
 }
 
 Server_Protocol:: ~Server_Protocol(){}

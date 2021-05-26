@@ -64,12 +64,12 @@ std::string TaTeTi::get_name(){
     return this->name;
 }
 
-void TaTeTi:: setNewPosition
+void TaTeTi:: set_new_position
 (const char& character,const int& column,const int& row){
     this->board[row-1][column-1] = character;
 }
 
-void TaTeTi:: checkGameStatus(){
+void TaTeTi:: check_game_status(){
     bool is_there_a_winner = false;
        
     is_there_a_winner = check_rows();

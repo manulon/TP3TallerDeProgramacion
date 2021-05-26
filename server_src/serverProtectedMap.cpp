@@ -23,4 +23,18 @@ std::string ProtectedMap::get_all_values(){
     return all_games_name;
 }
 
+void ProtectedMap:: make_play(const std::string& key,
+const char& token, const unsigned char& row,
+const unsigned char& column){
+    this->internal.at(key).set_new_position(token,column,row);
+}
+
+std::string ProtectedMap::get_board(const std::string& game_name){
+    return this->internal.at(game_name).get_board();
+}
+
+void ProtectedMap:: check_game_status(const std::string& game_name){
+    this->internal.at(game_name).check_game_status();
+}
+
 ProtectedMap:: ~ProtectedMap() {}

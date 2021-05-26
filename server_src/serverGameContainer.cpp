@@ -1,4 +1,5 @@
 #include "serverGameContainer.h"
+#include <iostream>
 
 GameContainer:: GameContainer(){}
 
@@ -19,6 +20,27 @@ std::string GameContainer::get_game_name(const std::string& key){
 
 std::string GameContainer::get_all_values(){
     return this->map.get_all_values();
+}
+
+void GameContainer:: make_play
+(const char& token,const unsigned char& row, 
+const unsigned char& column, const std::string& game_name){
+    if (contains(game_name)){
+        this->map.make_play(game_name,token,row,column);
+    }
+}
+
+std::string GameContainer::get_board(const std::string& game_name){
+    if (contains(game_name)){
+        return this->map.get_board(game_name);
+    }
+    return 0;
+}
+
+void GameContainer::check_game_status(const std::string& game_name){
+    if (contains(game_name)){
+        this->map.check_game_status(game_name);
+    }
 }
 
 GameContainer:: ~GameContainer(){}

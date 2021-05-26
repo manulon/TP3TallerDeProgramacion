@@ -22,11 +22,11 @@ public:
     TaTeTi();
     TaTeTi(const std::string& name);
     std::string get_board();
-    void setNewPosition
+    void set_new_position
     (const char& character,const int& column,const int& row);
     void set_name(const std::string& name);
     std::string get_name();
-    void checkGameStatus();
+    void check_game_status();
     ~TaTeTi();
 };
 
