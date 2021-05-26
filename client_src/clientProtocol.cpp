@@ -50,10 +50,10 @@ void Client_Protocol:: mode_list(){
     std::string key = LISTAR_KEY;
     this->comm.send_message(key.c_str(),key.length());
 
-    int size(0);
+    uint16_t size(0);
     std::vector<char> all_games_name(size+1);
 
-    size = this->comm.receive_size();
+    this->comm.receive_size(&size);
     this->comm.receive_message(size,all_games_name.data());
 
     std::cout<<all_games_name.data()<< std::endl;
@@ -71,14 +71,12 @@ void Client_Protocol:: mode_play(std::string& line){
     this->comm.send_message(key.c_str(),key.length());
     this->comm.send_message(str.c_str(),str.length());
 
-    int size(0);
-    this->comm.receive_size();
-    std::cout<<"Size: "<<size<<std::endl;
+    uint16_t size(0);
+    this->comm.receive_size(&size);
 
     std::vector<char> board(size);
-    int bytes_received = this->comm.receive_message(size,board.data());
+    this->comm.receive_message(size,board.data());
 
-    std::cout<<"Recibi: "<<bytes_received<<std::endl;
     std::cout<<board.data()<<std::endl;
 }
 

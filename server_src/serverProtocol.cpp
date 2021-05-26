@@ -37,11 +37,13 @@ void Server_Protocol:: select_execution_mode(){
 }
 
 void Server_Protocol:: receive_game_name(){
-    int bytes_received = 0;
+    int bytes_received(0);
     
-    int game_name_size = 0;
-    game_name_size = this->comm.receive_size();
+    uint16_t game_name_size(0);
+    game_name_size = this->comm.receive_size(&game_name_size);
     
+    std::cout << game_name_size << std::endl;
+
     std::vector<char> message(game_name_size);
     bytes_received = comm.receive_message(game_name_size,message.data());
 

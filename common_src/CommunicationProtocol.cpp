@@ -58,15 +58,15 @@ ssize_t CommunicationProtocol:: receive_message(const int& length, char* buffer)
     return total_bytes_received;
 }
 
-ssize_t CommunicationProtocol:: send_size(int size){
+ssize_t CommunicationProtocol:: send_size(uint16_t size){
     int remaining_bytes = 2;       
     int total_bytes_sent = 0;
-    char buffer[2];
 
-    _short_to_char(size,buffer);
+    size = htons(size);
+
     while (total_bytes_sent < 2) {
         ssize_t bytes = send(this->socket.fd, 
-                            &buffer[total_bytes_sent],
+                            (char*) &size,
                             remaining_bytes, MSG_NOSIGNAL);
 
         if (bytes == -1) {
@@ -77,16 +77,14 @@ ssize_t CommunicationProtocol:: send_size(int size){
         total_bytes_sent += bytes;
         remaining_bytes -= bytes;
     }
-    std::cout << "Envie: " << total_bytes_sent <<std::endl;
     return total_bytes_sent;
 }
 
-int CommunicationProtocol:: receive_size(){
-    char buffer[2] = "";                    
+int CommunicationProtocol:: receive_size(uint16_t* size){
     int remaining_bytes = 2;
     int total_bytes_received = 0;
     while (total_bytes_received < 2) {
-        ssize_t bytes = recv(this->socket.fd, &buffer[total_bytes_received],
+        ssize_t bytes = recv(this->socket.fd,(char*)size,
                         remaining_bytes, 0);
         if (bytes == -1) {
             fprintf(stderr, "socket_receive-->recv: %s\n", strerror(errno));
@@ -98,20 +96,9 @@ int CommunicationProtocol:: receive_size(){
         remaining_bytes -= bytes;
     }
 
-    int size = _char_to_short(buffer);
-    return size;
-}
-
-void CommunicationProtocol:: _short_to_char(const int& size,char* buffer){
-    buffer[0] = (size >> 8) & 0xff;
-    buffer[1] = size & 0xff;
-}
-
-int CommunicationProtocol:: _char_to_short(const char* buffer){  
-    int pshort;
-    pshort = (buffer[0] << 8) | buffer[1];
-    std::cout<<"Luego del char to short "<<pshort<<std::endl;
-    return pshort;
+    int final_size = 0;
+    final_size = ntohs(*size);
+    return final_size;
 }
 
 CommunicationProtocol:: ~CommunicationProtocol(){}
