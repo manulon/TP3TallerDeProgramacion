@@ -23,25 +23,6 @@ TaTeTi:: TaTeTi(const std::string& name){
     this->name = name;
 }
 
-void TaTeTi:: printBoard(){
-    //std::cout <<"    1 . 2 . 3 ."<<std::endl;
-    //std::cout <<"  +---+---+---+"<<std::endl;
-    //std::cout <<"1 | "<< this->board[0][0] <<" | ";
-    //std::cout << this->board[0][1] <<" | ";
-    //std::cout << this->board[0][2] <<" |"<<std::endl;
-    //std::cout <<"  +---+---+---+"<<std::endl;
-    //std::cout <<"2 | "<< this->board[1][0] <<" | ";
-    //std::cout << this->board[1][1] <<" | ";
-    //std::cout << this->board[1][2] <<" |"<<std::endl;
-    //std::cout <<"  +---+---+---+"<<std::endl;
-    //std::cout <<"3 | "<< this->board[2][0] <<" | ";
-    //std::cout << this->board[2][1] <<" | ";
-    //std::cout << this->board[2][2] <<" |"<<std::endl;
-    //std::cout <<"  +---+---+---+"<<std::endl;
-    //std::cout << std::endl;
-    //std::cout << std::endl;
-}
-
 std::string TaTeTi::get_board(){
     std::string board("");
 

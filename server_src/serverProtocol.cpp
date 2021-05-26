@@ -65,18 +65,36 @@ void Server_Protocol::receive_play(){
     std::vector<char> message(2);
     bytes_received = comm.receive_message(1,message.data());
 
-    std::string board("");
     if( bytes_received > 0){
         try{    
             makePlay(message.data());
-            board = this->game.get_board();
-
-            std::cout << (int)board.length() << std::endl;;
-
-            this->comm.send_size((int)board.length());
-            this->comm.send_message(board.c_str(),board.length());
-        } catch( GameFinishedException &error ){}
+            check_game_status();
+            send_board();
+        } catch( GameFinishedException &error ){
+            send_board_with_message();
+        }
     }
+}
+
+void Server_Protocol:: check_game_status(){
+    this->game.checkGameStatus();
+}
+
+void Server_Protocol:: send_board(){
+    std::string board("");
+    board = this->game.get_board();
+
+    this->comm.send_size((int)board.length());
+    this->comm.send_message(board.c_str(),board.length());
+}
+
+void Server_Protocol:: send_board_with_message(){
+    std::string board("");
+    board = this->game.get_board();
+    board += "\nFelicitaciones! Ganaste! \n";
+
+    this->comm.send_size((int)board.length());
+    this->comm.send_message(board.c_str(),board.length());
 }
 
 int Server_Protocol::get_execution_mode(char* mode){
@@ -97,8 +115,6 @@ void Server_Protocol:: makePlay(const char* message){
     row = (row | aux2)-48;
 
     this->game.setNewPosition(88,column,row);
-    //this->game.printBoard();
-    this->game.checkGameStatus();
 }
 
 Server_Protocol:: ~Server_Protocol(){}
