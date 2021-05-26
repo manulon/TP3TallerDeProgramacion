@@ -4,6 +4,8 @@
 #define LISTAR_KEY "l"
 #define JUGAR_KEY "p"
 #define CREAR_KEY "n"
+#define HOST_TOKEN 79
+#define GUEST_TOKEN 88
 
 #include "../common_src/CommunicationProtocol.h"
 #include "../common_src/TaTeTi.h"
@@ -11,6 +13,7 @@
 
 class Server_Protocol{
 private:
+    char token;
     Socket socket;
     CommunicationProtocol comm;
     TaTeTi game;
@@ -27,6 +30,7 @@ private:
     void check_game_status();
     void receive_game_name();
     void receive_list_command();
+    void set_token(const char& token);
 
 public:
     Server_Protocol();

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-Server_Protocol:: Server_Protocol(){}
+Server_Protocol:: Server_Protocol():token(){}
 
 void Server_Protocol:: init(const Socket& socket){
    this->socket = socket;
@@ -15,6 +15,10 @@ void Server_Protocol:: start_communication_protocol(){
     this->comm.init(std::move(this->socket));
 
     select_execution_mode();
+}
+
+void Server_Protocol:: set_token(const char& token){
+    this->token = token;
 }
 
 void Server_Protocol:: select_execution_mode(){
@@ -37,14 +41,13 @@ void Server_Protocol:: select_execution_mode(){
 }
 
 void Server_Protocol:: receive_game_name(){
+    set_token(HOST_TOKEN);
     int bytes_received(0);
     
     uint16_t game_name_size(0);
     game_name_size = this->comm.receive_size(&game_name_size);
     
-    std::cout << game_name_size << std::endl;
-
-    std::vector<char> message(game_name_size);
+    std::vector<char> message(game_name_size+1);
     bytes_received = comm.receive_message(game_name_size,message.data());
 
     if( bytes_received > 0)
@@ -114,7 +117,7 @@ void Server_Protocol:: makePlay(const char* message){
     column = (column | aux2)-48;
     row = (row | aux2)-48;
 
-    this->game.setNewPosition(88,column,row);
+    this->game.setNewPosition(this->token,column,row);
 }
 
 Server_Protocol:: ~Server_Protocol(){}

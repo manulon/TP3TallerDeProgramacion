@@ -98,7 +98,6 @@ bool TaTeTi:: game_tied(){
 
 void TaTeTi:: game_finished_with_a_winner(const bool& status){
     if( status == true ){
-        std::cout << "Felicitaciones, eres el ganador !" << std::endl;
         throw GameWonException();
     }
 }

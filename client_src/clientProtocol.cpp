@@ -75,7 +75,7 @@ void Client_Protocol:: mode_play(std::string& line){
     uint16_t size(0);
     size = this->comm.receive_size(&size);
 
-    std::vector<char> board(size);
+    std::vector<char> board(size+1);
     this->comm.receive_message(size,board.data());
 
     std::cout<<board.data()<<std::endl;

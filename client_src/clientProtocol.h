@@ -8,14 +8,12 @@
 #define LISTAR_KEY "l"
 #define JUGAR_KEY "p"
 #define CREAR_KEY "n"
-#define HOST_TOKEN "X"
-#define GUEST_TOKEN "O"
+
 
 #include "../common_src/CommunicationProtocol.h"
 #include <string>
 
 class Client_Protocol{
-    char token;
     Socket socket;
     CommunicationProtocol comm;
 
