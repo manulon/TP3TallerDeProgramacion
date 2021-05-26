@@ -77,6 +77,7 @@ ssize_t CommunicationProtocol:: send_size(int size){
         total_bytes_sent += bytes;
         remaining_bytes -= bytes;
     }
+    std::cout << "Envie: " << total_bytes_sent <<std::endl;
     return total_bytes_sent;
 }
 
@@ -101,16 +102,15 @@ int CommunicationProtocol:: receive_size(){
     return size;
 }
 
-void CommunicationProtocol:: _short_to_char(const short int& size,char* buffer){
+void CommunicationProtocol:: _short_to_char(const int& size,char* buffer){
     buffer[0] = (size >> 8) & 0xff;
     buffer[1] = size & 0xff;
 }
 
-short int CommunicationProtocol:: _char_to_short(const char* buffer){  
-    short int pshort;
-
+int CommunicationProtocol:: _char_to_short(const char* buffer){  
+    int pshort;
     pshort = (buffer[0] << 8) | buffer[1];
-    
+    std::cout<<"Luego del char to short "<<pshort<<std::endl;
     return pshort;
 }
 

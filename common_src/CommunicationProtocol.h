@@ -13,8 +13,8 @@ class CommunicationProtocol{
 private:
     
     ssize_t _send_message(const char* msg,const int& size);
-    void _short_to_char(const short int& size,char* buffer);
-    short int _char_to_short(const char* buffer);
+    void _short_to_char(const int& size,char* buffer);
+    int _char_to_short(const char* buffer);
 
 public:
     CommunicationProtocol();

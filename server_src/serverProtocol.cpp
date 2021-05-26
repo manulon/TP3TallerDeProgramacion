@@ -63,9 +63,16 @@ void Server_Protocol::receive_play(){
     std::vector<char> message(2);
     bytes_received = comm.receive_message(1,message.data());
 
+    std::string board("");
     if( bytes_received > 0){
         try{    
             makePlay(message.data());
+            board = this->game.get_board();
+
+            std::cout << (int)board.length() << std::endl;;
+
+            this->comm.send_size((int)board.length());
+            this->comm.send_message(board.c_str(),board.length());
         } catch( GameFinishedException &error ){}
     }
 }
@@ -88,7 +95,7 @@ void Server_Protocol:: makePlay(const char* message){
     row = (row | aux2)-48;
 
     this->game.setNewPosition(88,column,row);
-    this->game.printBoard();
+    //this->game.printBoard();
     this->game.checkGameStatus();
 }
 

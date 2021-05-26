@@ -22,6 +22,7 @@ public:
     TaTeTi();
     TaTeTi(const std::string& name);
     void printBoard();
+    std::string get_board();
     void setNewPosition
     (const char& character,const int& column,const int& row);
     void set_name(const std::string& name);

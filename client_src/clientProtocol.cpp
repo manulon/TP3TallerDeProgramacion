@@ -70,6 +70,16 @@ void Client_Protocol:: mode_play(std::string& line){
     std::string key = JUGAR_KEY;
     this->comm.send_message(key.c_str(),key.length());
     this->comm.send_message(str.c_str(),str.length());
+
+    int size(0);
+    this->comm.receive_size();
+    std::cout<<"Size: "<<size<<std::endl;
+
+    std::vector<char> board(size);
+    int bytes_received = this->comm.receive_message(size,board.data());
+
+    std::cout<<"Recibi: "<<bytes_received<<std::endl;
+    std::cout<<board.data()<<std::endl;
 }
 
 unsigned char Client_Protocol:: put_position_in_one_byte
