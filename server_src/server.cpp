@@ -11,7 +11,7 @@ Server:: ~Server(){
 }
 
 void Server:: start(){
-    this->acceptor = new ThreadAcceptor(this->socket,this->protocol);
+    this->acceptor = new ThreadAcceptor(this->socket,&(this->games));
     this->acceptor->start();
 }
 

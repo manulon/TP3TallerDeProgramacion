@@ -2,8 +2,8 @@
 #define SERVER_H
 
 #include "../common_src/Socket.h"
-#include "serverProtocol.h"
 #include "ThreadAcceptor.h"
+#include "serverGameContainer.h"
 #include <string>
 
 class Server{
@@ -11,7 +11,7 @@ private:
     const char*  servicename;
     std::string message_read;
     Socket socket;
-    Server_Protocol protocol;
+    GameContainer games;
     ThreadAcceptor* acceptor;
 
     

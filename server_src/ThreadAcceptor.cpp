@@ -1,8 +1,8 @@
 #include "ThreadAcceptor.h"
 
-ThreadAcceptor:: ThreadAcceptor(const Socket& s, const Server_Protocol& sp) {
+ThreadAcceptor:: ThreadAcceptor(const Socket& s,GameContainer* games) {
     this->socket = s;
-    this->sp = sp;
+    this->games = games;
 }
 
 void ThreadAcceptor:: run() {
@@ -12,7 +12,7 @@ void ThreadAcceptor:: run() {
             delete peer;
             break;
         }
-        clients.push_back(new ThreadClient(peer,this->sp));
+        clients.push_back(new ThreadClient(peer,this->games));
         clients.back()->start();
         this->garbage_collector();
     }

@@ -9,16 +9,16 @@
 #include "Thread.h"
 #include "../common_src/Socket.h"
 #include "ThreadClient.h"
-#include "serverProtocol.h"
+#include "serverGameContainer.h"
 
 class ThreadAcceptor: public Thread {
     Socket socket;
     std::list<ThreadClient*> clients;
     std::atomic<bool> keep_running{true};
-    Server_Protocol sp;
+    GameContainer* games;
 
     public:
-    ThreadAcceptor(const Socket& socket, const Server_Protocol& sp);
+    ThreadAcceptor(const Socket& socket,GameContainer* games);
     virtual void run() override;
     void stop();
     void garbage_collector();

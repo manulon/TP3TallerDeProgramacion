@@ -1,17 +1,18 @@
 #include "ThreadClient.h"
 
-ThreadClient:: ThreadClient(Socket* peer, const Server_Protocol& sp) {
+ThreadClient:: ThreadClient(Socket* peer, GameContainer* games) {
     this->peer = peer;
-    this->sp = sp;
+    this->games = games;
 }
 
 void ThreadClient:: run() {
-    this->sp.init(std::move(*this->peer));
-    this->sp.start_communication_protocol();
+    Server_Protocol sp(this->games);
+    sp.init(std::move(*this->peer));
+    sp.start_communication_protocol();
 
     while (keep_running){
         try {
-            this->sp.select_execution_mode();
+            sp.select_execution_mode();
         } catch (...) {
             if (!keep_running) break;
         } 

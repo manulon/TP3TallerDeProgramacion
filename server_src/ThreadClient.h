@@ -8,6 +8,7 @@
 #include <atomic>
 #include "Thread.h"
 #include "../common_src/Socket.h"
+#include "serverGameContainer.h"
 #include "serverProtocol.h"
 
 class ThreadClient: public Thread {
@@ -15,10 +16,10 @@ class ThreadClient: public Thread {
     std::mutex mtx;
     std::atomic<bool> keep_running{true};
     std::atomic<bool> dead{false};
-    Server_Protocol sp;
+    GameContainer* games;
 
     public:
-    ThreadClient(Socket* peer, const Server_Protocol& sp);
+    ThreadClient(Socket* peer, GameContainer* games);
     virtual void run() override;
     void stop();
     bool is_dead();

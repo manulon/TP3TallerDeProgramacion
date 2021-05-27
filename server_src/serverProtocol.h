@@ -18,7 +18,7 @@ private:
     Socket socket;
     CommunicationProtocol comm;
     TaTeTi game;
-    GameContainer gc;
+    GameContainer* gc;
 
     int receive_size();
     int receive_message(const int& size);
@@ -34,10 +34,12 @@ private:
     void set_token(const char& token);
 
 public:
-    Server_Protocol();
+    Server_Protocol(GameContainer* games);
     void init(const Socket& socket);
     void start_communication_protocol();
     void select_execution_mode();
+    int culo();
+    void pis(int a);
     ~Server_Protocol();
 };
 
