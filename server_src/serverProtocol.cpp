@@ -13,8 +13,6 @@ void Server_Protocol:: init(const Socket& socket){
 
 void Server_Protocol:: start_communication_protocol(){
     this->comm.init(std::move(this->socket));
-
-    select_execution_mode();
 }
 
 void Server_Protocol:: set_token(const char& token){

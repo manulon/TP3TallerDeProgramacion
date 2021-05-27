@@ -24,7 +24,6 @@ private:
     int receive_message(const int& size);
     void makePlay(const char* message, const std::string& game_name);
     int get_execution_mode(char* mode);
-    void select_execution_mode();
     void receive_play_command();
     void send_board(const std::string& game_name);
     void send_board_with_message(const std::string& game_name);
@@ -38,6 +37,7 @@ public:
     Server_Protocol();
     void init(const Socket& socket);
     void start_communication_protocol();
+    void select_execution_mode();
     ~Server_Protocol();
 };
 

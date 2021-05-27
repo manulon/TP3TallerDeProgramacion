@@ -29,8 +29,9 @@ public:
     void socket_init
     (const int& family,const int& socktype,const int& protocol);
     bool bind_and_listen(const char *hostname,const char *servicename);
-    int socket_accept(Socket& peer);
+    int socket_accept(Socket* peer);
     void socket_connect(const char* hostname, const char* servicename);
+    int get_fd();
     ~Socket();
 };
 

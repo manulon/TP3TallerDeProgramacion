@@ -7,7 +7,16 @@
 int main(int argc, char const *argv[]){
     Server server(argv);
 
-    server.communicate_with_client();
+    if (!server.start_connection()){
+        return 1;
+    }
+
+    server.start();
+
+    std::string input("");
+    while (input != "q") {
+        std::cin >> input;
+    }
 
     return 0;
 }

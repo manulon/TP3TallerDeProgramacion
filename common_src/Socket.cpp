@@ -25,9 +25,6 @@ bool Socket:: bind_and_listen(const char* hostname, const char* servicename){
     hints.ai_flags = AI_PASSIVE;
     getaddrinfo(hostname,servicename,&hints,&addr_list);
 
-    std::cout << "Esperando por una conexion..." << std::endl;
-
-
 	for (addr = addr_list; addr && !is_connected; addr = addr->ai_next) {
         socket_init(addr->ai_family, addr->ai_socktype, addr->ai_protocol);
         setsockopt(this->fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
@@ -45,17 +42,22 @@ bool Socket:: bind_and_listen(const char* hostname, const char* servicename){
 		fprintf(stderr, "socket_bind_and_listen-->listen: %s\n", strerror(errno));
 		return false;
 	}
+
+    std::cout << "Esperando por una conexion..." << std::endl;
+
 	return true;
 }
 
-int Socket:: socket_accept(Socket& peer){
+int Socket:: socket_accept(Socket* peer){
 	int fd = -1;
     
-	if ((peer.fd = accept(this->fd, NULL, NULL)) < 0) {
+	if ((peer->fd = accept(this->fd, NULL, NULL)) < 0) {
 		fprintf(stderr, "socket_accept-->accept: %s\n", strerror(errno));
         return fd;
 	}
     
+    printf("Conexión establecida\n");
+
     fd = 0;
 	return fd;
 }
@@ -103,6 +105,10 @@ void Socket:: socket_connect(const char* hostname, const char* servicename){
     if ( is_connected == false ){
         return;
     }
+}
+
+int Socket:: get_fd(){
+    return this->fd;
 }
 
 Socket:: ~Socket(){

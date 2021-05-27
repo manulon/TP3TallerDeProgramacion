@@ -3,6 +3,7 @@
 
 #include "../common_src/Socket.h"
 #include "serverProtocol.h"
+#include "ThreadAcceptor.h"
 #include <string>
 
 class Server{
@@ -10,16 +11,17 @@ private:
     const char*  servicename;
     std::string message_read;
     Socket socket;
-    Socket peer;
     Server_Protocol protocol;
+    ThreadAcceptor* acceptor;
 
-    bool start_connection(Socket& socket,Socket& peer);
+    
 
 public:
     Server(char const* argv[]);
     ~Server();
 
-    void communicate_with_client();
+    void start();
+    bool start_connection();
 };
 
 #endif
