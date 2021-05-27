@@ -11,6 +11,7 @@
 #include "../common_src/CommunicationProtocol.h"
 #include "../common_src/TaTeTi.h"
 #include "serverGameContainer.h"
+#include <atomic>
 
 class Server_Protocol{
 private:
@@ -19,6 +20,7 @@ private:
     CommunicationProtocol comm;
     TaTeTi game;
     GameContainer* gc;
+    std::atomic<bool> my_turn;  
 
     int receive_size();
     int receive_message(const int& size);

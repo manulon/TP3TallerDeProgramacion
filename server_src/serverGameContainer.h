@@ -2,10 +2,15 @@
 #define SERVER_GAME_CONTAINER_H
 
 #include "serverProtectedMap.h"
+#include <mutex>
+#include <condition_variable>
 
 class GameContainer{
 private:
     ProtectedMap map;
+    std::mutex m;
+    std::condition_variable cv;
+
     bool contains(const std::string& key);
 
 public:

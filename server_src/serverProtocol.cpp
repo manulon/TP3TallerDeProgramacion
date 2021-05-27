@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-Server_Protocol:: Server_Protocol(GameContainer* games):token(){
+Server_Protocol:: Server_Protocol(GameContainer* games):token(),my_turn(false){
     this->gc = games;
 }
 
@@ -102,12 +102,14 @@ void Server_Protocol:: check_game_status(const std::string& game_name){
 }
 
 void Server_Protocol:: send_board(const std::string& game_name){
-    std::string board("");
-    board = this->gc->get_board(game_name);
-
-    this->comm.send_size((int)board.length());
-    this->comm.send_message(board.c_str(),board.length());
+    
+        std::string board("");
+        board = this->gc->get_board(game_name);
+        
+        this->comm.send_size((int)board.length());
+        this->comm.send_message(board.c_str(),board.length());  
 }
+
 
 void Server_Protocol:: send_board_with_message(const std::string& game_name){
     std::string board("");
@@ -136,7 +138,9 @@ void Server_Protocol:: makePlay
     column = (column | aux2)-48;
     row = (row | aux2)-48;
 
+    this->my_turn = true;
     this->gc->make_play(this->token,column,row,game_name);
+    this->my_turn = false;
 }
 
 Server_Protocol:: ~Server_Protocol(){}
