@@ -8,6 +8,7 @@
 #define LISTAR_KEY "l"
 #define JUGAR_KEY "p"
 #define CREAR_KEY "n"
+#define UNIRSE_KEY "j"
 
 
 #include "../common_src/CommunicationProtocol.h"
@@ -23,7 +24,7 @@ private:
     void mode_play(std::string& line);
     void mode_create(std::string& line);
     void mode_list();
-    void mode_join();
+    void mode_join(std::string& line);
     unsigned char put_position_in_one_byte
     (unsigned char row, unsigned char column);
 

@@ -4,6 +4,7 @@
 #define LISTAR_KEY "l"
 #define JUGAR_KEY "p"
 #define CREAR_KEY "n"
+#define UNIRSE_KEY "j"
 #define HOST_TOKEN 79
 #define GUEST_TOKEN 88
 
@@ -24,12 +25,13 @@ private:
     void makePlay(const char* message, const std::string& game_name);
     int get_execution_mode(char* mode);
     void select_execution_mode();
-    void receive_play();
+    void receive_play_command();
     void send_board(const std::string& game_name);
     void send_board_with_message(const std::string& game_name);
     void check_game_status(const std::string& game_name);
-    void receive_game_name();
+    void receive_create_command();
     void receive_list_command();
+    void receive_join_command();
     void set_token(const char& token);
 
 public:

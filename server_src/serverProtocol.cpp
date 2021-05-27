@@ -29,18 +29,35 @@ void Server_Protocol:: select_execution_mode(){
 
     while (bytes_received > 0){
         if ( strcmp(mode.data(),CREAR_KEY) == 0){
-            receive_game_name();
+            receive_create_command();
         }else if ( strcmp(mode.data(),LISTAR_KEY) == 0){
             receive_list_command();
-        }else if ( strcmp(mode.data(),"unirse") == 0){
+        }else if ( strcmp(mode.data(),UNIRSE_KEY) == 0){
+            receive_join_command();
         }else if ( strcmp(mode.data(),JUGAR_KEY) == 0){
-            receive_play();
+            receive_play_command();
         }
         bytes_received = get_execution_mode(mode.data());
     }
 }
 
-void Server_Protocol:: receive_game_name(){
+void Server_Protocol:: receive_join_command(){
+    set_token(GUEST_TOKEN);
+    int bytes_received(0);
+    
+    uint16_t game_name_size(0);
+    game_name_size = this->comm.receive_size(&game_name_size);
+    
+    std::vector<char> message(game_name_size+1);
+    bytes_received = comm.receive_message(game_name_size,message.data());
+
+    if( bytes_received > 0)
+        this->game.set_name(message.data());
+
+
+}
+
+void Server_Protocol:: receive_create_command(){
     set_token(HOST_TOKEN);
     int bytes_received(0);
     
@@ -65,7 +82,7 @@ void Server_Protocol:: receive_list_command(){
     this->comm.send_message(all_games_name.c_str(),all_games_name.length());
 }
 
-void Server_Protocol::receive_play(){
+void Server_Protocol::receive_play_command(){
     int bytes_received = 0;
     std::vector<char> message(2);
     bytes_received = comm.receive_message(1,message.data());

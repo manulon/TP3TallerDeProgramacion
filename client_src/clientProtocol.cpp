@@ -36,7 +36,7 @@ void Client_Protocol:: select_execution_mode(std::string& line){
     }else if (mode == LISTAR_KEYWORD){
         mode_list();
     }else if (mode == UNIRSE_KEYWORD){
-        mode_join();
+        mode_join(line);
     }else if (mode == JUGAR_KEYWORD){
         mode_play(line);
     }else{
@@ -44,7 +44,27 @@ void Client_Protocol:: select_execution_mode(std::string& line){
     }
 }
 
-void Client_Protocol:: mode_join(){}
+void Client_Protocol:: mode_join(std::string& line){
+    std::string crear(UNIRSE_KEYWORD);
+
+    size_t p = -1;
+
+    std::string tempWord = crear + " ";
+            
+    while ((p = line.find(crear)) != std::string::npos)
+        line.replace(p, tempWord.length(), "");
+        
+    tempWord = " " + crear;
+    while ((p = line.find(crear)) != std::string::npos)
+        line.replace(p, tempWord.length(), "");       
+
+    
+    std::string key = UNIRSE_KEY;
+
+    this->comm.send_message(key.c_str(),key.length());
+    this->comm.send_size((int)(line.length()));
+    this->comm.send_message(line.c_str(),line.length());    
+}
 
 void Client_Protocol:: mode_list(){
     std::string key = LISTAR_KEY;
