@@ -131,6 +131,19 @@ void Client_Protocol:: mode_create(std::string& line){
     this->comm.send_message(key.c_str(),key.length());
     this->comm.send_size((int)(line.length()));
     this->comm.send_message(line.c_str(),line.length());
+
+    uint16_t game_name_size(0);
+    game_name_size = this->comm.receive_size(&game_name_size);
+    
+    std::vector<char> board(game_name_size+1);
+    int bytes_received(0);
+    bytes_received = comm.receive_message(game_name_size,board.data());
+
+    if ( bytes_received > 0){
+        std::cout<<board.data()<<std::endl;
+    }
+
+    
 }
 
 std::string Client_Protocol:: get_execution_mode(const std::string& line){

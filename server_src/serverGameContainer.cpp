@@ -1,7 +1,7 @@
 #include "serverGameContainer.h"
 #include <iostream>
 
-GameContainer:: GameContainer(){}
+GameContainer:: GameContainer(): game_finished(false){}
 
 bool GameContainer:: contains(const std::string& key) {
     return this->map.contains(key);
@@ -38,18 +38,33 @@ const unsigned char& column, const std::string& game_name){
 
 std::string GameContainer::get_board(const std::string& game_name){
     std::unique_lock<std::mutex> lk(this->m);
-    this->cv.wait(lk);
-    if (contains(game_name)){
+    if (!this->game_finished){
+        this->cv.wait(lk);
+        if (contains(game_name))
+            return this->map.get_board(game_name);
+    }else{
         return this->map.get_board(game_name);
     }
     return 0;
 }
 
-void GameContainer::check_game_status(const std::string& game_name){
+std::string GameContainer:: get_initial_board(const std::string& game_name){
+    if (contains(game_name)){
+            return this->map.get_board(game_name);
+    }
+    return 0;
+}
+
+void GameContainer::check_game_status(const std::string& game_name,const char& token){
     std::unique_lock<std::mutex> lk(this->m);
     if (contains(game_name)){
-        this->map.check_game_status(game_name);
+        this->map.check_game_status(game_name,token);
     }
 }
+
+void GameContainer:: finish_game(){
+    this->game_finished = true;
+}
+
 
 GameContainer:: ~GameContainer(){}

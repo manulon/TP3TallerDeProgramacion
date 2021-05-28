@@ -20,7 +20,6 @@ private:
     CommunicationProtocol comm;
     TaTeTi game;
     GameContainer* gc;
-    std::atomic<bool> my_turn;  
 
     int receive_size();
     int receive_message(const int& size);
@@ -28,7 +27,8 @@ private:
     int get_execution_mode(char* mode);
     void receive_play_command();
     void send_board(const std::string& game_name);
-    void send_board_with_message(const std::string& game_name);
+    void send_board_with_message
+    (const std::string& game_name, const std::string& final_msg);
     void check_game_status(const std::string& game_name);
     void receive_create_command();
     void receive_list_command();

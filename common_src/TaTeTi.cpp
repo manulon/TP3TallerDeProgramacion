@@ -69,7 +69,7 @@ void TaTeTi:: set_new_position
     this->board[row-1][column-1] = character;
 }
 
-void TaTeTi:: check_game_status(){
+void TaTeTi:: check_game_status(const char& token){
     bool is_there_a_winner = false;
        
     is_there_a_winner = check_rows();

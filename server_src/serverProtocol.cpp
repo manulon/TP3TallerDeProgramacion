@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 
-Server_Protocol:: Server_Protocol(GameContainer* games):token(),my_turn(false){
+Server_Protocol:: Server_Protocol(GameContainer* games):token(){
     this->gc = games;
 }
 
@@ -69,6 +69,11 @@ void Server_Protocol:: receive_create_command(){
     if( bytes_received > 0){
         this->gc->create_new_game(message.data());
         this->game.set_name(message.data());
+        
+        std::string board("");
+        board = this->gc->get_initial_board(this->game.get_name());
+        this->comm.send_size((int)board.length());
+        this->comm.send_message(board.c_str(),board.length());
     }
     
 }
@@ -89,20 +94,18 @@ void Server_Protocol::receive_play_command(){
     if( bytes_received > 0){
         try{
             makePlay(message.data(),this->game.get_name());
-            check_game_status(this->game.get_name());
             send_board(this->game.get_name());
         } catch( GameFinishedException &error ){
-            send_board_with_message(this->game.get_name());
+            send_board_with_message(this->game.get_name(),error.what());
         }
     }
 }
 
 void Server_Protocol:: check_game_status(const std::string& game_name){
-    this->gc->check_game_status(game_name);
+    this->gc->check_game_status(game_name,this->token);
 }
 
 void Server_Protocol:: send_board(const std::string& game_name){
-    
         std::string board("");
         board = this->gc->get_board(game_name);
         
@@ -110,11 +113,13 @@ void Server_Protocol:: send_board(const std::string& game_name){
         this->comm.send_message(board.c_str(),board.length());  
 }
 
+void Server_Protocol:: send_board_with_message
+(const std::string& game_name,const std::string& final_msg){
+    this->gc->finish_game();
 
-void Server_Protocol:: send_board_with_message(const std::string& game_name){
     std::string board("");
     board = this->gc->get_board(game_name);
-    board += "\nFelicitaciones! Ganaste! \n";
+    board += final_msg;
 
     this->comm.send_size((int)board.length());
     this->comm.send_message(board.c_str(),board.length());
@@ -138,9 +143,8 @@ void Server_Protocol:: makePlay
     column = (column | aux2)-48;
     row = (row | aux2)-48;
 
-    this->my_turn = true;
     this->gc->make_play(this->token,column,row,game_name);
-    this->my_turn = false;
+    check_game_status(this->game.get_name());
 }
 
 Server_Protocol:: ~Server_Protocol(){}

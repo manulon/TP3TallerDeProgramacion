@@ -26,7 +26,7 @@ public:
     (const char& character,const int& column,const int& row);
     void set_name(const std::string& name);
     std::string get_name();
-    void check_game_status();
+    void check_game_status(const char& token);
     ~TaTeTi();
 };
 
