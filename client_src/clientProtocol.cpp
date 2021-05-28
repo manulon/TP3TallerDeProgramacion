@@ -83,8 +83,12 @@ void Client_Protocol:: mode_list(){
 void Client_Protocol:: mode_play(std::string& line){
     unsigned char final(0);
 
+    std::cout<<"#"<<line[line.length()-1]<<"#"<< std::endl;
+    std::cout<<"#"<<line[line.length()-3]<<"#"<< std::endl;
+
+
     final = put_position_in_one_byte(line[line.length()-1],
-                                     line[line.length()-2]);
+                                     line[line.length()-3]);
 
     std::string str(1,final);
 
@@ -141,9 +145,7 @@ void Client_Protocol:: mode_create(std::string& line){
 
     if ( bytes_received > 0){
         std::cout<<board.data()<<std::endl;
-    }
-
-    
+    }   
 }
 
 std::string Client_Protocol:: get_execution_mode(const std::string& line){
@@ -154,4 +156,3 @@ std::string Client_Protocol:: get_execution_mode(const std::string& line){
 }
 
 Client_Protocol:: ~Client_Protocol(){}
-
