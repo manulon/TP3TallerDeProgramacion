@@ -25,8 +25,10 @@ public:
     void make_play(const char& token,const unsigned char& row,
         const unsigned char& column, const std::string& game_name);
     std::string get_board(const std::string& game_name);
-    void check_game_status(const std::string& game_name,const char& token);
+    void check_game_status
+    (const std::string& game_name,const char& token,std::string& msg);
     std::string get_initial_board(const std::string& game_name);
+    void notify_winner();
     void finish_game();
 };
 

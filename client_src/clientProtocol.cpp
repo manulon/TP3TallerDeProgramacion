@@ -1,7 +1,9 @@
 #include "clientProtocol.h"
+#include "../common_src/GameFinishedException.h"
 #include <iostream>
 #include <sstream> 
 #include <vector>
+
 
 Client_Protocol:: Client_Protocol(){}
 
@@ -18,10 +20,10 @@ void Client_Protocol:: start_communication_protocol(){
 
     std::getline(std::cin, line);
     while(keep_reading_from_cin){
-        if (line != "q"){
+        try{
             select_execution_mode(line);
             std::getline(std::cin, line);
-        }else{
+        }catch(GameFinishedException& error){
             keep_reading_from_cin = false;
         }
     }
@@ -110,6 +112,10 @@ void Client_Protocol:: mode_play(std::string& line){
     this->comm.receive_message(size,board.data());
 
     std::cout<<board.data()<<std::endl;
+
+    if (size > STANDARD_BOARD_SIZE){
+        throw GameFinishedException();
+    }
 }
 
 unsigned char Client_Protocol:: put_position_in_one_byte

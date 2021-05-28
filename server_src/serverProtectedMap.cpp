@@ -33,8 +33,9 @@ std::string ProtectedMap::get_board(const std::string& game_name){
     return this->internal.at(game_name).get_board();
 }
 
-void ProtectedMap:: check_game_status(const std::string& game_name,const char& token){
-    this->internal.at(game_name).check_game_status(token);
+void ProtectedMap:: check_game_status
+(const std::string& game_name,const char& token,std::string& msg){
+    this->internal.at(game_name).check_game_status(token,msg);
 }
 
 ProtectedMap:: ~ProtectedMap() {}

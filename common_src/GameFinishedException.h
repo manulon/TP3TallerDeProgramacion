@@ -3,9 +3,6 @@
 
 #include <exception>
 
-class GameFinishedException : public std::exception {
-    public:
-        virtual const char* what() = 0;
-};
+class GameFinishedException : public std::exception {};
 
 #endif

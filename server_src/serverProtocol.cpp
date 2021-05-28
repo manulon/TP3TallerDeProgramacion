@@ -5,7 +5,8 @@
 #include <iostream>
 #include <vector>
 
-Server_Protocol:: Server_Protocol(GameContainer* games):token(){
+Server_Protocol:: Server_Protocol(GameContainer* games):
+token(),final_game_msg(""){
     this->gc = games;
 }
 
@@ -91,23 +92,28 @@ void Server_Protocol::receive_play_command(){
     std::vector<char> message(2);
     bytes_received = comm.receive_message(1,message.data());
 
-    if( bytes_received > 0){
-        try{
-            makePlay(message.data(),this->game.get_name());
-            send_board(this->game.get_name());
-        } catch( GameFinishedException &error ){
-            send_board_with_message(this->game.get_name(),error.what());
-        }
+    if( bytes_received > 0){  
+        makePlay(message.data(),this->game.get_name());
+        send_board(this->game.get_name());
     }
 }
 
-void Server_Protocol:: check_game_status(const std::string& game_name){
-    this->gc->check_game_status(game_name,this->token);
+void Server_Protocol:: check_game_status
+(const std::string& game_name,std::string& msg){
+    this->gc->check_game_status(game_name,this->token,this->final_game_msg);
 }
 
 void Server_Protocol:: send_board(const std::string& game_name){
         std::string board("");
+
         board = this->gc->get_board(game_name);
+
+        check_game_status(this->game.get_name(),this->final_game_msg);
+
+        if (this->final_game_msg != "")
+            this->gc->notify_winner();
+
+        board += this->final_game_msg;
         
         this->comm.send_size((int)board.length());
         this->comm.send_message(board.c_str(),board.length());  
@@ -142,10 +148,8 @@ void Server_Protocol:: makePlay
     
     column = (column | aux2)-48;
     row = (row | aux2)-48;
-
-    //check_game_status(this->game.get_name());
+    
     this->gc->make_play(this->token,column,row,game_name);
-    check_game_status(this->game.get_name());
 }
 
 Server_Protocol:: ~Server_Protocol(){}

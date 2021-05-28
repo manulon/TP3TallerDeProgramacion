@@ -55,15 +55,20 @@ std::string GameContainer:: get_initial_board(const std::string& game_name){
     return 0;
 }
 
-void GameContainer::check_game_status(const std::string& game_name,const char& token){
+void GameContainer::check_game_status
+(const std::string& game_name,const char& token,std::string& msg){
     std::unique_lock<std::mutex> lk(this->m);
     if (contains(game_name)){
-        this->map.check_game_status(game_name,token);
+        this->map.check_game_status(game_name,token,msg);
     }
 }
 
 void GameContainer:: finish_game(){
     this->game_finished = true;
+}
+
+void GameContainer:: notify_winner(){
+    this->cv.notify_all();
 }
 
 

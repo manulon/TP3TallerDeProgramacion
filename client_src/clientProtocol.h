@@ -9,6 +9,7 @@
 #define JUGAR_KEY "p"
 #define CREAR_KEY "n"
 #define UNIRSE_KEY "j"
+#define STANDARD_BOARD_SIZE 127
 
 
 #include "../common_src/CommunicationProtocol.h"

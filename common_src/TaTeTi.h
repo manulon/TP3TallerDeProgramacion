@@ -11,12 +11,13 @@ class TaTeTi {
 private:
     char board[ROW_LENGTH][COLUMN_LENGTH];
     std::string name;
+    bool there_is_a_winner;
     
-    void game_finished_with_a_winner(const bool& status);
+    void game_finished_with_a_winner(const bool& status,std::string& msg);
     bool game_tied();
-    bool check_rows();
-    bool check_columns();
-    bool check_diagonals();
+    bool check_rows(const char& token);
+    bool check_columns(const char& token);
+    bool check_diagonals(const char& token);
 
 public:
     TaTeTi();
@@ -26,7 +27,7 @@ public:
     (const char& character,const int& column,const int& row);
     void set_name(const std::string& name);
     std::string get_name();
-    void check_game_status(const char& token);
+    void check_game_status(const char& token,std::string& msg);
     ~TaTeTi();
 };
 

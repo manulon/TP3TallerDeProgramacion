@@ -16,6 +16,7 @@
 class Server_Protocol{
 private:
     char token;
+    std::string final_game_msg;
     Socket socket;
     CommunicationProtocol comm;
     TaTeTi game;
@@ -29,7 +30,8 @@ private:
     void send_board(const std::string& game_name);
     void send_board_with_message
     (const std::string& game_name, const std::string& final_msg);
-    void check_game_status(const std::string& game_name);
+    void check_game_status
+    (const std::string& game_name,std::string& msg);
     void receive_create_command();
     void receive_list_command();
     void receive_join_command();
