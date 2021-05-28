@@ -50,10 +50,10 @@ void Server_Protocol:: receive_join_command(){
     std::vector<char> message(game_name_size+1);
     bytes_received = comm.receive_message(game_name_size,message.data());
 
-    if( bytes_received > 0)
+    if( bytes_received > 0){
         this->game.set_name(message.data());
-
-
+        send_board(this->game.get_name());
+    }
 }
 
 void Server_Protocol:: receive_create_command(){
@@ -143,6 +143,7 @@ void Server_Protocol:: makePlay
     column = (column | aux2)-48;
     row = (row | aux2)-48;
 
+    //check_game_status(this->game.get_name());
     this->gc->make_play(this->token,column,row,game_name);
     check_game_status(this->game.get_name());
 }

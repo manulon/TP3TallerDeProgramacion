@@ -64,6 +64,17 @@ void Client_Protocol:: mode_join(std::string& line){
     this->comm.send_message(key.c_str(),key.length());
     this->comm.send_size((int)(line.length()));
     this->comm.send_message(line.c_str(),line.length());    
+
+    uint16_t board_size(0);
+    board_size = this->comm.receive_size(&board_size);
+    
+    std::vector<char> board(board_size+1);
+    int bytes_received(0);
+    bytes_received = comm.receive_message(board_size,board.data());
+
+    if ( bytes_received > 0){
+        std::cout<<board.data()<<std::endl;
+    }   
 }
 
 void Client_Protocol:: mode_list(){
@@ -82,10 +93,6 @@ void Client_Protocol:: mode_list(){
 
 void Client_Protocol:: mode_play(std::string& line){
     unsigned char final(0);
-
-    std::cout<<"#"<<line[line.length()-1]<<"#"<< std::endl;
-    std::cout<<"#"<<line[line.length()-3]<<"#"<< std::endl;
-
 
     final = put_position_in_one_byte(line[line.length()-1],
                                      line[line.length()-3]);
@@ -136,12 +143,12 @@ void Client_Protocol:: mode_create(std::string& line){
     this->comm.send_size((int)(line.length()));
     this->comm.send_message(line.c_str(),line.length());
 
-    uint16_t game_name_size(0);
-    game_name_size = this->comm.receive_size(&game_name_size);
+    uint16_t board_size(0);
+    board_size = this->comm.receive_size(&board_size);
     
-    std::vector<char> board(game_name_size+1);
+    std::vector<char> board(board_size+1);
     int bytes_received(0);
-    bytes_received = comm.receive_message(game_name_size,board.data());
+    bytes_received = comm.receive_message(board_size,board.data());
 
     if ( bytes_received > 0){
         std::cout<<board.data()<<std::endl;

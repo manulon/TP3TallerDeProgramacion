@@ -1,5 +1,5 @@
 #include "TaTeTi.h"
-#include "GameWonException.h"
+#include "GameLossException.h"
 #include "GameTiedException.h"
 #include <iostream>
 
@@ -98,7 +98,7 @@ bool TaTeTi:: game_tied(){
 
 void TaTeTi:: game_finished_with_a_winner(const bool& status){
     if( status == true ){
-        throw GameWonException();
+        throw GameLossException();
     }
 }
 
