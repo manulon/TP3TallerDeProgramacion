@@ -8,9 +8,7 @@
 #include <utility>
 
 Server_Protocol:: Server_Protocol(GameContainer* games):
-token(),final_game_msg(""){
-    this->gc = games;
-}
+token(),final_game_msg(""),gc(games){}
 
 void Server_Protocol:: init(const Socket& socket){
    this->socket = socket;

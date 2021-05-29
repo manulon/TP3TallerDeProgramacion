@@ -46,19 +46,7 @@ void Client_Protocol:: select_execution_mode(std::string& line){
 }
 
 void Client_Protocol:: mode_join(std::string& line){
-    std::string crear(UNIRSE_KEYWORD);
-
-    size_t p = -1;
-
-    std::string tempWord = crear + " ";
-            
-    while ((p = line.find(crear)) != std::string::npos)
-        line.replace(p, tempWord.length(), "");
-        
-    tempWord = " " + crear;
-    while ((p = line.find(crear)) != std::string::npos)
-        line.replace(p, tempWord.length(), "");       
-
+    get_keyword(UNIRSE_KEYWORD,line);
     
     std::string key = UNIRSE_KEY;
 
@@ -86,9 +74,12 @@ void Client_Protocol:: mode_list(){
     size = this->comm.receive_size(&size);
 
     std::vector<char> all_games_name(size+1);
-    this->comm.receive_message(size,all_games_name.data());
+    int bytes_received(0);
 
-    std::cout<<all_games_name.data()<<std::endl;
+    bytes_received = this->comm.receive_message(size,all_games_name.data());
+    
+    if (bytes_received > 0)
+        std::cout<<all_games_name.data()<<std::endl;
 }
 
 void Client_Protocol:: mode_play(std::string& line){
@@ -107,9 +98,12 @@ void Client_Protocol:: mode_play(std::string& line){
     size = this->comm.receive_size(&size);
 
     std::vector<char> board(size+1);
-    this->comm.receive_message(size,board.data());
+    int bytes_received(0);
 
-    std::cout<<board.data()<<std::endl;
+    bytes_received = this->comm.receive_message(size,board.data());
+
+    if (bytes_received > 0)
+        std::cout<<board.data()<<std::endl;
 
     if (size > STANDARD_BOARD_SIZE){
         throw GameFinishedException();
@@ -127,19 +121,7 @@ unsigned char Client_Protocol:: put_position_in_one_byte
 }
 
 void Client_Protocol:: mode_create(std::string& line){
-    std::string crear = CREAR_KEYWORD;
-
-    size_t p = -1;
-
-    std::string tempWord = crear + " ";
-            
-    while ((p = line.find(crear)) != std::string::npos)
-        line.replace(p, tempWord.length(), "");
-        
-    tempWord = " " + crear;
-    while ((p = line.find(crear)) != std::string::npos)
-        line.replace(p, tempWord.length(), "");       
-
+    get_keyword(CREAR_KEYWORD,line);
     
     std::string key = CREAR_KEY;
 
@@ -164,6 +146,22 @@ std::string Client_Protocol:: get_execution_mode(const std::string& line){
     std::string word = "";
     iss >> word;
     return word;
+}
+
+void Client_Protocol::get_keyword
+(const std::string& keyword, std::string& line){
+    std::string aux(keyword);
+
+    size_t p = -1;
+
+    std::string tempWord = keyword + " ";
+            
+    while ((p = line.find(keyword)) != std::string::npos)
+        line.replace(p, tempWord.length(), "");
+        
+    tempWord = " " + keyword;
+    while ((p = line.find(keyword)) != std::string::npos)
+        line.replace(p, tempWord.length(), "");
 }
 
 Client_Protocol:: ~Client_Protocol(){}

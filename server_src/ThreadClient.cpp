@@ -1,10 +1,8 @@
 #include "ThreadClient.h"
 #include <utility>
 
-ThreadClient:: ThreadClient(Socket* peer, GameContainer* games) {
-    this->peer = peer;
-    this->games = games;
-}
+ThreadClient:: ThreadClient(Socket* peer, GameContainer* games):
+peer(peer),games(games) {}
 
 void ThreadClient:: run() {
     Server_Protocol sp(this->games);

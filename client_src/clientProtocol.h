@@ -28,6 +28,8 @@ private:
     void mode_join(std::string& line);
     unsigned char put_position_in_one_byte
     (unsigned char row, unsigned char column);
+    void get_keyword
+    (const std::string& keyword, std::string& line);
 
 public:
     Client_Protocol();

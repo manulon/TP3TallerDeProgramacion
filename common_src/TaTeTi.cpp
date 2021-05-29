@@ -144,7 +144,7 @@ bool TaTeTi:: check_diagonals(const char& token){
     if ((this->board[0][2] == this->board[1][1])
       && (this->board[1][1] == this->board[2][0])
       && (this->board[0][2] != 32 ) 
-      && (this->board[1][1] == token))
+      && (this->board[1][1] != token))
             return true;
     
     return false;
