@@ -44,8 +44,6 @@ bool Socket:: bind_and_listen(const char* hostname, const char* servicename){
 		return false;
 	}
 
-    std::cout << "Esperando por una conexion..." << std::endl;
-
 	return true;
 }
 
@@ -56,8 +54,6 @@ int Socket:: socket_accept(Socket* peer){
         throw AcceptorClosedException();
 	}
     
-    printf("Conexión establecida\n");
-
     fd = 0;
 	return fd;
 }

@@ -105,9 +105,9 @@ void Client_Protocol:: mode_play(std::string& line){
     if (bytes_received > 0)
         std::cout<<board.data()<<std::endl;
 
-    if (size > STANDARD_BOARD_SIZE){
+    if (size > STANDARD_BOARD_SIZE)
         throw GameFinishedException();
-    }
+    
 }
 
 unsigned char Client_Protocol:: put_position_in_one_byte

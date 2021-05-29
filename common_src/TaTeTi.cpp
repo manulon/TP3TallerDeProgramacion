@@ -50,10 +50,10 @@ std::string TaTeTi::get_board(){
     board += (" | ");
     board += this->board[2][2];
     board += (" |\n");
-    board += ("  +---+---+---+");
+    board += ("  +---+---+---+\n");
 
     if ( there_is_a_winner )
-        board += "\nFelicitaciones! Ganaste!\n";
+        board += "Felicitaciones! Ganaste!\n";
 
     return board;
 }
@@ -100,7 +100,7 @@ bool TaTeTi:: game_tied(){
 void TaTeTi:: game_finished_with_a_winner
 (const bool& status, std::string& msg){
     if ( status == true ){
-        msg = "\nHas perdido. Segui intentando!\n";
+        msg = "Has perdido. Segui intentando!\n";
         this->there_is_a_winner = true;
     }
 }
