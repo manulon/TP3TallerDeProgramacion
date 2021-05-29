@@ -17,11 +17,12 @@ private:
     
 
 public:
-    Server(char const* argv[]);
+    explicit Server(char const* argv[]);
     ~Server();
 
     void start();
     bool start_connection();
+    void stop_accepting();
 };
 
 #endif

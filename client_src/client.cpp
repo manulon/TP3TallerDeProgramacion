@@ -1,4 +1,5 @@
 #include "client.h"
+#include <utility>
 
 Client:: Client(char const *argv[]):
 hostname(argv[1]),servicename(argv[2]){}
@@ -10,26 +11,6 @@ void Client:: init_connection(){
 void Client:: communicate_with_server(){
     this->protocol.init(std::move(this->socket));
     this->protocol.start_communication_protocol();
-}
-
-void Client:: set_message_length(const int& len){
-    this->message_length = len;
-}
-
-void Client:: set_message(const char* msg){
-    this->message = 
-        (char*)calloc(this->message_length+1, sizeof(char));
-    
-    strncpy((char*)this->message,(char*)msg,this->message_length);
-    this->message[this->message_length] = 0;
-}
-
-char* Client:: get_message(){
-    return this->message;
-}
-
-int Client:: get_message_length(){
-    return this->message_length;
 }
 
 Client:: ~Client(){}

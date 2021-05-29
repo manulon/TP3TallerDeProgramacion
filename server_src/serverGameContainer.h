@@ -5,6 +5,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <atomic>
+#include <string>
 
 class GameContainer{
 private:
@@ -20,7 +21,6 @@ public:
     ~GameContainer();
     
     void create_new_game(const std::string& key);
-    std::string get_game_name(const std::string& key);
     std::string get_all_values();
     void make_play(const char& token,const unsigned char& row,
         const unsigned char& column, const std::string& game_name);
@@ -29,7 +29,6 @@ public:
     (const std::string& game_name,const char& token,std::string& msg);
     std::string get_initial_board(const std::string& game_name);
     void notify_winner();
-    void finish_game();
 };
 
 #endif

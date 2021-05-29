@@ -18,5 +18,7 @@ int main(int argc, char const *argv[]){
         std::cin >> input;
     }
 
+    server.stop_accepting();
+
     return 0;
 }

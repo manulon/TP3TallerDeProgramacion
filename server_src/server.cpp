@@ -2,11 +2,10 @@
 #include <stdio.h>
 #include <iostream>
 Server:: Server(char const* argv[]):
-servicename(argv[1]){}
+servicename(argv[1]),acceptor(){}
 
 Server:: ~Server(){
     this->acceptor->stop();
-    this->acceptor->join();
     delete this->acceptor;
 }
 
@@ -19,3 +18,7 @@ bool Server:: start_connection(){
     return this->socket.bind_and_listen(NULL, this->servicename);
 }
 
+void Server:: stop_accepting(){
+    this->socket.socket_close();
+    this->acceptor->join();
+}

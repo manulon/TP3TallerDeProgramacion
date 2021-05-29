@@ -1,5 +1,6 @@
 #include "Socket.h"
 #include <iostream>
+#include "AcceptorClosedException.h"
 
 Socket:: Socket(){}
 
@@ -52,8 +53,7 @@ int Socket:: socket_accept(Socket* peer){
 	int fd = -1;
     
 	if ((peer->fd = accept(this->fd, NULL, NULL)) < 0) {
-		fprintf(stderr, "socket_accept-->accept: %s\n", strerror(errno));
-        return fd;
+        throw AcceptorClosedException();
 	}
     
     printf("Conexión establecida\n");
@@ -111,7 +111,14 @@ int Socket:: get_fd(){
     return this->fd;
 }
 
+void Socket:: socket_close(){
+    shutdown(this->fd, SHUT_RDWR);
+    close(this->fd);
+}
+
 Socket:: ~Socket(){
-   shutdown(this->fd, SHUT_RDWR);
-   close(this->fd);
+   if (this->fd != -1){
+        shutdown(this->fd, SHUT_RDWR);
+        close(this->fd);
+   }
 }

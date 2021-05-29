@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream> 
 #include <vector>
-
+#include <utility>
 
 Client_Protocol:: Client_Protocol(){}
 
@@ -12,14 +12,13 @@ void Client_Protocol:: init(const Socket& socket){
 }
        
 void Client_Protocol:: start_communication_protocol(){
-    std::cout<<"Ingrese uno de los comandos designados por favor: "<<std::endl;
     this->comm.init(std::move(this->socket));
 
     bool keep_reading_from_cin = true;
     std::string line = "";
 
     std::getline(std::cin, line);
-    while(keep_reading_from_cin){
+    while (keep_reading_from_cin){
         try{
             select_execution_mode(line);
             std::getline(std::cin, line);
@@ -33,7 +32,7 @@ void Client_Protocol:: select_execution_mode(std::string& line){
     std::string mode = "";
     mode = get_execution_mode(line);
 
-    if ( mode == CREAR_KEYWORD){
+    if (mode == CREAR_KEYWORD){
         mode_create(line);
     }else if (mode == LISTAR_KEYWORD){
         mode_list();
@@ -74,7 +73,7 @@ void Client_Protocol:: mode_join(std::string& line){
     int bytes_received(0);
     bytes_received = comm.receive_message(board_size,board.data());
 
-    if ( bytes_received > 0){
+    if (bytes_received > 0){
         std::cout<<board.data()<<std::endl;
     }   
 }
@@ -90,7 +89,6 @@ void Client_Protocol:: mode_list(){
     this->comm.receive_message(size,all_games_name.data());
 
     std::cout<<all_games_name.data()<<std::endl;
-
 }
 
 void Client_Protocol:: mode_play(std::string& line){
@@ -156,7 +154,7 @@ void Client_Protocol:: mode_create(std::string& line){
     int bytes_received(0);
     bytes_received = comm.receive_message(board_size,board.data());
 
-    if ( bytes_received > 0){
+    if (bytes_received > 0){
         std::cout<<board.data()<<std::endl;
     }   
 }

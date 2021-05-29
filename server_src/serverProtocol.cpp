@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
+#include <utility>
 
 Server_Protocol:: Server_Protocol(GameContainer* games):
 token(),final_game_msg(""){
@@ -29,13 +31,13 @@ void Server_Protocol:: select_execution_mode(){
     bytes_received = get_execution_mode(mode.data());
 
     while (bytes_received > 0){
-        if ( strcmp(mode.data(),CREAR_KEY) == 0){
+        if (strcmp(mode.data(),CREAR_KEY) == 0){
             receive_create_command();
-        }else if ( strcmp(mode.data(),LISTAR_KEY) == 0){
+        }else if (strcmp(mode.data(),LISTAR_KEY) == 0){
             receive_list_command();
-        }else if ( strcmp(mode.data(),UNIRSE_KEY) == 0){
+        }else if (strcmp(mode.data(),UNIRSE_KEY) == 0){
             receive_join_command();
-        }else if ( strcmp(mode.data(),JUGAR_KEY) == 0){
+        }else if (strcmp(mode.data(),JUGAR_KEY) == 0){
             receive_play_command();
         }
         bytes_received = get_execution_mode(mode.data());
@@ -51,7 +53,7 @@ void Server_Protocol:: receive_join_command(){
     std::vector<char> message(game_name_size+1);
     bytes_received = comm.receive_message(game_name_size,message.data());
 
-    if( bytes_received > 0){
+    if (bytes_received > 0){
         this->game.set_name(message.data());
         send_board(this->game.get_name());
     }
@@ -67,7 +69,7 @@ void Server_Protocol:: receive_create_command(){
     std::vector<char> message(game_name_size+1);
     bytes_received = comm.receive_message(game_name_size,message.data());
 
-    if( bytes_received > 0){
+    if (bytes_received > 0){
         this->gc->create_new_game(message.data());
         this->game.set_name(message.data());
         
@@ -76,7 +78,6 @@ void Server_Protocol:: receive_create_command(){
         this->comm.send_size((int)board.length());
         this->comm.send_message(board.c_str(),board.length());
     }
-    
 }
 
 void Server_Protocol:: receive_list_command(){
@@ -92,7 +93,7 @@ void Server_Protocol::receive_play_command(){
     std::vector<char> message(2);
     bytes_received = comm.receive_message(1,message.data());
 
-    if( bytes_received > 0){  
+    if (bytes_received > 0){  
         makePlay(message.data(),this->game.get_name());
         send_board(this->game.get_name());
     }
@@ -117,18 +118,6 @@ void Server_Protocol:: send_board(const std::string& game_name){
         
         this->comm.send_size((int)board.length());
         this->comm.send_message(board.c_str(),board.length());  
-}
-
-void Server_Protocol:: send_board_with_message
-(const std::string& game_name,const std::string& final_msg){
-    this->gc->finish_game();
-
-    std::string board("");
-    board = this->gc->get_board(game_name);
-    board += final_msg;
-
-    this->comm.send_size((int)board.length());
-    this->comm.send_message(board.c_str(),board.length());
 }
 
 int Server_Protocol::get_execution_mode(char* mode){

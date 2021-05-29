@@ -37,7 +37,8 @@ ssize_t CommunicationProtocol:: _send_message(const char* msg,const int& size){
     return total_bytes_sent;
 }
 
-ssize_t CommunicationProtocol:: receive_message(const int& length, char* buffer){
+ssize_t CommunicationProtocol:: receive_message
+(const int& length, char* buffer){
     if (length == 0){ return 0; }
     int remaining_bytes = length;
     int total_bytes_received = 0;

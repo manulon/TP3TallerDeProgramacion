@@ -12,7 +12,8 @@ there_is_a_winner(false){
     }
 }
 
-TaTeTi:: TaTeTi(const std::string& name){
+TaTeTi:: TaTeTi(const std::string& name):
+there_is_a_winner(false){
     for (int i=0 ; i<ROW_LENGTH; i++){
         for (int j=0 ; j<COLUMN_LENGTH ; j++){
             /*Empty space*/
@@ -84,7 +85,6 @@ void TaTeTi:: check_game_status(const char& token,std::string& msg){
 
     if ( game_tied() )
         msg = "La partida ha terminado en empate\n";
-    
 }
 
 bool TaTeTi:: game_tied(){
@@ -99,7 +99,7 @@ bool TaTeTi:: game_tied(){
 
 void TaTeTi:: game_finished_with_a_winner
 (const bool& status, std::string& msg){
-    if( status == true ){
+    if ( status == true ){
         msg = "\nHas perdido. Segui intentando!\n";
         this->there_is_a_winner = true;
     }
@@ -135,16 +135,16 @@ bool TaTeTi:: check_columns(const char& token){
 }
 
 bool TaTeTi:: check_diagonals(const char& token){
-    if ( (this->board[0][0] == this->board[1][1])
+    if ((this->board[0][0] == this->board[1][1])
       && (this->board[1][1] == this->board[2][2])
       && (this->board[0][0] != 32 ) 
-      && (this->board[1][1] != token ) )
+      && (this->board[1][1] != token))
             return true;
 
-    if ( (this->board[0][2] == this->board[1][1])
+    if ((this->board[0][2] == this->board[1][1])
       && (this->board[1][1] == this->board[2][0])
       && (this->board[0][2] != 32 ) 
-      && (this->board[1][1] == token ) )
+      && (this->board[1][1] == token))
             return true;
     
     return false;

@@ -32,6 +32,7 @@ public:
     int socket_accept(Socket* peer);
     void socket_connect(const char* hostname, const char* servicename);
     int get_fd();
+    void socket_close();
     ~Socket();
 };
 

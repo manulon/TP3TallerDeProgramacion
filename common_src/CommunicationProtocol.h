@@ -7,7 +7,6 @@
 #include <stdint.h>
 
 class CommunicationProtocol{
-
     Socket socket;
 
 private:
@@ -15,7 +14,7 @@ private:
 
 public:
     CommunicationProtocol();
-    CommunicationProtocol(const Socket& socket);
+    explicit CommunicationProtocol(const Socket& socket);
     void init(const Socket& socket);
     ssize_t send_message(const char* msg,const int& length);
     ssize_t send_size(uint16_t size);

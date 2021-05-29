@@ -1,5 +1,6 @@
 #include "serverGameContainer.h"
 #include <iostream>
+#include <string>
 
 GameContainer:: GameContainer(): game_finished(false){}
 
@@ -12,14 +13,6 @@ void GameContainer:: create_new_game(const std::string& key){
     if (!contains(key)) {
         this->map.set_name(key);
     }
-}
-
-std::string GameContainer::get_game_name(const std::string& key){
-    std::unique_lock<std::mutex> lk(this->m);
-    if (!contains(key)) {
-        return this->map.get_name(key);
-    }
-    return 0;
 }
 
 std::string GameContainer::get_all_values(){
@@ -61,10 +54,6 @@ void GameContainer::check_game_status
     if (contains(game_name)){
         this->map.check_game_status(game_name,token,msg);
     }
-}
-
-void GameContainer:: finish_game(){
-    this->game_finished = true;
 }
 
 void GameContainer:: notify_winner(){

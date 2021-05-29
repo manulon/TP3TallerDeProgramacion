@@ -7,7 +7,6 @@
 #include <string>
 
 class TaTeTi {
-
 private:
     char board[ROW_LENGTH][COLUMN_LENGTH];
     std::string name;
@@ -21,7 +20,7 @@ private:
 
 public:
     TaTeTi();
-    TaTeTi(const std::string& name);
+    explicit TaTeTi(const std::string& name);
     std::string get_board();
     void set_new_position
     (const char& character,const int& column,const int& row);

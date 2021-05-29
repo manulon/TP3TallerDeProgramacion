@@ -1,4 +1,5 @@
 #include "ThreadAcceptor.h"
+#include "../common_src/AcceptorClosedException.h"
 
 ThreadAcceptor:: ThreadAcceptor(const Socket& s,GameContainer* games) {
     this->socket = s;
@@ -6,15 +7,20 @@ ThreadAcceptor:: ThreadAcceptor(const Socket& s,GameContainer* games) {
 }
 
 void ThreadAcceptor:: run() {
-    while (keep_running) {
+    bool keep_running = true;
+    while (keep_running){
         Socket* peer = new Socket();
-        if (this->socket.socket_accept(peer) < 0) {
+        try {
+            if (this->socket.socket_accept(peer) < 0) {
+                delete peer;
+            }
+            clients.push_back(new ThreadClient(peer,this->games));
+            clients.back()->start();
+            this->garbage_collector();
+        }catch(AcceptorClosedException& error){
             delete peer;
-            break;
+            keep_running = false;
         }
-        clients.push_back(new ThreadClient(peer,this->games));
-        clients.back()->start();
-        this->garbage_collector();
     }
 }
 
@@ -31,11 +37,7 @@ void ThreadAcceptor:: garbage_collector() {
         }
     }
 }
-
 void ThreadAcceptor:: stop() {
-    this->keep_running = false;
-    shutdown(this->socket.get_fd(), SHUT_RDWR);
-    close(this->socket.get_fd());
     std::list<ThreadClient*>::iterator it;
     for (it = this->clients.begin(); 
     it != this->clients.end(); ++it) {
@@ -43,5 +45,6 @@ void ThreadAcceptor:: stop() {
         delete (*it);
     }
 }
+
 
 ThreadAcceptor:: ~ThreadAcceptor(){}

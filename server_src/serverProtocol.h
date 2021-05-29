@@ -12,6 +12,7 @@
 #include "../common_src/TaTeTi.h"
 #include "serverGameContainer.h"
 #include <atomic>
+#include <string>
 
 class Server_Protocol{
 private:
@@ -28,8 +29,6 @@ private:
     int get_execution_mode(char* mode);
     void receive_play_command();
     void send_board(const std::string& game_name);
-    void send_board_with_message
-    (const std::string& game_name, const std::string& final_msg);
     void check_game_status
     (const std::string& game_name,std::string& msg);
     void receive_create_command();
@@ -38,7 +37,7 @@ private:
     void set_token(const char& token);
 
 public:
-    Server_Protocol(GameContainer* games);
+    explicit Server_Protocol(GameContainer* games);
     void init(const Socket& socket);
     void start_communication_protocol();
     void select_execution_mode();
