@@ -23,37 +23,6 @@ std::string ProtectedMap::get_all_values(){
     return all_games_name;
 }
 
-void ProtectedMap:: make_play(const std::string& key,
-const char& token, const unsigned char& row,
-const unsigned char& column){
-    this->internal.at(key)->set_new_position(token,column,row);
-}
-
-std::string ProtectedMap::get_board(const std::string& game_name){
-    return this->internal.at(game_name)->get_board();
-}
-
-void ProtectedMap:: check_game_status
-(const std::string& game_name,const char& token,std::string& msg){
-    this->internal.at(game_name)->check_game_status(token,msg);
-}
-
-bool ProtectedMap:: game_already_start(const std::string& key){
-    return this->internal.at(key)->game_already_start();
-}
-
-void ProtectedMap:: game_started(const std::string& key){
-    this->internal.at(key)->start_game();
-}
-
-void ProtectedMap:: notify_winner(const std::string& key){
-    this->internal.at(key)->notify_winner();
-}
-
-std::string ProtectedMap::get_initial_board(const std::string& game_name){
-    return this->internal.at(game_name)->get_initial_board();
-}
-
 void ProtectedMap:: add_new_game(TaTeTi* game){
     this->internal[game->get_name()] = game;
 }

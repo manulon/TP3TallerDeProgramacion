@@ -29,8 +29,6 @@ private:
     int get_execution_mode(char* mode);
     void receive_play_command();
     void send_board(const std::string& game_name);
-    void check_game_status
-    (const std::string& game_name,std::string& msg);
     void receive_create_command();
     void receive_list_command();
     void receive_join_command();

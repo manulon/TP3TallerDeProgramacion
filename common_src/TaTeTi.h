@@ -17,6 +17,7 @@ private:
     std::mutex m;
     std::condition_variable cv;
 
+    void initialize_board();
     void game_finished_with_a_winner(const bool& status,std::string& msg);
     bool game_tied();
     bool check_rows(const char& token);
@@ -34,7 +35,7 @@ public:
     std::string get_name();
     void check_game_status(const char& token,std::string& msg);
     bool game_already_start();
-    void start_game();
+    void opponent_turn();
     void notify_winner();
     TaTeTi& operator=(const TaTeTi &t);
     ~TaTeTi();

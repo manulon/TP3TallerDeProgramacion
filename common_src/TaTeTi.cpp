@@ -2,31 +2,30 @@
 #include <iostream>
 
 TaTeTi:: TaTeTi():
-there_is_a_winner(false),a_play_was_made(false){
-    /*funcion*/
-    for (int i=0 ; i<ROW_LENGTH; i++){
-        for (int j=0 ; j<COLUMN_LENGTH ; j++){
-            /*Empty space*/
-            this->board[i][j] = 32;
-        }
-    }
+name(),there_is_a_winner(false),a_play_was_made(false){
+    initialize_board();
 }
 
 TaTeTi:: TaTeTi(const std::string& name):
-there_is_a_winner(false), a_play_was_made(false){
+name(name),there_is_a_winner(false), a_play_was_made(false){
+    initialize_board();
+}
+
+void TaTeTi:: initialize_board(){
+    std::unique_lock<std::mutex> lk(this->m);
     for (int i=0 ; i<ROW_LENGTH; i++){
         for (int j=0 ; j<COLUMN_LENGTH ; j++){
             /*Empty space*/
             this->board[i][j] = 32;
         }
     }
-    this->name = name;
 }
 
 std::string TaTeTi::get_board(){
     std::unique_lock<std::mutex> lk(this->m);
-    this->cv.wait(lk);
     
+    this->cv.wait(lk);
+
     std::string board("");
 
     board =  ("    1 . 2 . 3 .\n");
@@ -62,6 +61,7 @@ std::string TaTeTi::get_board(){
 }
 
 std::string TaTeTi::get_initial_board(){
+    std::unique_lock<std::mutex> lk(this->m);
     std::string board("");
     
     board =  ("    1 . 2 . 3 .\n");
@@ -95,10 +95,12 @@ std::string TaTeTi::get_initial_board(){
 
 void TaTeTi:: set_name
 (const std::string& name){
+    std::unique_lock<std::mutex> lk(this->m);
     this->name = name;
 }
 
 std::string TaTeTi::get_name(){
+    std::unique_lock<std::mutex> lk(this->m);
     return this->name;
 }
 
@@ -188,14 +190,15 @@ bool TaTeTi:: check_diagonals(const char& token){
 }
 
 bool TaTeTi:: game_already_start(){
+    std::unique_lock<std::mutex> lk(this->m);
     return a_play_was_made;
 }
 
-//Tiene que cambiar el nombre de esta funcion
-void TaTeTi:: start_game(){
+void TaTeTi:: opponent_turn(){
     std::unique_lock<std::mutex> lk(this->m);
     this->cv.notify_all();
     this->a_play_was_made = true;
+    
 }
 
 void TaTeTi:: notify_winner(){
@@ -204,6 +207,7 @@ void TaTeTi:: notify_winner(){
 }
 
 TaTeTi &TaTeTi::operator=(const TaTeTi &t){
+    std::unique_lock<std::mutex> lk(this->m);
     this->name = t.name;
     this->there_is_a_winner = t.there_is_a_winner;
     this->a_play_was_made = t.a_play_was_made;

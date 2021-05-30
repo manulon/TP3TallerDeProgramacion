@@ -101,14 +101,9 @@ void Server_Protocol::receive_play_command(){
 
     if (bytes_received > 0){
         makePlay(message.data(),this->game->get_name());
-        this->game->start_game();
+        this->game->opponent_turn();
         send_board(this->game->get_name());
     }
-}
-
-void Server_Protocol:: check_game_status
-(const std::string& game_name,std::string& msg){
-    this->gc->check_game_status(game_name,this->token,this->final_game_msg);
 }
 
 void Server_Protocol:: send_board(const std::string& game_name){
