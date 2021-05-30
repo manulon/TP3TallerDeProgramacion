@@ -15,6 +15,7 @@ extension = cpp
 # NOTA: No poner cabeceras (.h).
 #fuentes = entrada.cpp
 
+
 # Si usa funciones de math.h, descomentar (quitar el '#' a) la siguiente lÃ­nea.
 math = si
 
@@ -55,7 +56,7 @@ CFLAGS += -D _POSIX_C_SOURCE=200809L
 
 # Si se quiere simular pÃ©rdidas, definir la variable wrapsocks por linea
 # de comandos: 'wrapsocks=si make'  o descomentar la siguiente linea
-#wrapsocks = si
+# wrapsocks = si
 
 
 # VARIABLES CALCULADAS A PARTIR DE LA CONFIGURACION

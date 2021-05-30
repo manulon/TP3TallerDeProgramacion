@@ -8,7 +8,7 @@
 #include <utility>
 
 Server_Protocol:: Server_Protocol(GameContainer* games):
-token(),final_game_msg(""),gc(games){}
+token(),final_game_msg(""),game(nullptr),gc(games){}
 
 void Server_Protocol:: init(const Socket& socket){
    this->socket = socket;
@@ -52,15 +52,15 @@ void Server_Protocol:: receive_join_command(){
     std::vector<char> message(game_name_size+1);
     bytes_received = comm.receive_message(game_name_size,message.data());
     if (bytes_received > 0){
-        this->game.set_name(message.data());
-        if (this->gc->game_already_start(this->game.get_name())){
+        this->game = this->gc->get_game(message.data());
+
+        if (this->game->game_already_start()){
             std::string board("");
-            board = this->gc->get_initial_board(this->game.get_name());
-            board += "\n";
+            board = this->game->get_initial_board();
             this->comm.send_size((int)board.length());
             this->comm.send_message(board.c_str(),board.length());
         }else{
-            send_board(this->game.get_name());
+            send_board(this->game->get_name());
         }
     }
 }
@@ -77,11 +77,10 @@ void Server_Protocol:: receive_create_command(){
 
     if (bytes_received > 0){
         this->gc->create_new_game(message.data());
-        this->game.set_name(message.data());
+        this->game = this->gc->get_game(message.data());
         
         std::string board("");
-        board = this->gc->get_initial_board(this->game.get_name());
-        board += "\n";
+        board = this->game->get_initial_board();
         this->comm.send_size((int)board.length());
         this->comm.send_message(board.c_str(),board.length());
     }
@@ -100,9 +99,10 @@ void Server_Protocol::receive_play_command(){
     std::vector<char> message(2);
     bytes_received = comm.receive_message(1,message.data());
 
-    if (bytes_received > 0){  
-        makePlay(message.data(),this->game.get_name());
-        send_board(this->game.get_name());
+    if (bytes_received > 0){
+        makePlay(message.data(),this->game->get_name());
+        this->game->start_game();
+        send_board(this->game->get_name());
     }
 }
 
@@ -114,13 +114,12 @@ void Server_Protocol:: check_game_status
 void Server_Protocol:: send_board(const std::string& game_name){
         std::string board("");
 
-        board = this->gc->get_board(game_name);
-        board += "\n";
-
-        check_game_status(this->game.get_name(),this->final_game_msg);
+        board = this->game->get_board();
+        
+        this->game->check_game_status(this->token,this->final_game_msg);
 
         if (this->final_game_msg != "")
-            this->gc->notify_winner();
+            this->game->notify_winner();
 
         board += this->final_game_msg;
       
@@ -146,7 +145,7 @@ void Server_Protocol:: makePlay
     column = (column | aux2)-47;
     row = (row | aux2)-47;
     
-    this->gc->make_play(this->token,row,column,game_name);
+    this->game->set_new_position(this->token,row,column);
 }
 
 Server_Protocol:: ~Server_Protocol(){}

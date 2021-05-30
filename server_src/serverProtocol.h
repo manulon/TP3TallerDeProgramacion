@@ -20,7 +20,7 @@ private:
     std::string final_game_msg;
     Socket socket;
     CommunicationProtocol comm;
-    TaTeTi game;
+    TaTeTi* game;
     GameContainer* gc;
 
     int receive_size();
@@ -41,8 +41,6 @@ public:
     void init(const Socket& socket);
     void start_communication_protocol();
     void select_execution_mode();
-    int culo();
-    void pis(int a);
     ~Server_Protocol();
 };
 

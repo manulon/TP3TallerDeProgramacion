@@ -28,8 +28,10 @@ public:
     void check_game_status
     (const std::string& game_name,const char& token,std::string& msg);
     std::string get_initial_board(const std::string& game_name);
-    void notify_winner();
+    void notify_winner(const std::string& game_name);
     bool game_already_start(const std::string& key);
+    TaTeTi* get_game(const std::string& key);
+    void add_new_game(TaTeTi* game);
 };
 
 #endif

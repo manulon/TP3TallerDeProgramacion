@@ -62,7 +62,7 @@ void Client_Protocol:: mode_join(std::string& line){
     bytes_received = comm.receive_message(board_size,board.data());
 
     if (bytes_received > 0){
-        std::cout<<board.data()<<std::endl;
+        std::cout<<board.data();
     }   
 }
 
@@ -79,7 +79,7 @@ void Client_Protocol:: mode_list(){
     bytes_received = this->comm.receive_message(size,all_games_name.data());
     
     if (bytes_received > 0)
-        std::cout<<all_games_name.data()<<std::endl;
+        std::cout<<all_games_name.data();
 }
 
 void Client_Protocol:: mode_play(std::string& line){
@@ -103,7 +103,7 @@ void Client_Protocol:: mode_play(std::string& line){
     bytes_received = this->comm.receive_message(size,board.data());
 
     if (bytes_received > 0)
-        std::cout<<board.data()<<std::endl;
+        std::cout<<board.data();
 
     if (size != STANDARD_BOARD_SIZE)
         throw GameFinishedException();
@@ -121,12 +121,12 @@ unsigned char Client_Protocol:: put_position_in_one_byte
 
 void Client_Protocol:: mode_create(std::string& line){
     get_keyword(CREAR_KEYWORD,line);
-    
     std::string key = CREAR_KEY;
 
     this->comm.send_message(key.c_str(),key.length());
     this->comm.send_size((int)(line.length()));
     this->comm.send_message(line.c_str(),line.length());
+    
 
     uint16_t board_size(0);
     board_size = this->comm.receive_size(&board_size);
@@ -136,7 +136,7 @@ void Client_Protocol:: mode_create(std::string& line){
     bytes_received = comm.receive_message(board_size,board.data());
 
     if (bytes_received > 0){
-        std::cout<<board.data()<<std::endl;
+        std::cout<<board.data();
     }   
 }
 

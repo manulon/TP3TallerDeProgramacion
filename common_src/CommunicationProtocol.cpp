@@ -60,12 +60,11 @@ ssize_t CommunicationProtocol:: receive_message
 }
 
 ssize_t CommunicationProtocol:: send_size(uint16_t size){
-    int remaining_bytes = 2;       
-    int total_bytes_sent = 0;
-
     size = htons(size);
 
-    while (total_bytes_sent < 2) {
+    _send_message((char*)&size,2);
+
+    /*while (total_bytes_sent < 2) {
         ssize_t bytes = send(this->socket.fd, 
                             (char*) &size,
                             remaining_bytes, MSG_NOSIGNAL);
@@ -77,8 +76,8 @@ ssize_t CommunicationProtocol:: send_size(uint16_t size){
         if (bytes == 0) break;
         total_bytes_sent += bytes;
         remaining_bytes -= bytes;
-    }
-    return total_bytes_sent;
+    }*/
+    return 2;
 }
 
 int CommunicationProtocol:: receive_size(uint16_t* size){

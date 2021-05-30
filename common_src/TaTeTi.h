@@ -5,6 +5,8 @@
 #define COLUMN_LENGTH 3
 
 #include <string>
+#include <mutex>
+#include <condition_variable>
 
 class TaTeTi {
 private:
@@ -12,7 +14,9 @@ private:
     std::string name;
     bool there_is_a_winner;
     bool a_play_was_made;
-    
+    std::mutex m;
+    std::condition_variable cv;
+
     void game_finished_with_a_winner(const bool& status,std::string& msg);
     bool game_tied();
     bool check_rows(const char& token);
@@ -23,6 +27,7 @@ public:
     TaTeTi();
     explicit TaTeTi(const std::string& name);
     std::string get_board();
+    std::string get_initial_board();
     void set_new_position
     (const char& character,const int& column,const int& row);
     void set_name(const std::string& name);
@@ -30,6 +35,8 @@ public:
     void check_game_status(const char& token,std::string& msg);
     bool game_already_start();
     void start_game();
+    void notify_winner();
+    TaTeTi& operator=(const TaTeTi &t);
     ~TaTeTi();
 };
 
