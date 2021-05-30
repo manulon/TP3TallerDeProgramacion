@@ -23,8 +23,9 @@ std::string ProtectedMap::get_all_values(){
     return all_games_name;
 }
 
-void ProtectedMap:: add_new_game(TaTeTi* game){
+TaTeTi* ProtectedMap:: add_new_game(TaTeTi* game){
     this->internal[game->get_name()] = game;
+    return game;
 }
 
 TaTeTi* ProtectedMap::get_game(const std::string& key){

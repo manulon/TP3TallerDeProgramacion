@@ -76,8 +76,7 @@ void Server_Protocol:: receive_create_command(){
     bytes_received = comm.receive_message(game_name_size,message.data());
 
     if (bytes_received > 0){
-        this->gc->create_new_game(message.data());
-        this->game = this->gc->get_game(message.data());
+        this->game = this->gc->create_new_game(message.data());
         
         std::string board("");
         board = this->game->get_initial_board();

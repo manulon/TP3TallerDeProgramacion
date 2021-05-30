@@ -15,7 +15,7 @@ public:
 
     bool contains(const std::string& key);
     void set_name(const std::string& key);
-    void add_new_game(TaTeTi* game);
+    TaTeTi* add_new_game(TaTeTi* game);
     std::string get_name(const std::string& key);
     std::string get_all_values();
     TaTeTi* get_game(const std::string& key);
