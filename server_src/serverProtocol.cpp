@@ -56,6 +56,7 @@ void Server_Protocol:: receive_join_command(){
         if (this->gc->game_already_start(this->game.get_name())){
             std::string board("");
             board = this->gc->get_initial_board(this->game.get_name());
+            board += "\n";
             this->comm.send_size((int)board.length());
             this->comm.send_message(board.c_str(),board.length());
         }else{
@@ -80,6 +81,7 @@ void Server_Protocol:: receive_create_command(){
         
         std::string board("");
         board = this->gc->get_initial_board(this->game.get_name());
+        board += "\n";
         this->comm.send_size((int)board.length());
         this->comm.send_message(board.c_str(),board.length());
     }
@@ -113,6 +115,7 @@ void Server_Protocol:: send_board(const std::string& game_name){
         std::string board("");
 
         board = this->gc->get_board(game_name);
+        board += "\n";
 
         check_game_status(this->game.get_name(),this->final_game_msg);
 
