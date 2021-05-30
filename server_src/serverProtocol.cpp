@@ -61,7 +61,6 @@ void Server_Protocol:: receive_join_command(){
         }else{
             send_board(this->game.get_name());
         }
-    
     }
 }
 

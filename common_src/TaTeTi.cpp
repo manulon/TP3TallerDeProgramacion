@@ -13,7 +13,7 @@ there_is_a_winner(false),a_play_was_made(false){
 }
 
 TaTeTi:: TaTeTi(const std::string& name):
-there_is_a_winner(false){
+there_is_a_winner(false), a_play_was_made(false){
     for (int i=0 ; i<ROW_LENGTH; i++){
         for (int j=0 ; j<COLUMN_LENGTH ; j++){
             /*Empty space*/
