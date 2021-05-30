@@ -2,7 +2,7 @@
 #include <iostream>
 
 TaTeTi:: TaTeTi():
-there_is_a_winner(false){
+there_is_a_winner(false),a_play_was_made(false){
     /*funcion*/
     for (int i=0 ; i<ROW_LENGTH; i++){
         for (int j=0 ; j<COLUMN_LENGTH ; j++){
@@ -26,7 +26,7 @@ there_is_a_winner(false){
 std::string TaTeTi::get_board(){
     std::string board("");
 
-    board += ("    1 . 2 . 3 .\n");
+    board =  ("    1 . 2 . 3 .\n");
     board += ("  +---+---+---+\n");
     board += ("1 | ");
     board += this->board[0][0];
@@ -50,10 +50,10 @@ std::string TaTeTi::get_board(){
     board += (" | ");
     board += this->board[2][2];
     board += (" |\n");
-    board += ("  +---+---+---+\n");
+    board += ("  +---+---+---+");
 
     if ( there_is_a_winner )
-        board += "Felicitaciones! Ganaste!\n";
+        board += "\nFelicitaciones! Ganaste!\n";
 
     return board;
 }
@@ -83,8 +83,8 @@ void TaTeTi:: check_game_status(const char& token,std::string& msg){
 
     game_finished_with_a_winner(is_a_loser,msg);
 
-    if ( game_tied() )
-        msg = "La partida ha terminado en empate\n";
+    if ( game_tied() && !there_is_a_winner )
+        msg = "\nLa partida ha terminado en empate\n";
 }
 
 bool TaTeTi:: game_tied(){
@@ -100,7 +100,7 @@ bool TaTeTi:: game_tied(){
 void TaTeTi:: game_finished_with_a_winner
 (const bool& status, std::string& msg){
     if ( status == true ){
-        msg = "Has perdido. Segui intentando!\n";
+        msg = "\nHas perdido. Segui intentando!\n";
         this->there_is_a_winner = true;
     }
 }
@@ -148,6 +148,14 @@ bool TaTeTi:: check_diagonals(const char& token){
             return true;
     
     return false;
+}
+
+bool TaTeTi:: game_already_start(){
+    return a_play_was_made;
+}
+
+void TaTeTi:: start_game(){
+    this->a_play_was_made = true;
 }
 
 TaTeTi:: ~TaTeTi(){}

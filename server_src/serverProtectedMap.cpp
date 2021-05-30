@@ -38,4 +38,12 @@ void ProtectedMap:: check_game_status
     this->internal.at(game_name).check_game_status(token,msg);
 }
 
+bool ProtectedMap:: game_already_start(const std::string& key){
+    return this->internal.at(key).game_already_start();
+}
+
+void ProtectedMap:: game_started(const std::string& key){
+    this->internal.at(key).start_game();
+}
+
 ProtectedMap:: ~ProtectedMap() {}

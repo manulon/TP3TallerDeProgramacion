@@ -11,6 +11,7 @@ private:
     char board[ROW_LENGTH][COLUMN_LENGTH];
     std::string name;
     bool there_is_a_winner;
+    bool a_play_was_made;
     
     void game_finished_with_a_winner(const bool& status,std::string& msg);
     bool game_tied();
@@ -27,6 +28,8 @@ public:
     void set_name(const std::string& name);
     std::string get_name();
     void check_game_status(const char& token,std::string& msg);
+    bool game_already_start();
+    void start_game();
     ~TaTeTi();
 };
 

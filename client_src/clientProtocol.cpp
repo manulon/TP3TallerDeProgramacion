@@ -47,7 +47,7 @@ void Client_Protocol:: select_execution_mode(std::string& line){
 
 void Client_Protocol:: mode_join(std::string& line){
     get_keyword(UNIRSE_KEYWORD,line);
-    
+
     std::string key = UNIRSE_KEY;
 
     this->comm.send_message(key.c_str(),key.length());
@@ -56,7 +56,7 @@ void Client_Protocol:: mode_join(std::string& line){
 
     uint16_t board_size(0);
     board_size = this->comm.receive_size(&board_size);
-    
+
     std::vector<char> board(board_size+1);
     int bytes_received(0);
     bytes_received = comm.receive_message(board_size,board.data());
@@ -107,15 +107,14 @@ void Client_Protocol:: mode_play(std::string& line){
 
     if (size > STANDARD_BOARD_SIZE)
         throw GameFinishedException();
-    
 }
 
 unsigned char Client_Protocol:: put_position_in_one_byte
 (unsigned char row, unsigned char column){
-    column = column << 4;
+    column = (column-1) << 4;
 
     unsigned char aux = 15; // 0x0F
-    row = row & aux;
+    row = (row-1) & aux;
 
     return (column | row);
 }

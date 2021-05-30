@@ -2,7 +2,8 @@
 #include <iostream>
 #include <string>
 
-GameContainer:: GameContainer(): game_finished(false){}
+GameContainer:: GameContainer():
+game_finished(false){}
 
 bool GameContainer:: contains(const std::string& key) {
     return this->map.contains(key);
@@ -24,8 +25,9 @@ void GameContainer:: make_play
 const unsigned char& column, const std::string& game_name){
     std::unique_lock<std::mutex> lk(this->m);
     if (contains(game_name)){
+        this->map.make_play(game_name,token,row,column);
+        this->map.game_started(game_name);
         this->cv.notify_all();
-        this->map.make_play(game_name,token,row,column);      
     }
 }
 
@@ -42,6 +44,7 @@ std::string GameContainer::get_board(const std::string& game_name){
 }
 
 std::string GameContainer:: get_initial_board(const std::string& game_name){
+    std::unique_lock<std::mutex> lk(this->m);
     if (contains(game_name)){
             return this->map.get_board(game_name);
     }
@@ -57,8 +60,16 @@ void GameContainer::check_game_status
 }
 
 void GameContainer:: notify_winner(){
+    std::unique_lock<std::mutex> lk(this->m);
     this->cv.notify_all();
 }
 
+bool GameContainer:: game_already_start(const std::string& key){
+    std::unique_lock<std::mutex> lk(this->m);
+    if (contains(key)){
+        return this->map.game_already_start(key);
+    }
+    return false;    
+}
 
 GameContainer:: ~GameContainer(){}

@@ -12,8 +12,8 @@ private:
     ProtectedMap map;
     std::mutex m;
     std::condition_variable cv;
-    std::atomic<bool> game_finished; 
-
+    std::atomic<bool> game_finished;
+    
     bool contains(const std::string& key);
 
 public:
@@ -29,6 +29,7 @@ public:
     (const std::string& game_name,const char& token,std::string& msg);
     std::string get_initial_board(const std::string& game_name);
     void notify_winner();
+    bool game_already_start(const std::string& key);
 };
 
 #endif

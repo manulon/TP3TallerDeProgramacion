@@ -22,6 +22,8 @@ public:
     std::string get_board(const std::string& game_name);
     void check_game_status
     (const std::string& game_name,const char& token,std::string& msg);
+    bool game_already_start(const std::string& key);
+    void game_started(const std::string& key);
 };
 
 #endif

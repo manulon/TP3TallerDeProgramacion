@@ -44,16 +44,24 @@ void Server_Protocol:: select_execution_mode(){
 
 void Server_Protocol:: receive_join_command(){
     set_token(GUEST_TOKEN);
+
     int bytes_received(0);
     uint16_t game_name_size(0);
     game_name_size = this->comm.receive_size(&game_name_size);
     
     std::vector<char> message(game_name_size+1);
     bytes_received = comm.receive_message(game_name_size,message.data());
-
     if (bytes_received > 0){
         this->game.set_name(message.data());
-        send_board(this->game.get_name());
+        if (this->gc->game_already_start(this->game.get_name())){
+            std::string board("");
+            board = this->gc->get_initial_board(this->game.get_name());
+            this->comm.send_size((int)board.length());
+            this->comm.send_message(board.c_str(),board.length());
+        }else{
+            send_board(this->game.get_name());
+        }
+    
     }
 }
 
@@ -113,7 +121,7 @@ void Server_Protocol:: send_board(const std::string& game_name){
             this->gc->notify_winner();
 
         board += this->final_game_msg;
-        
+      
         this->comm.send_size((int)board.length());
         this->comm.send_message(board.c_str(),board.length());  
 }
@@ -133,10 +141,10 @@ void Server_Protocol:: makePlay
     
     int row = message[0] & aux;
     
-    column = (column | aux2)-48;
-    row = (row | aux2)-48;
+    column = (column | aux2)-47;
+    row = (row | aux2)-47;
     
-    this->gc->make_play(this->token,column,row,game_name);
+    this->gc->make_play(this->token,row,column,game_name);
 }
 
 Server_Protocol:: ~Server_Protocol(){}
