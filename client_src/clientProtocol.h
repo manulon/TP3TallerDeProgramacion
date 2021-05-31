@@ -37,7 +37,6 @@ public:
     
     void init(const Socket& socket);
     void start_communication_protocol();
-    
 };
 
 #endif
