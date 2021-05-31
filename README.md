@@ -50,10 +50,12 @@ Mi hipotesis sobre el mal funcionamiento del programa en el sercom es que debe h
 Adjunto imagenes que comprueban que en la computadora personal los programas se ejecutan correctamente:
 
 Caso 02 - One Match
-![Prueba numero 1 funciona OK](https://user-images.githubusercontent.com/45469722/120196018-bdc6c200-c1f5-11eb-9f2a-9afb96cd9c2f.png)
+![1](https://user-images.githubusercontent.com/45469722/120247742-ee851680-c24a-11eb-8a1f-d7bbbc8adbd1.png)
+
 
 Caso 03 - Two Concurrent Ties
-![caso 02 anda Ok](https://user-images.githubusercontent.com/45469722/120196033-c0c1b280-c1f5-11eb-99d4-c465710cb77f.png)
+![2](https://user-images.githubusercontent.com/45469722/120247748-f2189d80-c24a-11eb-86ef-1e26e8394929.png)
+
 
 *ACLARACION:* La 'q' se ejecuto en el servidor en el medio de las partidas. Para que nadie pueda conectarse y el servidor deba esperar a que los clientes terminen para cerrarse. Tambien como aclaracion, corri con tsan el servidor y no me genero en ningun momento una race condition, en ambos casos.
 
