@@ -55,7 +55,7 @@ Caso 02 - One Match
 Caso 03 - Two Concurrent Ties
 ![caso 02 anda Ok](https://user-images.githubusercontent.com/45469722/120196033-c0c1b280-c1f5-11eb-99d4-c465710cb77f.png)
 
-*ACLARACION:* La 'q' se ejecuto en el servidor en el medio de las partidas. Para que nadie pueda conectarse y el servidor deba esperar a que los clientes terminen para cerrarse.
+*ACLARACION:* La 'q' se ejecuto en el servidor en el medio de las partidas. Para que nadie pueda conectarse y el servidor deba esperar a que los clientes terminen para cerrarse. Tambien como aclaracion, corri con tsan el servidor y no me genero en ningun momento una race condition, en ambos casos.
 
 
 # Diagrama de clases representativo de la solución final:
