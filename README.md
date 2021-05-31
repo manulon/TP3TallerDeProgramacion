@@ -45,8 +45,17 @@ Para la implementacion se busco siempre cumplir con el paradigma de programacion
 
 Para esta entrega se encontro el siguiente problema:
 
-- El programa en la computadora se ejecuta de manera correcta. Es decir siguiendo el *schedule* de las pruebas se obtiene el resultado adecuado y buscado, agregando que todos los recursos son liberados correctamente y no se pierde memoria. El problema ocurre cuando se quiere subir el programa a la plataforma de pruebas provisto por la catedra *sercom*. Aqui se arroja `El programa 'Server' termino con un codigo de error '124' muy posiblemente por timeout.`, lo cual no permite la ejecucion de las pruebas. Mostrando,
+- El programa en la computadora se ejecuta de manera correcta. Es decir siguiendo el *schedule* de las pruebas se obtiene el resultado adecuado y buscado, agregando que todos los recursos son liberados correctamente y no se pierde memoria. El problema ocurre cuando se quiere subir el programa a la plataforma de pruebas provisto por la catedra *sercom*. Aqui se arroja `El programa 'Server' termino con un codigo de error '124' muy posiblemente por timeout.`, lo cual no permite la ejecucion de las pruebas debido a que el programa se queda colgado en alguna parte y debe ejecutarse el cierre forzdo. Mostrando, que los mensajes no fueron enviados correctamente y se quedan en la mitad. Lo cual eso en mi computadora no ocurre (corriendo el programa con y sin valgrind). De hecho, cuando se ejecuta *tiburoncin* las salidas de este son tal cual a las esperadas en los casos de prueba. Lo cual me hace notar que esta sucediendo algo raro. 
+Mi hipotesis sobre el mal funcionamiento del programa en el sercom es que debe haber una *race condition* en algun lado. Pero eso cuando lo pruebo localmente no lo puedo ver, ya que mi programa se ejecuta bien. Seguramente sea debido a que cuando se introducen los comandos manualmente se hacen de manera mas lenta que cuando se ejecuta el *script* del sercom, haciendo asi que ocurra la situacion no deseada y generando el mal comportamiento del programa. 
+Adjunto imagenes que comprueban que en la computadora personal los programas se ejecutan correctamente:}
+
+![Prueba numero 1 funciona OK](https://user-images.githubusercontent.com/45469722/120196018-bdc6c200-c1f5-11eb-9f2a-9afb96cd9c2f.png)
+
+![caso 02 anda Ok](https://user-images.githubusercontent.com/45469722/120196033-c0c1b280-c1f5-11eb-99d4-c465710cb77f.png)
+
+
 
 
 # Diagrama de clases representativo de la solución final:
-*ACLARACION:* Este diagrama no muestra todas los metodos implementados en la solucion. Solo muestra los mas importantes para que viendo el diagrama se pueda dar un entendimiento del programa. Lo mismo sucede con los constructores y destructores de las clases
+*ACLARACION:* En este diagrama, y como primera entrega. Se muestran solamente las clases y como se relacionan entre ellas para que pueda verse un mayor entendimiento del programa.
+
