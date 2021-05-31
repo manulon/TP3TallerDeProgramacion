@@ -140,7 +140,7 @@ void Server_Protocol:: makePlay
     column = (column | aux2)-47;
     row = (row | aux2)-47;
     
-    this->game->set_new_position(this->token,row,column);
+    this->game->set_new_position(this->token,column,row);
 }
 
 Server_Protocol:: ~Server_Protocol(){}
