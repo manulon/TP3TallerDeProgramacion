@@ -40,8 +40,6 @@ void Client_Protocol:: select_execution_mode(std::string& line){
         mode_join(line);
     }else if (mode == JUGAR_KEYWORD){
         mode_play(line);
-    }else{
-        //help_mode()
     }
 }
 

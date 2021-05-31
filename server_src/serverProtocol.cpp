@@ -1,5 +1,5 @@
 #include "serverProtocol.h"
-#include "../common_src/TaTeTi.h"
+#include "TaTeTi.h"
 #include "../common_src/GameFinishedException.h"
 
 #include <iostream>

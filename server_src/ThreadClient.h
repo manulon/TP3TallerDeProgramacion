@@ -14,15 +14,13 @@
 class ThreadClient: public Thread {
     Socket* peer;
     std::mutex mtx;
-    std::atomic<bool> keep_running{true};
-    std::atomic<bool> dead{false};
+    std::atomic<bool> keep_running;
     GameContainer* games;
 
     public:
     ThreadClient(Socket* peer, GameContainer* games);
     virtual void run() override;
     void stop();
-    //bool is_dead();
     virtual ~ThreadClient() override;
 };
 

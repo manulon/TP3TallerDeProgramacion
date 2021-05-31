@@ -33,9 +33,11 @@ private:
 
 public:
     Client_Protocol();
+    ~Client_Protocol();
+    
     void init(const Socket& socket);
     void start_communication_protocol();
-    ~Client_Protocol();
+    
 };
 
 #endif

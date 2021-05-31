@@ -1,7 +1,7 @@
 #ifndef SERVER_PROTECTED_MAP_H
 #define SERVER_PROTECTED_MAP_H
 
-#include "../common_src/TaTeTi.h"
+#include "TaTeTi.h"
 #include <string>
 #include <map>
 #include <utility>

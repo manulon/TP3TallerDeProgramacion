@@ -21,9 +21,8 @@ class ThreadAcceptor: public Thread {
     public:
     ThreadAcceptor(const Socket& socket,GameContainer* games);
     virtual void run() override;
+    void stop_clients();
     void stop();
-    //void garbage_collector();
-    void stop_test();
     virtual ~ThreadAcceptor() override;
 };
 

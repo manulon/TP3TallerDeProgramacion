@@ -9,7 +9,7 @@
 #define GUEST_TOKEN 88
 
 #include "../common_src/CommunicationProtocol.h"
-#include "../common_src/TaTeTi.h"
+#include "TaTeTi.h"
 #include "serverGameContainer.h"
 #include <atomic>
 #include <string>

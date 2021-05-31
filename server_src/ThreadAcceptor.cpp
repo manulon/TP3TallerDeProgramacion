@@ -16,7 +16,6 @@ void ThreadAcceptor:: run() {
             }
             clients.push_back(new ThreadClient(peer,this->games));
             clients.back()->start();
-            //this->garbage_collector();
         }catch(AcceptorClosedException& error){
             delete peer;
             keep_running = false;
@@ -27,20 +26,7 @@ void ThreadAcceptor:: run() {
 	}
 }
 
-/*void ThreadAcceptor:: garbage_collector() {
-    std::list<ThreadClient*>::iterator it;
-    it = this->clients.begin();
-    while (it != this->clients.end()) {
-        if ((*it)->is_dead()) {
-            (*it)->stop();
-            delete (*it);
-            it = this->clients.erase(it);
-        } else {
-            ++it;
-        }
-    }
-}*/
-void ThreadAcceptor:: stop() {
+void ThreadAcceptor:: stop_clients() {
     std::list<ThreadClient*>::iterator it;
     for (it = this->clients.begin(); 
     it != this->clients.end(); ++it) {
@@ -49,8 +35,7 @@ void ThreadAcceptor:: stop() {
     }
 }
 
-
-void ThreadAcceptor:: stop_test(){
+void ThreadAcceptor:: stop(){
     keep_running = false;
 }
 

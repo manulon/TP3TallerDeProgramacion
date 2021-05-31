@@ -5,7 +5,7 @@ Server:: Server(char const* argv[]):
 servicename(argv[1]),acceptor(){}
 
 Server:: ~Server(){
-    this->acceptor->stop();
+    this->acceptor->stop_clients();
     delete this->acceptor;
 }
 
@@ -20,7 +20,6 @@ bool Server:: start_connection(){
 
 void Server:: stop_accepting(){
     this->socket.socket_close();
-    this->acceptor->stop_test();
+    this->acceptor->stop();
     this->acceptor->join();
-    std::cout<<"Sali del join"<<std::endl;
 }
