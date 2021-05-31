@@ -20,5 +20,7 @@ bool Server:: start_connection(){
 
 void Server:: stop_accepting(){
     this->socket.socket_close();
+    this->acceptor->stop_test();
     this->acceptor->join();
+    std::cout<<"Sali del join"<<std::endl;
 }

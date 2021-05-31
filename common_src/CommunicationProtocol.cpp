@@ -64,19 +64,6 @@ ssize_t CommunicationProtocol:: send_size(uint16_t size){
 
     _send_message((char*)&size,2);
 
-    /*while (total_bytes_sent < 2) {
-        ssize_t bytes = send(this->socket.fd, 
-                            (char*) &size,
-                            remaining_bytes, MSG_NOSIGNAL);
-
-        if (bytes == -1) {
-			fprintf(stderr, "socket_send-->send: %s\n", strerror(errno));
-            return bytes;
-        }
-        if (bytes == 0) break;
-        total_bytes_sent += bytes;
-        remaining_bytes -= bytes;
-    }*/
     return 2;
 }
 

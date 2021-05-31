@@ -198,7 +198,6 @@ void TaTeTi:: opponent_turn(){
     std::unique_lock<std::mutex> lk(this->m);
     this->cv.notify_all();
     this->a_play_was_made = true;
-    
 }
 
 void TaTeTi:: notify_winner(){

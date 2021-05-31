@@ -32,4 +32,8 @@ TaTeTi* ProtectedMap::get_game(const std::string& key){
     return this->internal.at(key);
 }
 
-ProtectedMap:: ~ProtectedMap() {}
+ProtectedMap:: ~ProtectedMap() {
+    for (auto &element : internal) {
+        delete element.second;
+	}
+}

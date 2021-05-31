@@ -14,14 +14,16 @@
 class ThreadAcceptor: public Thread {
     Socket socket;
     std::list<ThreadClient*> clients;
-    std::atomic<bool> keep_running{true};
+    std::atomic<bool> keep_running;
     GameContainer* games;
+
 
     public:
     ThreadAcceptor(const Socket& socket,GameContainer* games);
     virtual void run() override;
     void stop();
-    void garbage_collector();
+    //void garbage_collector();
+    void stop_test();
     virtual ~ThreadAcceptor() override;
 };
 

@@ -22,7 +22,7 @@ void Server_Protocol:: set_token(const char& token){
     this->token = token;
 }
 
-void Server_Protocol:: select_execution_mode(){
+int Server_Protocol:: select_execution_mode(){
     int bytes_received = 0;
     std::vector<char> mode(2);
     
@@ -40,6 +40,7 @@ void Server_Protocol:: select_execution_mode(){
         }
         bytes_received = get_execution_mode(mode.data());
     }
+    return bytes_received;
 }
 
 void Server_Protocol:: receive_join_command(){

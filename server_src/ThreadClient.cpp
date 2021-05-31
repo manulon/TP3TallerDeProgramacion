@@ -9,26 +9,24 @@ void ThreadClient:: run() {
     sp.init(std::move(*this->peer));
     sp.start_communication_protocol();
 
-    while (keep_running){
-        try {
-            sp.select_execution_mode();
-        } catch (...) {
-            if (!keep_running) break;
-        } 
+    int bytes_received(1);
+
+    while (bytes_received > 0){
+        bytes_received = sp.select_execution_mode();
     }
     shutdown(peer->get_fd(), SHUT_WR);
     dead = true;
 }
 
 void ThreadClient:: stop() {
-    keep_running = false;
     delete this->peer;
 }
 
+/*
 bool ThreadClient:: is_dead() {
     return this->dead;
-}
+}*/
 
 ThreadClient:: ~ThreadClient(){
-    this->join();
+    //this->join();
 }

@@ -38,7 +38,7 @@ public:
     explicit Server_Protocol(GameContainer* games);
     void init(const Socket& socket);
     void start_communication_protocol();
-    void select_execution_mode();
+    int select_execution_mode();
     ~Server_Protocol();
 };
 

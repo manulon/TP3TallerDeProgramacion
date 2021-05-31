@@ -22,7 +22,7 @@ class ThreadClient: public Thread {
     ThreadClient(Socket* peer, GameContainer* games);
     virtual void run() override;
     void stop();
-    bool is_dead();
+    //bool is_dead();
     virtual ~ThreadClient() override;
 };
 
