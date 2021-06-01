@@ -21,25 +21,53 @@ private:
     Socket socket;
     CommunicationProtocol comm;
     TaTeTi* game;
-    GameContainer* gc;
-
-    int receive_size();
-    int receive_message(const int& size);
+    GameContainer* gc;    
+    
+    //Delega al juego la realizacion un movimiento.
+    //Pre: El nombre de juego recibido por parametro es valido.
     void makePlay(const char* message, const std::string& game_name);
+    
+    //Recibe un byte que representa el identificador del tipo de jugada
+    //a realizar.
+    //Pre: El identificador recibido es valido.
     int get_execution_mode(char* mode);
+    
+    //Recibe el mensaje del cliente con la jugada a realizar y ejecuta
+    //las funciones necesarias para realizar las jugadas.
     void receive_play_command();
+    
+    //Envia el estado del tablero actual al cliente
     void send_board(const std::string& game_name);
+    
+    //Recibe el mensaje del cliente con la creacion de la partida y 
+    //ejecuta las funciones necesarias para llevarla a cabo.
     void receive_create_command();
+    
+    //Recibe el mensaje del cliente que refiere al listado de partidas y 
+    //ejecuta las funciones necesarias para llevarla a cabo.
     void receive_list_command();
+    
+    //Recibe el mensaje del cliente con el nombre de la partida a 
+    //unirse y ejecuta las funciones necesarias para llevarla a cabo.
     void receive_join_command();
+    
+    //Setea el token al jugador.
     void set_token(const char& token);
 
 public:
     explicit Server_Protocol(GameContainer* games);
-    void init(const Socket& socket);
-    void start_communication_protocol();
-    int select_execution_mode();
     ~Server_Protocol();
+    
+    //Asigna como socket propio el socket recibido por parametro.
+    void init(const Socket& socket);
+    
+    //Inicia el protocolo de comunicacion comun.
+    void start_communication_protocol();
+    
+    //Recibe un byte que representa el identificador de comando a
+    //realizar y lo realiza, si ya no recibe mas nada. Deja de esperar por
+    //un identificador.
+    int select_execution_mode();
 };
 
 #endif

@@ -20,8 +20,14 @@ public:
     explicit Server(char const* argv[]);
     ~Server();
 
+    //Crea un nuevo Thread Acceptor y lo ejecuta.
     void start();
+    
+    //Comienza a escuchar conexiones.
     bool start_connection();
+    
+    //Deja de aceptar conexiones, cerrando el socket, frenando 
+    //el Thread Acceptor y joinenandolo.
     void stop_accepting();
 };
 

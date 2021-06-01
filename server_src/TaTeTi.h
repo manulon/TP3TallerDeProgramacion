@@ -18,26 +18,49 @@ private:
     std::mutex m;
     std::condition_variable cv;
 
+    //Inicializa el tablero, poniendo todos los valores en espacios
+    //vacios.
     void initialize_board();
+    
+    //Asigna el mensaje de victoria en el mensaje recibido por parametro.
+    //diciendo asi que se encontro a un ganador.
     void game_finished_with_a_winner(const bool& status,std::string& msg);
-    bool game_tied();
+
+    //Estas funciones verifican si hay un ganador en las filas, columnas
+    //o diagolanes respectivamente. Y finalmente la ultima de estas
+    //chequea si hay un empate.
     bool check_rows(const char& token);
     bool check_columns(const char& token);
     bool check_diagonals(const char& token);
+    bool game_tied();
 
 public:
     TaTeTi();
     explicit TaTeTi(const std::string& name);
-    std::string get_board();
-    std::string get_initial_board();
-    void set_new_position
-    (const char& character,const int& column,const int& row);
-    void set_name(const std::string& name);
-    std::string get_name();
-    void check_game_status(const char& token,std::string& msg);
-    void notify_winner();
-    TaTeTi& operator=(const TaTeTi &t);
     ~TaTeTi();
+
+    //Devuelve el estado del tablero actual.
+    std::string get_board();
+        
+    //Realiza un movimiento en el tablero con los valores recibidos por
+    //parametro.
+    void set_new_position    
+    (const char& character,const int& column,const int& row);
+    
+    //Asigna el nombre del juego recibido por parametro.
+    void set_name(const std::string& name);
+    
+    //Devuelve el nombre del juego
+    std::string get_name();
+    
+    //Chequea el estado actual del juego. Y setea en el parametro msg su
+    //estado si es necesario
+    void check_game_status(const char& token,std::string& msg);
+    
+    //Notifica que hay un ganador.
+    void notify_winner();
+    
+    TaTeTi& operator=(const TaTeTi &t);
 };
 
 #endif

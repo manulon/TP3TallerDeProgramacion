@@ -22,11 +22,6 @@ std::string GameContainer::get_all_values(){
     return this->map.get_all_values();
 }
 
-void GameContainer:: add_new_game(TaTeTi* game){
-    std::unique_lock<std::mutex> lk(this->m);
-    this->map.add_new_game(game);
-}
-
 TaTeTi* GameContainer::get_game(const std::string& key){
     std::unique_lock<std::mutex> lk(this->m);
     return this->map.get_game(key);

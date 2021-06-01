@@ -12,16 +12,10 @@ void CommunicationProtocol:: init(const Socket& socket){
 }
 
 ssize_t CommunicationProtocol:: send_message(const char* msg,const int& length){
-    ssize_t total_bytes_sent = 0;
-    _send_message(msg,length);
-    return total_bytes_sent;
-}
-
-ssize_t CommunicationProtocol:: _send_message(const char* msg,const int& size){
-    int remaining_bytes = size;
+    int remaining_bytes = length;
     int total_bytes_sent = 0;
 
-    while (total_bytes_sent < size) {
+    while (total_bytes_sent < length) {
         ssize_t bytes = send(this->socket.fd, 
                             &msg[total_bytes_sent], 
                              remaining_bytes, MSG_NOSIGNAL);
@@ -62,7 +56,7 @@ ssize_t CommunicationProtocol:: receive_message
 ssize_t CommunicationProtocol:: send_size(uint16_t size){
     size = htons(size);
 
-    _send_message((char*)&size,2);
+    send_message((char*)&size,2);
 
     return 2;
 }

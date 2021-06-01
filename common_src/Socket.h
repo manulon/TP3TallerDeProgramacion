@@ -25,6 +25,7 @@ public:
 
     Socket();
     Socket(const int& family,const int& socktype,const int& protocol);
+    ~Socket();
 
     void socket_init
     (const int& family,const int& socktype,const int& protocol);
@@ -33,7 +34,6 @@ public:
     void socket_connect(const char* hostname, const char* servicename);
     int get_fd();
     void socket_close();
-    ~Socket();
 };
 
 #endif

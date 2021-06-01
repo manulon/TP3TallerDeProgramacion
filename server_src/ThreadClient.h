@@ -19,9 +19,15 @@ class ThreadClient: public Thread {
 
     public:
     ThreadClient(Socket* peer, GameContainer* games);
-    virtual void run() override;
-    void stop();
     virtual ~ThreadClient() override;
+    
+    //Hace la operacion del run del hilo. Una vez que la
+    //operacion principal termina, le hace un shutdown al 
+    //socket asociado.
+    virtual void run() override;
+    
+    //Elimina el socket asociado.
+    void stop();
 };
 
 #endif

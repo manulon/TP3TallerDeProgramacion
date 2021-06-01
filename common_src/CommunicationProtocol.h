@@ -9,18 +9,25 @@
 class CommunicationProtocol{
     Socket socket;
 
-private:
-    ssize_t _send_message(const char* msg,const int& size);
-
 public:
     CommunicationProtocol();
-    explicit CommunicationProtocol(const Socket& socket);
-    void init(const Socket& socket);
-    ssize_t send_message(const char* msg,const int& length);
-    ssize_t send_size(uint16_t size);
-    ssize_t receive_message(const int& length, char* buffer);
-    int receive_size(uint16_t* size);
     ~CommunicationProtocol();
+    explicit CommunicationProtocol(const Socket& socket);
+    
+    //Asigna como socket propio el socket recibido por parametro.
+    void init(const Socket& socket);
+    
+    //Envia el mensaje recibido por parametro.
+    ssize_t send_message(const char* msg,const int& length);
+    
+    //Envia el size recibido por parametro.
+    ssize_t send_size(uint16_t size);
+    
+    //Recibe un mensaje de largo length.
+    ssize_t receive_message(const int& length, char* buffer);
+    
+    //Recibe el tamaño de un mensaje
+    int receive_size(uint16_t* size);
 };
 
 #endif

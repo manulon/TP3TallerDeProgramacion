@@ -20,10 +20,18 @@ class ThreadAcceptor: public Thread {
 
     public:
     ThreadAcceptor(const Socket& socket,GameContainer* games);
-    virtual void run() override;
-    void stop_clients();
-    void stop();
     virtual ~ThreadAcceptor() override;
+    
+    //Realiza el run del Thread Acceptor. Una vez que la operacion
+    //principal del run termine, espera a que joineen todos los hilos
+    //clientes que fueron lanzados.
+    virtual void run() override;
+    
+    //Hace stop a todos los clientes.
+    void stop_clients();
+    
+    //Deja de correr el hilo.
+    void stop();
 };
 
 #endif
