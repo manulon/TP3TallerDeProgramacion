@@ -14,6 +14,7 @@ private:
     std::string name;
     bool there_is_a_winner;
     bool a_play_was_made;
+    bool first_get_board;
     std::mutex m;
     std::condition_variable cv;
 
@@ -34,8 +35,6 @@ public:
     void set_name(const std::string& name);
     std::string get_name();
     void check_game_status(const char& token,std::string& msg);
-    bool game_already_start();
-    void opponent_turn();
     void notify_winner();
     TaTeTi& operator=(const TaTeTi &t);
     ~TaTeTi();

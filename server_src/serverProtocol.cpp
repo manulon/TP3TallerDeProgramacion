@@ -54,15 +54,7 @@ void Server_Protocol:: receive_join_command(){
     bytes_received = comm.receive_message(game_name_size,message.data());
     if (bytes_received > 0){
         this->game = this->gc->get_game(message.data());
-
-        if (this->game->game_already_start()){
-            std::string board("");
-            board = this->game->get_initial_board();
-            this->comm.send_size((int)board.length());
-            this->comm.send_message(board.c_str(),board.length());
-        }else{
-            send_board(this->game->get_name());
-        }
+        send_board(this->game->get_name());
     }
 }
 
@@ -80,7 +72,7 @@ void Server_Protocol:: receive_create_command(){
         this->game = this->gc->create_new_game(message.data());
         
         std::string board("");
-        board = this->game->get_initial_board();
+        board = this->game->get_board();
         this->comm.send_size((int)board.length());
         this->comm.send_message(board.c_str(),board.length());
     }
@@ -101,7 +93,6 @@ void Server_Protocol::receive_play_command(){
 
     if (bytes_received > 0){
         makePlay(message.data(),this->game->get_name());
-        this->game->opponent_turn();
         send_board(this->game->get_name());
     }
 }

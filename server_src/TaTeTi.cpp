@@ -2,12 +2,14 @@
 #include <iostream>
 
 TaTeTi:: TaTeTi():
-name(),there_is_a_winner(false),a_play_was_made(false){
+name(),there_is_a_winner(false),a_play_was_made(false),
+first_get_board(true){
     initialize_board();
 }
 
 TaTeTi:: TaTeTi(const std::string& name):
-name(name),there_is_a_winner(false), a_play_was_made(false){
+name(name),there_is_a_winner(false), a_play_was_made(false),
+first_get_board(true){
     initialize_board();
 }
 
@@ -24,8 +26,14 @@ void TaTeTi:: initialize_board(){
 std::string TaTeTi::get_board(){
     std::unique_lock<std::mutex> lk(this->m);
     
-    this->cv.wait(lk);
-
+    if (!first_get_board){
+        while (!a_play_was_made){
+            this->cv.wait(lk);
+        }
+    }else{
+        first_get_board = false;
+    }
+    
     std::string board("");
 
     board =  ("    1 . 2 . 3 .\n");
@@ -60,39 +68,6 @@ std::string TaTeTi::get_board(){
     return board;
 }
 
-std::string TaTeTi::get_initial_board(){
-    std::unique_lock<std::mutex> lk(this->m);
-    std::string board("");
-    
-    board =  ("    1 . 2 . 3 .\n");
-    board += ("  +---+---+---+\n");
-    board += ("1 | ");
-    board += this->board[0][0];
-    board += (" | ");
-    board += this->board[0][1];
-    board += (" | ");
-    board += this->board[0][2];
-    board += (" |\n  +---+---+---+\n");
-    board += ("2 | ");
-    board += this->board[1][0];
-    board += (" | ");
-    board += this->board[1][1];
-    board += (" | ");
-    board += this->board[1][2];
-    board += (" |\n");
-    board += ("  +---+---+---+\n");
-    board += ("3 | ");
-    board += this->board[2][0];
-    board += (" | ");
-    board += this->board[2][1];
-    board += (" | ");
-    board += this->board[2][2];
-    board += (" |\n");
-    board += ("  +---+---+---+\n");
-
-    return board;
-}
-
 void TaTeTi:: set_name
 (const std::string& name){
     std::unique_lock<std::mutex> lk(this->m);
@@ -108,6 +83,9 @@ void TaTeTi:: set_new_position
 (const char& character,const int& column,const int& row){
     std::unique_lock<std::mutex> lk(this->m);
     this->board[row-1][column-1] = character;
+    this->a_play_was_made = true;
+    this->cv.notify_all();
+    this->cv.wait(lk);
 }
 
 void TaTeTi:: check_game_status(const char& token,std::string& msg){
@@ -187,17 +165,6 @@ bool TaTeTi:: check_diagonals(const char& token){
             return true;
     
     return false;
-}
-
-bool TaTeTi:: game_already_start(){
-    std::unique_lock<std::mutex> lk(this->m);
-    return a_play_was_made;
-}
-
-void TaTeTi:: opponent_turn(){
-    std::unique_lock<std::mutex> lk(this->m);
-    this->cv.notify_all();
-    this->a_play_was_made = true;
 }
 
 void TaTeTi:: notify_winner(){
