@@ -42,41 +42,41 @@ void Client_Protocol:: select_and_execute_mode(std::string& line){
 }
 
 void Client_Protocol:: mode_join(const std::string& line){
-    std::string keyword("");
-    get_keyword(keyword,line);
+    std::string game_name("");
+    get_game_name(game_name,line);
 
-    std::string key = UNIRSE_KEY;
+    char key = UNIRSE_KEY;
 
-    this->comm.send_message(key.c_str(),key.length());
-    this->comm.send_size((int)(keyword.length()));
-    this->comm.send_message(keyword.c_str(),keyword.length());    
+    this->comm.send_message(&key,1);
+    this->comm.send_size((int)(game_name.length()));
+    this->comm.send_message(game_name.c_str(),game_name.length());    
 
     uint16_t board_size(0);
     board_size = this->comm.receive_size(&board_size);
 
-    std::vector<char> board(board_size+1);
+    std::vector<char> board(board_size,0);
     int bytes_received(0);
     bytes_received = comm.receive_message(board_size,board.data());
 
     if (bytes_received > 0){
-        std::cout<<board.data();
+        std::cout.write(board.data(),board_size);
     }   
 }
 
 void Client_Protocol:: mode_list(){
-    std::string key = LISTAR_KEY;
-    this->comm.send_message(key.c_str(),key.length());
+    char key = LISTAR_KEY;
+    this->comm.send_message(&key,1);
 
     uint16_t size(0);
     size = this->comm.receive_size(&size);
 
-    std::vector<char> all_games_name(size+1);
+    std::vector<char> all_games_name(size,0);
     int bytes_received(0);
 
     bytes_received = this->comm.receive_message(size,all_games_name.data());
     
     if (bytes_received > 0)
-        std::cout<<all_games_name.data();
+        std::cout.write(all_games_name.data(),size);
 }
 
 void Client_Protocol:: mode_play(const std::string& line){
@@ -87,20 +87,20 @@ void Client_Protocol:: mode_play(const std::string& line){
 
     std::string str(1,final);
 
-    std::string key = JUGAR_KEY;
-    this->comm.send_message(key.c_str(),key.length());
+    char key = JUGAR_KEY;
+    this->comm.send_message(&key,1);
     this->comm.send_message(str.c_str(),str.length());
 
     uint16_t size(0);
     size = this->comm.receive_size(&size);
 
-    std::vector<char> board(size+1);
+    std::vector<char> board(size,0);
     int bytes_received(0);
 
     bytes_received = this->comm.receive_message(size,board.data());
 
     if (bytes_received > 0)
-        std::cout<<board.data();
+        std::cout.write(board.data(),size);
 
     if (size != STANDARD_BOARD_SIZE)
         throw GameFinishedException();
@@ -117,24 +117,24 @@ unsigned char Client_Protocol:: put_position_in_one_byte
 }
 
 void Client_Protocol:: mode_create(const std::string& line){
-    std::string keyword("");
-    get_keyword(keyword,line);
-    std::string key = CREAR_KEY;
+    std::string game_name("");
+    get_game_name(game_name,line);
+    char key = CREAR_KEY;
 
-    this->comm.send_message(key.c_str(),key.length());
-    this->comm.send_size((int)(keyword.length()));
-    this->comm.send_message(keyword.c_str(),keyword.length());
+    this->comm.send_message(&key,1);
+    this->comm.send_size((int)(game_name.length()));
+    this->comm.send_message(game_name.c_str(),game_name.length());
     
 
     uint16_t board_size(0);
     board_size = this->comm.receive_size(&board_size);
     
-    std::vector<char> board(board_size+1);
+    std::vector<char> board(board_size,0);
     int bytes_received(0);
     bytes_received = comm.receive_message(board_size,board.data());
 
     if (bytes_received > 0){
-        std::cout<<board.data();
+        std::cout.write(board.data(),board_size);
     }   
 }
 
@@ -145,7 +145,7 @@ std::string Client_Protocol:: get_execution_mode(const std::string& line){
     return word;
 }
 
-void Client_Protocol::get_keyword
+void Client_Protocol::get_game_name
 (std::string& keyword,const std::string& line){
     std::stringstream ss(line);
 

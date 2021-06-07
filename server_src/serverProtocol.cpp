@@ -2,6 +2,8 @@
 #include "TaTeTi.h"
 #include "../common_src/GameFinishedException.h"
 
+#include <fstream>
+#include <sstream>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -24,7 +26,7 @@ void Server_Protocol:: set_token(const char& token){
 
 int Server_Protocol:: select_execution_mode(){
     int bytes_received = 0;
-    std::vector<char> mode(2);
+    std::vector<char> mode(2,0);
     
     bytes_received = get_execution_mode(mode.data());
 
@@ -50,10 +52,14 @@ void Server_Protocol:: receive_join_command(){
     uint16_t game_name_size(0);
     game_name_size = this->comm.receive_size(&game_name_size);
     
-    std::vector<char> message(game_name_size+1);
+    std::vector<char> message(game_name_size,0);
     bytes_received = comm.receive_message(game_name_size,message.data());
     if (bytes_received > 0){
-        this->game = this->gc->get_game(message.data());
+        std::ostringstream os;
+        os.write(message.data(),game_name_size);
+        std::string str(os.str());
+
+        this->game = this->gc->get_game(str);
         send_board(this->game->get_name());
     }
 }
@@ -65,11 +71,15 @@ void Server_Protocol:: receive_create_command(){
     uint16_t game_name_size(0);
     game_name_size = this->comm.receive_size(&game_name_size);
     
-    std::vector<char> message(game_name_size+1);
+    std::vector<char> message(game_name_size,0);
     bytes_received = comm.receive_message(game_name_size,message.data());
 
     if (bytes_received > 0){
-        this->game = this->gc->create_new_game(message.data());
+        std::ostringstream os;
+        os.write(message.data(),game_name_size);
+        std::string str(os.str());
+
+        this->game = this->gc->create_new_game(str);
         
         std::string board("");
         board = this->game->get_board();
@@ -88,7 +98,7 @@ void Server_Protocol:: receive_list_command(){
 
 void Server_Protocol::receive_play_command(){
     int bytes_received = 0;
-    std::vector<char> message(2);
+    std::vector<char> message(2,0);
     bytes_received = comm.receive_message(1,message.data());
 
     if (bytes_received > 0){

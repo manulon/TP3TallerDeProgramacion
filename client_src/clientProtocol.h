@@ -5,10 +5,10 @@
 #define LISTAR_KEYWORD "listar"
 #define UNIRSE_KEYWORD "unirse"
 #define JUGAR_KEYWORD "jugar"
-#define LISTAR_KEY "l"
-#define JUGAR_KEY "p"
-#define CREAR_KEY "n"
-#define UNIRSE_KEY "j"
+#define LISTAR_KEY 'l'
+#define JUGAR_KEY 'p'
+#define CREAR_KEY 'n'
+#define UNIRSE_KEY 'j'
 #define STANDARD_BOARD_SIZE 128
 
 
@@ -50,9 +50,9 @@ private:
     unsigned char put_position_in_one_byte
     (unsigned char row, unsigned char column);
 
-    //Obtiene la palabra clave del comando. Esta funcion se usa
-    //en crear y unirse para obtener el nombre de la partida.
-    void get_keyword
+    //Obtiene la palabra clave del comando, es decir el nombre de juego.
+    // Esta funcion se usa en crear y unirse para obtener el nombre de la partida.
+    void get_game_name
     (std::string& keyword,const std::string& line);
 
 public:
