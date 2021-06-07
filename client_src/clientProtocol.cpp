@@ -9,18 +9,17 @@ Client_Protocol:: Client_Protocol(){}
 
 void Client_Protocol:: init(const Socket& socket){
    this->socket = socket;
+   this->comm.init(std::move(this->socket));
 }
        
 void Client_Protocol:: start_communication_protocol(){
-    this->comm.init(std::move(this->socket));
-
     bool keep_reading_from_cin = true;
     std::string line = "";
 
     std::getline(std::cin, line);
     while (keep_reading_from_cin){
         try{
-            select_execution_mode(line);
+            select_and_execute_mode(line);
             std::getline(std::cin, line);
         }catch(GameFinishedException& error){
             keep_reading_from_cin = false;
@@ -28,9 +27,8 @@ void Client_Protocol:: start_communication_protocol(){
     }
 }
 
-void Client_Protocol:: select_execution_mode(std::string& line){
-    std::string mode = "";
-    mode = get_execution_mode(line);
+void Client_Protocol:: select_and_execute_mode(std::string& line){
+    std::string mode(get_execution_mode(line));
 
     if (mode == CREAR_KEYWORD){
         mode_create(line);

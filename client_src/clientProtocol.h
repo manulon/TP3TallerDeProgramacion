@@ -22,7 +22,7 @@ class Client_Protocol{
 private:
     //Selecciona el modo de ejecucion entre los cuatro validos.
     //Pre: Se ingresa un comando valido.
-    void select_execution_mode(std::string& line);
+    void select_and_execute_mode(std::string& line);
 
     //Obtiene la primer palabra de la frase recibida por entrada
     //estandar, para asi poder ejecutar el modo buscado.
@@ -62,7 +62,7 @@ public:
     //Asigna el socket recibido por parametro como socket propio.
     void init(const Socket& socket);
 
-    //Comienza el protocolo de comunicacion, lee una linea de la 
+    //Lee una linea de la 
     //entrada estandar y en funcion de ella delega la operacion partida
     //buscada.
     void start_communication_protocol();

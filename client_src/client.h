@@ -17,8 +17,7 @@ public:
     explicit Client(char const *argv[]);
     ~Client();
 
-    //Inicia el protocolo de comunicacion por parte del cliente
-    //y comienza la comunicacion con el servidor.
+    //Comienza la comunicacion con el servidor.
     //Pre: Ya hay una conexion establecida.
     void communicate_with_server();
 };
