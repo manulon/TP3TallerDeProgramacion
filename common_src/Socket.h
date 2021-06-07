@@ -10,8 +10,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <stdbool.h>
-#include <netdb.h>
-#include <errno.h>
 
 #define FAMILY AF_INET
 #define PROTOCOL 0
@@ -27,8 +25,7 @@ public:
     Socket(const int& family,const int& socktype,const int& protocol);
     ~Socket();
 
-    void socket_init
-    (const int& family,const int& socktype,const int& protocol);
+    void socket_init(int family,int socktype,int protocol);
     bool bind_and_listen(const char *hostname,const char *servicename);
     int socket_accept(Socket* peer);
     void socket_connect(const char* hostname, const char* servicename);

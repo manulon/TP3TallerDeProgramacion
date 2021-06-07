@@ -17,8 +17,7 @@ void TaTeTi:: initialize_board(){
     std::unique_lock<std::mutex> lk(this->m);
     for (int i=0 ; i<ROW_LENGTH; i++){
         for (int j=0 ; j<COLUMN_LENGTH ; j++){
-            /*Empty space*/
-            this->board[i][j] = 32;
+            this->board[i][j] = ' ';
         }
     }
 }
@@ -79,8 +78,7 @@ std::string TaTeTi::get_name(){
     return this->name;
 }
 
-void TaTeTi:: set_new_position
-(const char& character,const int& column,const int& row){
+void TaTeTi:: set_new_position(char character,int column,int row){
     std::unique_lock<std::mutex> lk(this->m);
     this->board[row-1][column-1] = character;
     this->a_play_was_made = true;
@@ -88,7 +86,7 @@ void TaTeTi:: set_new_position
     this->cv.wait(lk);
 }
 
-void TaTeTi:: check_game_status(const char& token,std::string& msg){
+void TaTeTi:: check_game_status(char token,std::string& msg){
     std::unique_lock<std::mutex> lk(this->m);
     bool is_a_loser = false;
        
@@ -107,28 +105,27 @@ void TaTeTi:: check_game_status(const char& token,std::string& msg){
 bool TaTeTi:: game_tied(){
     for (int i=0 ; i<ROW_LENGTH; i++){
         for (int j=0 ; j<COLUMN_LENGTH ; j++){
-            if ( this->board[i][j] == 32 )
+            if ( this->board[i][j] == ' ' )
                 return false;
         }
     }
     return true;
 }
 
-void TaTeTi:: game_finished_with_a_winner
-(const bool& status, std::string& msg){
+void TaTeTi:: game_finished_with_a_winner(bool status, std::string& msg){
     if ( status == true ){
         msg = "Has perdido. Segui intentando!\n";
         this->there_is_a_winner = true;
     }
 }
 
-bool TaTeTi:: check_rows(const char& token){
+bool TaTeTi:: check_rows(char token){
     int row = 0;
 
     while (row < 3) {
         if ( (this->board[row][0] == this->board[row][1])
           && (this->board[row][1] == this->board[row][2])
-          && (this->board[row][0] != 32 )
+          && (this->board[row][0] != ' ' )
           && (this->board[row][0] != token)){
             return true;
         }
@@ -137,13 +134,13 @@ bool TaTeTi:: check_rows(const char& token){
     return false;
 }
 
-bool TaTeTi:: check_columns(const char& token){
+bool TaTeTi:: check_columns(char token){
     int column = 0;
 
     while (column < 3) {
         if ( (this->board[0][column] == this->board[1][column])
           && (this->board[1][column] == this->board[2][column])
-          && (this->board[0][column] != 32 )
+          && (this->board[0][column] != ' ' )
           && (this->board[0][column] != token) )
             return true;
         column++;
@@ -151,16 +148,16 @@ bool TaTeTi:: check_columns(const char& token){
     return false;
 }
 
-bool TaTeTi:: check_diagonals(const char& token){
+bool TaTeTi:: check_diagonals(char token){
     if ((this->board[0][0] == this->board[1][1])
       && (this->board[1][1] == this->board[2][2])
-      && (this->board[0][0] != 32 ) 
+      && (this->board[0][0] != ' ' ) 
       && (this->board[1][1] != token))
             return true;
 
     if ((this->board[0][2] == this->board[1][1])
       && (this->board[1][1] == this->board[2][0])
-      && (this->board[0][2] != 32 ) 
+      && (this->board[0][2] != ' ' ) 
       && (this->board[1][1] != token))
             return true;
     

@@ -64,8 +64,7 @@ void Client_Protocol:: mode_list(){
     char key = LISTAR_KEY;
     this->comm.send_message(&key,1);
 
-    uint16_t size(0);
-    size = this->comm.receive_size(&size);
+    uint16_t size(this->comm.receive_size(&size));
 
     std::vector<char> all_games_name(size,0);
     int bytes_received(this->comm.receive_message(size,all_games_name.data()));
@@ -86,8 +85,7 @@ void Client_Protocol:: mode_play(const std::string& line){
     this->comm.send_message(&key,1);
     this->comm.send_message(str.c_str(),str.length());
 
-    uint16_t size(0);
-    size = this->comm.receive_size(&size);
+    uint16_t size(this->comm.receive_size(&size));
 
     std::vector<char> board(size,0);
     int bytes_received(this->comm.receive_message(size,board.data()));
@@ -103,7 +101,7 @@ unsigned char Client_Protocol:: encode_position
 (unsigned char row, unsigned char column){
     column = (column-1) << 4;
 
-    unsigned char aux = 15; // 0x0F
+    unsigned char aux = 0x0F; 
     row = (row-1) & aux;
 
     return (column | row);

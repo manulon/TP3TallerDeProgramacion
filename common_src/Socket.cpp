@@ -1,5 +1,7 @@
 #include "Socket.h"
 #include <iostream>
+#include <netdb.h>
+#include <errno.h>
 #include "AcceptorClosedException.h"
 
 Socket:: Socket(){}
@@ -9,8 +11,7 @@ Socket:: Socket
     socket_init(family,socktype,protocol);
 }
 
-void Socket:: socket_init
-(const int& family,const int& socktype,const int& protocol){
+void Socket:: socket_init(int family,int socktype,int protocol){
     this->fd = socket(family,socktype,protocol);
 }
 

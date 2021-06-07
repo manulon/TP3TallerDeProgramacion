@@ -15,13 +15,13 @@ public:
     explicit CommunicationProtocol(Socket* socket);   
     
     //Envia el mensaje recibido por parametro.
-    ssize_t send_message(const char* msg,const int& length);
+    ssize_t send_message(const char* msg,int length);
     
     //Envia el size recibido por parametro.
     ssize_t send_size(uint16_t size);
     
     //Recibe un mensaje de largo length.
-    ssize_t receive_message(const int& length, char* buffer);
+    ssize_t receive_message(int length, char* buffer);
     
     //Recibe el tamaño de un mensaje
     int receive_size(uint16_t* size);

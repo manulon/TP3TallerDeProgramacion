@@ -72,8 +72,7 @@ void Server_Protocol:: receive_create_command(){
 
         this->game = this->gc->create_new_game(str);
         
-        std::string board("");
-        board = this->game->get_board();
+        std::string board(this->game->get_board());
         this->comm.send_size((int)board.length());
         this->comm.send_message(board.c_str(),board.length());
     }
@@ -122,7 +121,7 @@ void Server_Protocol:: makePlay
 }
 
 int Server_Protocol:: decode_column(char message){
-    unsigned char aux2(48); //0x30
+    unsigned char aux2(0x30);
 
     int column(message >> 4);
     column = (column | aux2)-47;
@@ -131,8 +130,8 @@ int Server_Protocol:: decode_column(char message){
 }
 
 int Server_Protocol:: decode_row(char message){
-    unsigned char aux(15); //0x0F
-    unsigned char aux2(48); //0x30
+    unsigned char aux(0x0F);
+    unsigned char aux2(0x30); 
 
     int row(message & aux);
     row = (row | aux2)-47;

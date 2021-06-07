@@ -1,12 +1,13 @@
 #include "CommunicationProtocol.h"
 #include <iostream>
+#include <arpa/inet.h>
 
 CommunicationProtocol:: CommunicationProtocol(){}
 
 CommunicationProtocol:: CommunicationProtocol(Socket* socket):
 socket(socket){}
 
-ssize_t CommunicationProtocol:: send_message(const char* msg,const int& length){
+ssize_t CommunicationProtocol:: send_message(const char* msg,int length){
     int remaining_bytes = length;
     int total_bytes_sent = 0;
 
@@ -27,7 +28,7 @@ ssize_t CommunicationProtocol:: send_message(const char* msg,const int& length){
 }
 
 ssize_t CommunicationProtocol:: receive_message
-(const int& length, char* buffer){
+(int length, char* buffer){
     if (length == 0){ return 0; }
     int remaining_bytes = length;
     int total_bytes_received = 0;
@@ -57,8 +58,8 @@ ssize_t CommunicationProtocol:: send_size(uint16_t size){
 }
 
 int CommunicationProtocol:: receive_size(uint16_t* size){
-    int remaining_bytes = 2;
-    int total_bytes_received = 0;
+    int remaining_bytes(2);
+    int total_bytes_received(0);
     while (total_bytes_received < 2) {
         ssize_t bytes = recv(this->socket->fd,(char*)size,
                         remaining_bytes, 0);
@@ -71,10 +72,8 @@ int CommunicationProtocol:: receive_size(uint16_t* size){
         total_bytes_received += bytes;
         remaining_bytes -= bytes;
     }
-
-    int final_size = 0;
-    final_size = ntohs(*size);
-    return final_size;
+    
+    return (int)ntohs(*size);
 }
 
 CommunicationProtocol:: ~CommunicationProtocol(){}

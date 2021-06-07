@@ -24,14 +24,14 @@ private:
     
     //Asigna el mensaje de victoria en el mensaje recibido por parametro.
     //diciendo asi que se encontro a un ganador.
-    void game_finished_with_a_winner(const bool& status,std::string& msg);
+    void game_finished_with_a_winner(bool status,std::string& msg);
 
     //Estas funciones verifican si hay un ganador en las filas, columnas
     //o diagolanes respectivamente. Y finalmente la ultima de estas
     //chequea si hay un empate.
-    bool check_rows(const char& token);
-    bool check_columns(const char& token);
-    bool check_diagonals(const char& token);
+    bool check_rows(char token);
+    bool check_columns(char token);
+    bool check_diagonals(char token);
     bool game_tied();
 
 public:
@@ -44,8 +44,7 @@ public:
         
     //Realiza un movimiento en el tablero con los valores recibidos por
     //parametro.
-    void set_new_position    
-    (const char& character,const int& column,const int& row);
+    void set_new_position(char character,int column,int row);
     
     //Asigna el nombre del juego recibido por parametro.
     void set_name(const std::string& name);
@@ -55,7 +54,7 @@ public:
     
     //Chequea el estado actual del juego. Y setea en el parametro msg su
     //estado si es necesario
-    void check_game_status(const char& token,std::string& msg);
+    void check_game_status(char token,std::string& msg);
     
     //Notifica que hay un ganador.
     void notify_winner();
