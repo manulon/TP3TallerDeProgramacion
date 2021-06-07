@@ -51,13 +51,12 @@ void Client_Protocol:: mode_join(const std::string& line){
     this->comm.send_size((int)(game_name.length()));
     this->comm.send_message(game_name.c_str(),game_name.length());    
 
-    uint16_t board_size(0);
-    board_size = this->comm.receive_size(&board_size);
+    uint16_t board_size(this->comm.receive_size(&board_size));
 
     std::vector<char> board(board_size,0);
-    int bytes_received(0);
-    bytes_received = comm.receive_message(board_size,board.data());
 
+    int bytes_received(comm.receive_message(board_size,board.data()));
+    
     if (bytes_received > 0){
         std::cout.write(board.data(),board_size);
     }   
@@ -71,9 +70,7 @@ void Client_Protocol:: mode_list(){
     size = this->comm.receive_size(&size);
 
     std::vector<char> all_games_name(size,0);
-    int bytes_received(0);
-
-    bytes_received = this->comm.receive_message(size,all_games_name.data());
+    int bytes_received(this->comm.receive_message(size,all_games_name.data()));
     
     if (bytes_received > 0)
         std::cout.write(all_games_name.data(),size);
@@ -95,9 +92,7 @@ void Client_Protocol:: mode_play(const std::string& line){
     size = this->comm.receive_size(&size);
 
     std::vector<char> board(size,0);
-    int bytes_received(0);
-
-    bytes_received = this->comm.receive_message(size,board.data());
+    int bytes_received(this->comm.receive_message(size,board.data()));
 
     if (bytes_received > 0)
         std::cout.write(board.data(),size);
@@ -126,12 +121,10 @@ void Client_Protocol:: mode_create(const std::string& line){
     this->comm.send_message(game_name.c_str(),game_name.length());
     
 
-    uint16_t board_size(0);
-    board_size = this->comm.receive_size(&board_size);
+    uint16_t board_size(this->comm.receive_size(&board_size));
     
     std::vector<char> board(board_size,0);
-    int bytes_received(0);
-    bytes_received = comm.receive_message(board_size,board.data());
+    int bytes_received(comm.receive_message(board_size,board.data()));
 
     if (bytes_received > 0){
         std::cout.write(board.data(),board_size);

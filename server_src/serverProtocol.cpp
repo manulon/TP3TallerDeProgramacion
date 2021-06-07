@@ -25,10 +25,9 @@ void Server_Protocol:: set_token(const char& token){
 }
 
 int Server_Protocol:: select_execution_mode(){
-    int bytes_received = 0;
     std::vector<char> mode(2,0);
     
-    bytes_received = get_execution_mode(mode.data());
+    int bytes_received(get_execution_mode(mode.data()));
 
     while (bytes_received > 0){
         if (strcmp(mode.data(),CREAR_KEY) == 0){
@@ -48,12 +47,12 @@ int Server_Protocol:: select_execution_mode(){
 void Server_Protocol:: receive_join_command(){
     set_token(GUEST_TOKEN);
 
-    int bytes_received(0);
-    uint16_t game_name_size(0);
-    game_name_size = this->comm.receive_size(&game_name_size);
+    uint16_t game_name_size(this->comm.receive_size(&game_name_size));
     
     std::vector<char> message(game_name_size,0);
-    bytes_received = comm.receive_message(game_name_size,message.data());
+   
+    int bytes_received(comm.receive_message(game_name_size,message.data()));
+
     if (bytes_received > 0){
         std::ostringstream os;
         os.write(message.data(),game_name_size);
@@ -66,13 +65,12 @@ void Server_Protocol:: receive_join_command(){
 
 void Server_Protocol:: receive_create_command(){
     set_token(HOST_TOKEN);
-    int bytes_received(0);
-    
-    uint16_t game_name_size(0);
-    game_name_size = this->comm.receive_size(&game_name_size);
+
+    uint16_t game_name_size(this->comm.receive_size(&game_name_size));
     
     std::vector<char> message(game_name_size,0);
-    bytes_received = comm.receive_message(game_name_size,message.data());
+    
+    int bytes_received(comm.receive_message(game_name_size,message.data()));
 
     if (bytes_received > 0){
         std::ostringstream os;
@@ -89,17 +87,16 @@ void Server_Protocol:: receive_create_command(){
 }
 
 void Server_Protocol:: receive_list_command(){
-    std::string all_games_name("");
-    all_games_name = this->gc->get_all_values();
+    std::string all_games_name(this->gc->get_all_values());
     
     this->comm.send_size((int)all_games_name.length());
     this->comm.send_message(all_games_name.c_str(),all_games_name.length());
 }
 
 void Server_Protocol::receive_play_command(){
-    int bytes_received = 0;
     std::vector<char> message(2,0);
-    bytes_received = comm.receive_message(1,message.data());
+
+    int bytes_received(comm.receive_message(1,message.data()));
 
     if (bytes_received > 0){
         makePlay(message.data(),this->game->get_name());
@@ -108,9 +105,7 @@ void Server_Protocol::receive_play_command(){
 }
 
 void Server_Protocol:: send_board(const std::string& game_name){
-        std::string board("");
-
-        board = this->game->get_board();
+        std::string board(this->game->get_board());
         
         this->game->check_game_status(this->token,this->final_game_msg);
 
@@ -123,20 +118,18 @@ void Server_Protocol:: send_board(const std::string& game_name){
         this->comm.send_message(board.c_str(),board.length());  
 }
 
-int Server_Protocol::get_execution_mode(char* mode){
-    int bytes_received = 0;
-    bytes_received = comm.receive_message(1,mode);
-    return bytes_received;
+int Server_Protocol::get_execution_mode(char* mode){   
+    return comm.receive_message(1,mode);
 }
 
 void Server_Protocol:: makePlay
 (const char* message, const std::string& game_name){
-    unsigned char aux = 15; //0x0F
-    unsigned char aux2 = 48; //0x30
+    unsigned char aux(15); //0x0F
+    unsigned char aux2(48); //0x30
 
-    int column = message[0] >> 4;
+    int column(message[0] >> 4);
     
-    int row = message[0] & aux;
+    int row(message[0] & aux);
     
     column = (column | aux2)-47;
     row = (row | aux2)-47;
