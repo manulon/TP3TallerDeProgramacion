@@ -41,14 +41,15 @@ void Client_Protocol:: select_and_execute_mode(std::string& line){
     }
 }
 
-void Client_Protocol:: mode_join(std::string& line){
-    get_keyword(UNIRSE_KEYWORD,line);
+void Client_Protocol:: mode_join(const std::string& line){
+    std::string keyword("");
+    get_keyword(keyword,line);
 
     std::string key = UNIRSE_KEY;
 
     this->comm.send_message(key.c_str(),key.length());
-    this->comm.send_size((int)(line.length()));
-    this->comm.send_message(line.c_str(),line.length());    
+    this->comm.send_size((int)(keyword.length()));
+    this->comm.send_message(keyword.c_str(),keyword.length());    
 
     uint16_t board_size(0);
     board_size = this->comm.receive_size(&board_size);
@@ -78,7 +79,7 @@ void Client_Protocol:: mode_list(){
         std::cout<<all_games_name.data();
 }
 
-void Client_Protocol:: mode_play(std::string& line){
+void Client_Protocol:: mode_play(const std::string& line){
     unsigned char final(0);
 
     final = put_position_in_one_byte(line[line.length()-1],
@@ -115,13 +116,14 @@ unsigned char Client_Protocol:: put_position_in_one_byte
     return (column | row);
 }
 
-void Client_Protocol:: mode_create(std::string& line){
-    get_keyword(CREAR_KEYWORD,line);
+void Client_Protocol:: mode_create(const std::string& line){
+    std::string keyword("");
+    get_keyword(keyword,line);
     std::string key = CREAR_KEY;
 
     this->comm.send_message(key.c_str(),key.length());
-    this->comm.send_size((int)(line.length()));
-    this->comm.send_message(line.c_str(),line.length());
+    this->comm.send_size((int)(keyword.length()));
+    this->comm.send_message(keyword.c_str(),keyword.length());
     
 
     uint16_t board_size(0);
@@ -144,19 +146,11 @@ std::string Client_Protocol:: get_execution_mode(const std::string& line){
 }
 
 void Client_Protocol::get_keyword
-(const std::string& keyword, std::string& line){
-    std::string aux(keyword);
+(std::string& keyword,const std::string& line){
+    std::stringstream ss(line);
 
-    size_t p = -1;
-
-    std::string tempWord = keyword + " ";
-            
-    while ((p = line.find(keyword)) != std::string::npos)
-        line.replace(p, tempWord.length(), "");
-        
-    tempWord = " " + keyword;
-    while ((p = line.find(keyword)) != std::string::npos)
-        line.replace(p, tempWord.length(), "");
+    ss >> keyword;
+    ss >> keyword;
 }
 
 Client_Protocol:: ~Client_Protocol(){}

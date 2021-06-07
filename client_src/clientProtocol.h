@@ -31,18 +31,18 @@ private:
     //Ejecuta el modo jugar.
     //Pre: El formato de la linea recibida sera jugar X X,
     //con x pudiendo tomar los valores 1,2 y 3.
-    void mode_play(std::string& line);
+    void mode_play(const std::string& line);
 
     //Ejecuta el modo crear.
     //Pre: El formato de la linea recibida sera crear *nombre*.
-    void mode_create(std::string& line);
+    void mode_create(const std::string& line);
 
     //Ejecuta el modo listar.
     void mode_list();
 
     //Ejecuta el modo unirse.
     //Pre: El formato de la linea recibida sera unirse *nombre*.
-    void mode_join(std::string& line);
+    void mode_join(const std::string& line);
 
     //Pone las dos posiciones recibidas por linea de comando
     //que refieren al movimiento en un byte para respetar el
@@ -53,7 +53,7 @@ private:
     //Obtiene la palabra clave del comando. Esta funcion se usa
     //en crear y unirse para obtener el nombre de la partida.
     void get_keyword
-    (const std::string& keyword, std::string& line);
+    (std::string& keyword,const std::string& line);
 
 public:
     Client_Protocol();
