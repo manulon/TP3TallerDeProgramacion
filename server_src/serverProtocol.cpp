@@ -94,12 +94,12 @@ void Server_Protocol:: receive_list_command(){
 }
 
 void Server_Protocol::receive_play_command(){
-    std::vector<char> message(2,0);
+    char message(0);
 
-    int bytes_received(comm.receive_message(1,message.data()));
+    int bytes_received(comm.receive_message(1,&message));
 
     if (bytes_received > 0){
-        makePlay(message.data(),this->game->get_name());
+        makePlay(message,this->game->get_name());
         send_board(this->game->get_name());
     }
 }
@@ -123,18 +123,28 @@ int Server_Protocol::get_execution_mode(char* mode){
 }
 
 void Server_Protocol:: makePlay
-(const char* message, const std::string& game_name){
+(char message, const std::string& game_name){
+    this->game->set_new_position
+        (this->token,decode_column(message),decode_row(message));
+}
+
+int Server_Protocol:: decode_column(char message){
+    unsigned char aux2(48); //0x30
+
+    int column(message >> 4);
+    column = (column | aux2)-47;
+
+    return column;
+}
+
+int Server_Protocol:: decode_row(char message){
     unsigned char aux(15); //0x0F
     unsigned char aux2(48); //0x30
 
-    int column(message[0] >> 4);
-    
-    int row(message[0] & aux);
-    
-    column = (column | aux2)-47;
+    int row(message & aux);
     row = (row | aux2)-47;
-    
-    this->game->set_new_position(this->token,column,row);
+
+    return row;
 }
 
 Server_Protocol:: ~Server_Protocol(){}

@@ -47,7 +47,7 @@ private:
     //Pone las dos posiciones recibidas por linea de comando
     //que refieren al movimiento en un byte para respetar el
     //protocolo de envio.
-    unsigned char put_position_in_one_byte
+    unsigned char encode_position
     (unsigned char row, unsigned char column);
 
     //Obtiene la palabra clave del comando, es decir el nombre de juego.

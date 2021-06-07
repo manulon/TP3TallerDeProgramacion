@@ -25,7 +25,7 @@ private:
     
     //Delega al juego la realizacion un movimiento.
     //Pre: El nombre de juego recibido por parametro es valido.
-    void makePlay(const char* message, const std::string& game_name);
+    void makePlay(char message, const std::string& game_name);
     
     //Recibe un byte que representa el identificador del tipo de jugada
     //a realizar.
@@ -53,6 +53,11 @@ private:
     
     //Setea el token al jugador.
     void set_token(const char& token);
+
+    //Decodifica la columna y la fila respectivamente para ejecutar 
+    //la jugada.
+    int decode_column(char message);
+    int decode_row(char message);
 
 public:
     explicit Server_Protocol(GameContainer* games);

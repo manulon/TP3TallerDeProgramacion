@@ -77,12 +77,12 @@ void Client_Protocol:: mode_list(){
 }
 
 void Client_Protocol:: mode_play(const std::string& line){
-    unsigned char final(0);
+    unsigned char position(0);
 
-    final = put_position_in_one_byte(line[line.length()-1],
+    position = encode_position(line[line.length()-1],
                                      line[line.length()-3]);
 
-    std::string str(1,final);
+    std::string str(1,position);
 
     char key = JUGAR_KEY;
     this->comm.send_message(&key,1);
@@ -101,7 +101,7 @@ void Client_Protocol:: mode_play(const std::string& line){
         throw GameFinishedException();
 }
 
-unsigned char Client_Protocol:: put_position_in_one_byte
+unsigned char Client_Protocol:: encode_position
 (unsigned char row, unsigned char column){
     column = (column-1) << 4;
 
