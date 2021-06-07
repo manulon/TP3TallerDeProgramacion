@@ -63,5 +63,3 @@ Caso 03 - Two Concurrent Ties
 # Diagrama de clases representativo de la solución final:
 *ACLARACION:* En este diagrama, y como primera entrega. Se muestran solamente las clases y como se relacionan entre ellas para que pueda verse un mayor entendimiento del programa.
 
-![Diagrama](https://user-images.githubusercontent.com/45469722/120384784-ff8e6000-c2fc-11eb-8b2d-44d5dcd84102.png)
-

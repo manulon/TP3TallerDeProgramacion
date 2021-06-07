@@ -2,9 +2,7 @@
 #include <utility>
 
 Client:: Client(char const *argv[]):
-hostname(argv[1]),servicename(argv[2]){}
-
-void Client:: init_connection(){
+hostname(argv[1]),servicename(argv[2]){
     this->socket.socket_connect(this->hostname,this->servicename);
 }
 
