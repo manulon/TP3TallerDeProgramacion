@@ -9,16 +9,9 @@
 #include <string>
 #include <utility>
 
-Server_Protocol:: Server_Protocol(GameContainer* games):
-token(),final_game_msg(""),game(nullptr),gc(games){}
-
-void Server_Protocol:: init(const Socket& socket){
-   this->socket = socket;
-}
-
-void Server_Protocol:: start_communication_protocol(){
-    this->comm.init(std::move(this->socket));
-}
+Server_Protocol:: Server_Protocol(GameContainer* games,Socket* socket):
+token(),final_game_msg(""),socket(socket),comm(this->socket),
+game(nullptr),gc(games){}
 
 void Server_Protocol:: set_token(const char& token){
     this->token = token;

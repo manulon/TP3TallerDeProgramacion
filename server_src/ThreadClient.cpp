@@ -5,10 +5,8 @@ ThreadClient:: ThreadClient(Socket* peer, GameContainer* games):
 peer(peer),keep_running(true),games(games) {}
 
 void ThreadClient:: run() {
-    Server_Protocol sp(this->games);
-    sp.init(std::move(*this->peer));
-    sp.start_communication_protocol();
-
+    Server_Protocol sp(this->games,this->peer);
+    
     int bytes_received(1);
 
     while (bytes_received > 0){

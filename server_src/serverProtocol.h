@@ -18,7 +18,7 @@ class Server_Protocol{
 private:
     char token;
     std::string final_game_msg;
-    Socket socket;
+    Socket* socket;
     CommunicationProtocol comm;
     TaTeTi* game;
     GameContainer* gc;    
@@ -60,15 +60,9 @@ private:
     int decode_row(char message);
 
 public:
-    explicit Server_Protocol(GameContainer* games);
+    Server_Protocol(GameContainer* games,Socket* socket);
     ~Server_Protocol();
-    
-    //Asigna como socket propio el socket recibido por parametro.
-    void init(const Socket& socket);
-    
-    //Inicia el protocolo de comunicacion comun.
-    void start_communication_protocol();
-    
+        
     //Recibe un byte que representa el identificador de comando a
     //realizar y lo realiza, si ya no recibe mas nada. Deja de esperar por
     //un identificador.

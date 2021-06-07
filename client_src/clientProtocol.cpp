@@ -7,10 +7,8 @@
 
 Client_Protocol:: Client_Protocol(){}
 
-void Client_Protocol:: init(const Socket& socket){
-   this->socket = socket;
-   this->comm.init(std::move(this->socket));
-}
+Client_Protocol:: Client_Protocol(Socket* socket):
+socket(socket),comm(this->socket){}
        
 void Client_Protocol:: start_communication_protocol(){
     bool keep_reading_from_cin = true;

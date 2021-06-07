@@ -7,15 +7,12 @@
 #include <stdint.h>
 
 class CommunicationProtocol{
-    Socket socket;
+    Socket* socket;
 
 public:
     CommunicationProtocol();
     ~CommunicationProtocol();
-    explicit CommunicationProtocol(const Socket& socket);
-    
-    //Asigna como socket propio el socket recibido por parametro.
-    void init(const Socket& socket);
+    explicit CommunicationProtocol(Socket* socket);   
     
     //Envia el mensaje recibido por parametro.
     ssize_t send_message(const char* msg,const int& length);

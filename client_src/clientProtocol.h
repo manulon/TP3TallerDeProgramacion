@@ -16,7 +16,7 @@
 #include <string>
 
 class Client_Protocol{
-    Socket socket;
+    Socket* socket;
     CommunicationProtocol comm;
 
 private:
@@ -57,10 +57,8 @@ private:
 
 public:
     Client_Protocol();
-    ~Client_Protocol();
-    
-    //Asigna el socket recibido por parametro como socket propio.
-    void init(const Socket& socket);
+    explicit Client_Protocol(Socket* socket);
+    ~Client_Protocol();  
 
     //Lee una linea de la 
     //entrada estandar y en funcion de ella delega la operacion partida
