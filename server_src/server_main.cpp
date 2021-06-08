@@ -6,11 +6,7 @@
 
 int main(int argc, char const *argv[]){
     Server server(argv);
-
-    if (!server.start_connection()){
-        return 1;
-    }
-
+    
     server.start();
 
     std::string input("");

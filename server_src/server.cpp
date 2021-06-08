@@ -10,16 +10,13 @@ Server:: ~Server(){
 }
 
 void Server:: start(){
-    this->acceptor = new ThreadAcceptor(this->socket,&(this->games));
+    //try del aceptador que no encuentra una conexion en el bind and lisen
+    this->acceptor = new ThreadAcceptor(&(this->games),this->servicename);
     this->acceptor->start();
 }
 
-bool Server:: start_connection(){
-    return this->socket.bind_and_listen(NULL, this->servicename);
-}
-
 void Server:: stop_accepting(){
-    this->socket.socket_close();
+    this->acceptor->close_socket();
     this->acceptor->stop();
     this->acceptor->join();
 }

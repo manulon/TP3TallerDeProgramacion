@@ -17,9 +17,8 @@ class ThreadAcceptor: public Thread {
     std::atomic<bool> keep_running;
     GameContainer* games;
 
-
     public:
-    ThreadAcceptor(const Socket& socket,GameContainer* games);
+    ThreadAcceptor(GameContainer* games, const char* servicename);
     virtual ~ThreadAcceptor() override;
     
     //Realiza el run del Thread Acceptor. Una vez que la operacion
@@ -32,6 +31,8 @@ class ThreadAcceptor: public Thread {
     
     //Deja de correr el hilo.
     void stop();
+
+    void close_socket();
 };
 
 #endif

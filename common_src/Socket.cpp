@@ -154,6 +154,18 @@ void Socket:: socket_shutdown(){
     shutdown(this->fd, SHUT_WR);
 }
 
+Socket::Socket(Socket &&other){
+    this->fd = std::move(other.fd);
+    other.fd = 0;
+}
+
+Socket& Socket::operator=(Socket&& other){
+    if (this == &other) return *this;
+    this->fd = std::move(other.fd);
+    other.fd = 0;
+    return *this;
+}
+
 Socket:: ~Socket(){
    if (this->fd != -1){
         shutdown(this->fd, SHUT_RDWR);

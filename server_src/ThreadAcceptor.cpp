@@ -1,10 +1,10 @@
 #include "ThreadAcceptor.h"
 #include "../common_src/AcceptorClosedException.h"
 
-ThreadAcceptor:: ThreadAcceptor(const Socket& s,GameContainer* games):
-keep_running(true) {
-    this->socket = s;
-    this->games = games;
+ThreadAcceptor:: ThreadAcceptor
+(GameContainer* games, const char* servicename):
+keep_running(true), games(games) {
+    this->socket.bind_and_listen(NULL,servicename);
 }
 
 void ThreadAcceptor:: run() {
@@ -37,6 +37,10 @@ void ThreadAcceptor:: stop_clients() {
 
 void ThreadAcceptor:: stop(){
     keep_running = false;
+}
+
+void ThreadAcceptor:: close_socket(){
+    this->socket.socket_close();
 }
 
 ThreadAcceptor:: ~ThreadAcceptor(){}

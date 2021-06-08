@@ -18,12 +18,18 @@
 #define CLIENT_FLAGS 0
 
 class Socket{
+private:
     int fd;
+    Socket(const Socket& other) = delete;
+    Socket& operator=(const Socket& other) = delete;
 
 public: 
     Socket();
     Socket(const int& family,const int& socktype,const int& protocol);
     ~Socket();
+    Socket(Socket&& other);
+    Socket& operator=(Socket &&other);
+    
 
     void socket_init(int family,int socktype,int protocol);
     bool bind_and_listen(const char *hostname,const char *servicename);
