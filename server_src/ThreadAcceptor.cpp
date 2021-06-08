@@ -22,7 +22,7 @@ void ThreadAcceptor:: run() {
             }
             clients.push_back(new ThreadClient(peer,this->games));
             clients.back()->start();
-        }catch(AcceptorClosedException& error){
+        }catch(std::exception& error){
             delete peer;
             keep_running = false;
         }

@@ -54,8 +54,13 @@ bool Socket:: bind_and_listen(const char* hostname, const char* servicename){
 int Socket:: socket_accept(Socket* peer){
 	int fd = -1;
     
-	if ((peer->fd = accept(this->fd, NULL, NULL)) < 0) {
-        throw AcceptorClosedException();
+	if ((peer->fd = accept(this->fd, NULL, NULL)) == -1) {
+        if (errno == EINVAL){
+            throw AcceptorClosedException();
+        }else{
+            std::cout<<"Error: "<<strerror(errno)<<std::endl;
+            throw SocketException();
+        }
 	}
     
     fd = 0;
@@ -167,4 +172,5 @@ Socket:: ~Socket(){
         shutdown(this->fd, SHUT_RDWR);
         close(this->fd);
    }
+   this->fd = -1;
 }
