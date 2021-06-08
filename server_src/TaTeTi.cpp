@@ -1,5 +1,7 @@
 #include "TaTeTi.h"
 #include <iostream>
+#include <sstream>
+
 
 TaTeTi:: TaTeTi():
 name(),there_is_a_winner(false),a_play_was_made(false),
@@ -33,38 +35,21 @@ std::string TaTeTi::get_board(){
         first_get_board = false;
     }
     
-    std::string board("");
+    std::ostringstream board;
 
-    board =  ("    1 . 2 . 3 .\n");
-    board += ("  +---+---+---+\n");
-    board += ("1 | ");
-    board += this->board[0][0];
-    board += (" | ");
-    board += this->board[0][1];
-    board += (" | ");
-    board += this->board[0][2];
-    board += (" |\n  +---+---+---+\n");
-    board += ("2 | ");
-    board += this->board[1][0];
-    board += (" | ");
-    board += this->board[1][1];
-    board += (" | ");
-    board += this->board[1][2];
-    board += (" |\n");
-    board += ("  +---+---+---+\n");
-    board += ("3 | ");
-    board += this->board[2][0];
-    board += (" | ");
-    board += this->board[2][1];
-    board += (" | ");
-    board += this->board[2][2];
-    board += (" |\n");
-    board += ("  +---+---+---+\n");
+    board << "    1 . 2 . 3 .\n  +---+---+---+\n1 | ";   
+    board << this->board[0][0]<< " | "<< this->board[0][1]<< " | ";
+    board << this->board[0][2];
+    board << " |\n  +---+---+---+\n2 | "<< this->board[1][0]<< " | ";
+    board << this->board[1][1]<< " | "<< this->board[1][2]<< " |\n";
+    board << "  +---+---+---+\n3 | "<< this->board[2][0]<< " | ";
+    board << this->board[2][1]<< " | "<< this->board[2][2]<< " |\n";
+    board << "  +---+---+---+\n";
 
     if ( there_is_a_winner )
-        board += "Felicitaciones! Ganaste!\n";
+        board << "Felicitaciones! Ganaste!\n";
 
-    return board;
+    return board.str();
 }
 
 void TaTeTi:: set_name
