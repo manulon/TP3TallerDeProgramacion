@@ -1,6 +1,7 @@
 #include "server.h"
 #include <stdio.h>
 #include <iostream>
+
 Server:: Server(char const* argv[]):
 servicename(argv[1]),acceptor(){}
 
@@ -10,7 +11,6 @@ Server:: ~Server(){
 }
 
 void Server:: start(){
-    //try del aceptador que no encuentra una conexion en el bind and lisen
     this->acceptor = new ThreadAcceptor(&(this->games),this->servicename);
     this->acceptor->start();
 }

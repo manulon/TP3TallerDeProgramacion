@@ -3,6 +3,7 @@
 #include <netdb.h>
 #include <errno.h>
 #include "AcceptorClosedException.h"
+#include "SocketException.h"
 
 Socket:: Socket(){}
 
@@ -36,13 +37,15 @@ bool Socket:: bind_and_listen(const char* hostname, const char* servicename){
     freeaddrinfo(addr_list);
 
     if (!is_connected) {
-		fprintf(stderr, "socket_bind_and_listen-->bind: %s\n", strerror(errno));
-        return false;
+        std::cout<<"socket_bind_and_listen-->bind: "<<strerror(errno)<<std::endl
+        <<"Presione la tecla 'q' para finalizar"<<std::endl;
+        throw SocketException();
     }
 
 	if (listen(this->fd, 10) < 0) {
-		fprintf(stderr, "socket_bind_and_listen-->listen: %s\n", strerror(errno));
-		return false;
+        std::cout<<"socket_bind_and_listen-->listen: "<<strerror(errno)<<std::endl
+        <<"Presione la tecla 'q' para finalizar"<<std::endl;;
+        throw SocketException();
 	}
 
 	return true;
@@ -77,8 +80,8 @@ void Socket:: socket_connect(const char* hostname, const char* servicename){
     s = getaddrinfo(hostname,servicename,&hints,&results);
 
     if (s != 0) {
-        printf("Error en getaddrinfo: %s\n", gai_strerror(s));
-        return;
+        std::cout<<"Error en getaddrinfo: "<<gai_strerror(s)<<std::endl;
+        throw SocketException();
     }
 
     for (addr = results; addr != NULL && !is_connected ; addr = addr->ai_next) {
@@ -86,13 +89,14 @@ void Socket:: socket_connect(const char* hostname, const char* servicename){
         (addr->ai_family, addr->ai_socktype, addr->ai_protocol);
 
         if (this->fd == -1){
-            printf("Error: %s\n", strerror(errno));
+            std::cout<<"Error: "<<strerror(errno)<<std::endl;
+            throw SocketException();
         }else{
             s = connect(this->fd, addr->ai_addr, addr->ai_addrlen);
-            if ( s == -1 ){
-                perror("Error");
-                printf("%s\n",strerror(errno));
+            if ( s == -1 ){               
                 close(this->fd);
+                std::cout<<"Error: "<<strerror(errno)<<std::endl;
+                throw SocketException();
             }
             is_connected = (s != -1);
         }
@@ -117,11 +121,6 @@ ssize_t Socket:: socket_send(const char* msg,int length){
         ssize_t bytes = send(this->fd, 
                             &msg[total_bytes_sent], 
                              remaining_bytes, MSG_NOSIGNAL);
-    
-        if (bytes == -1) {
-			fprintf(stderr, "socket_send-->send: %s\n", strerror(errno));
-            return bytes;
-        }
         if (bytes == 0) break;
         total_bytes_sent += bytes;
         remaining_bytes -= bytes;
@@ -137,10 +136,7 @@ int Socket:: socket_receive(int length, char* buffer){
     while (total_bytes_received < length) {
         ssize_t bytes = recv(this->fd, &buffer[total_bytes_received],
                         remaining_bytes, 0);
-        if (bytes == -1) {
-            fprintf(stderr, "socket_receive-->recv: %s\n", strerror(errno));
-            return bytes;
-        }
+    
         if (bytes == 0) break;
         
         total_bytes_received += bytes;

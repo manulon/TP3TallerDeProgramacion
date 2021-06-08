@@ -115,7 +115,6 @@ void Client_Protocol:: mode_create(const std::string& line){
     this->comm.send_message(&key,1);
     this->comm.send_size((int)(game_name.length()));
     this->comm.send_message(game_name.c_str(),game_name.length());
-    
 
     uint16_t board_size(this->comm.receive_size(&board_size));
     

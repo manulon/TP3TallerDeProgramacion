@@ -16,6 +16,7 @@ class ThreadAcceptor: public Thread {
     std::list<ThreadClient*> clients;
     std::atomic<bool> keep_running;
     GameContainer* games;
+    const char* servicename;
 
     public:
     ThreadAcceptor(GameContainer* games, const char* servicename);

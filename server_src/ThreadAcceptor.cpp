@@ -1,13 +1,19 @@
 #include "ThreadAcceptor.h"
 #include "../common_src/AcceptorClosedException.h"
+#include "../common_src/SocketException.h"
+
 
 ThreadAcceptor:: ThreadAcceptor
 (GameContainer* games, const char* servicename):
-keep_running(true), games(games) {
-    this->socket.bind_and_listen(NULL,servicename);
-}
+keep_running(true), games(games), servicename(servicename) {}
 
 void ThreadAcceptor:: run() {
+    try{
+        this->socket.bind_and_listen(NULL,this->servicename);
+    }catch(SocketException& error){
+        keep_running = false;
+    }
+
     while (keep_running){
         Socket* peer = new Socket();
         try {
