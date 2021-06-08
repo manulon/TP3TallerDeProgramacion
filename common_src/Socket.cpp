@@ -150,8 +150,8 @@ int Socket:: socket_receive(int length, char* buffer){
     return total_bytes_received;
 }
 
-int Socket:: get_fd(){
-    return this->fd;
+void Socket:: socket_shutdown(){
+    shutdown(this->fd, SHUT_WR);
 }
 
 Socket:: ~Socket(){

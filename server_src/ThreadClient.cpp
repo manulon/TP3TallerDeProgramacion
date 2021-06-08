@@ -12,7 +12,7 @@ void ThreadClient:: run() {
     while (bytes_received > 0){
         bytes_received = sp.select_execution_mode();
     }
-    shutdown(peer->get_fd(), SHUT_WR);
+    peer->socket_shutdown();
 }
 
 void ThreadClient:: stop() {

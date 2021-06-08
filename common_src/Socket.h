@@ -32,7 +32,7 @@ public:
     ssize_t socket_send(const char* msg,int length);
     int socket_receive(int length, char* buffer);
     void socket_close();
-    int get_fd();
+    void socket_shutdown();
 };
 
 #endif
