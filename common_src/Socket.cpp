@@ -104,13 +104,54 @@ void Socket:: socket_connect(const char* hostname, const char* servicename){
     }
 }
 
-int Socket:: get_fd(){
-    return this->fd;
-}
-
 void Socket:: socket_close(){
     shutdown(this->fd, SHUT_RDWR);
     close(this->fd);
+}
+
+ssize_t Socket:: socket_send(const char* msg,int length){
+    int remaining_bytes = length;
+    int total_bytes_sent = 0;
+
+    while (total_bytes_sent < length) {
+        ssize_t bytes = send(this->fd, 
+                            &msg[total_bytes_sent], 
+                             remaining_bytes, MSG_NOSIGNAL);
+    
+        if (bytes == -1) {
+			fprintf(stderr, "socket_send-->send: %s\n", strerror(errno));
+            return bytes;
+        }
+        if (bytes == 0) break;
+        total_bytes_sent += bytes;
+        remaining_bytes -= bytes;
+    }
+    return total_bytes_sent;
+}
+
+int Socket:: socket_receive(int length, char* buffer){
+    if (length == 0){ return 0; }
+    int remaining_bytes = length;
+    int total_bytes_received = 0;
+
+    while (total_bytes_received < length) {
+        ssize_t bytes = recv(this->fd, &buffer[total_bytes_received],
+                        remaining_bytes, 0);
+        if (bytes == -1) {
+            fprintf(stderr, "socket_receive-->recv: %s\n", strerror(errno));
+            return bytes;
+        }
+        if (bytes == 0) break;
+        
+        total_bytes_received += bytes;
+        remaining_bytes -= bytes;
+    }
+
+    return total_bytes_received;
+}
+
+int Socket:: get_fd(){
+    return this->fd;
 }
 
 Socket:: ~Socket(){

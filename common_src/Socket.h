@@ -18,9 +18,9 @@
 #define CLIENT_FLAGS 0
 
 class Socket{
-public: 
     int fd;
 
+public: 
     Socket();
     Socket(const int& family,const int& socktype,const int& protocol);
     ~Socket();
@@ -29,8 +29,10 @@ public:
     bool bind_and_listen(const char *hostname,const char *servicename);
     int socket_accept(Socket* peer);
     void socket_connect(const char* hostname, const char* servicename);
-    int get_fd();
+    ssize_t socket_send(const char* msg,int length);
+    int socket_receive(int length, char* buffer);
     void socket_close();
+    int get_fd();
 };
 
 #endif

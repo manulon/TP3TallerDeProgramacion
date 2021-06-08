@@ -8,71 +8,22 @@ CommunicationProtocol:: CommunicationProtocol(Socket* socket):
 socket(socket){}
 
 ssize_t CommunicationProtocol:: send_message(const char* msg,int length){
-    int remaining_bytes = length;
-    int total_bytes_sent = 0;
-
-    while (total_bytes_sent < length) {
-        ssize_t bytes = send(this->socket->fd, 
-                            &msg[total_bytes_sent], 
-                             remaining_bytes, MSG_NOSIGNAL);
-    
-        if (bytes == -1) {
-			fprintf(stderr, "socket_send-->send: %s\n", strerror(errno));
-            return bytes;
-        }
-        if (bytes == 0) break;
-        total_bytes_sent += bytes;
-        remaining_bytes -= bytes;
-    }
-    return total_bytes_sent;
-}
-
-ssize_t CommunicationProtocol:: receive_message
-(int length, char* buffer){
-    if (length == 0){ return 0; }
-    int remaining_bytes = length;
-    int total_bytes_received = 0;
-
-    while (total_bytes_received < length) {
-        ssize_t bytes = recv(this->socket->fd, &buffer[total_bytes_received],
-                        remaining_bytes, 0);
-        if (bytes == -1) {
-            fprintf(stderr, "socket_receive-->recv: %s\n", strerror(errno));
-            return bytes;
-        }
-        if (bytes == 0) break;
-        
-        total_bytes_received += bytes;
-        remaining_bytes -= bytes;
-    }
-
-    return total_bytes_received;
+    return this->socket->socket_send(msg,length);
 }
 
 ssize_t CommunicationProtocol:: send_size(uint16_t size){
     size = htons(size);
-
-    send_message((char*)&size,2);
-
+    this->socket->socket_send((char*)&size,2);
     return 2;
 }
 
-int CommunicationProtocol:: receive_size(uint16_t* size){
-    int remaining_bytes(2);
-    int total_bytes_received(0);
-    while (total_bytes_received < 2) {
-        ssize_t bytes = recv(this->socket->fd,(char*)size,
-                        remaining_bytes, 0);
-        if (bytes == -1) {
-            fprintf(stderr, "socket_receive-->recv: %s\n", strerror(errno));
-            return bytes;
-        }
-        if (bytes == 0) break;
+ssize_t CommunicationProtocol:: receive_message
+(int length, char* buffer){
+    return this->socket->socket_receive(length,buffer);
+}
 
-        total_bytes_received += bytes;
-        remaining_bytes -= bytes;
-    }
-    
+int CommunicationProtocol:: receive_size(uint16_t* size){
+    this->socket->socket_receive(2,(char*)size);
     return (int)ntohs(*size);
 }
 
