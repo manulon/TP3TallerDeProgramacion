@@ -3,20 +3,12 @@
 #include <sstream>
 
 
-TaTeTi:: TaTeTi():
-name(),there_is_a_winner(false),a_play_was_made(false),
-first_get_board(true){
-    initialize_board();
-}
-
-TaTeTi:: TaTeTi(const std::string& name):
-name(name),there_is_a_winner(false), a_play_was_made(false),
-first_get_board(true){
+TaTeTi:: TaTeTi(const std::string& key):
+name(key),there_is_a_winner(false),first_get_board(true){
     initialize_board();
 }
 
 void TaTeTi:: initialize_board(){
-    std::unique_lock<std::mutex> lk(this->m);
     for (int i=0 ; i<ROW_LENGTH; i++){
         for (int j=0 ; j<COLUMN_LENGTH ; j++){
             this->board[i][j] = ' ';
@@ -24,17 +16,7 @@ void TaTeTi:: initialize_board(){
     }
 }
 
-std::string TaTeTi::get_board(){
-    std::unique_lock<std::mutex> lk(this->m);
-    
-    if (!first_get_board){
-        while (!a_play_was_made){
-            this->cv.wait(lk);
-        }
-    }else{
-        first_get_board = false;
-    }
-    
+std::string TaTeTi::get_board(){      
     std::ostringstream board;
 
     board << "    1 . 2 . 3 .\n  +---+---+---+\n1 | ";   
@@ -54,25 +36,18 @@ std::string TaTeTi::get_board(){
 
 void TaTeTi:: set_name
 (const std::string& name){
-    std::unique_lock<std::mutex> lk(this->m);
     this->name = name;
 }
 
 std::string TaTeTi::get_name(){
-    std::unique_lock<std::mutex> lk(this->m);
     return this->name;
 }
 
 void TaTeTi:: set_new_position(char character,int column,int row){
-    std::unique_lock<std::mutex> lk(this->m);
     this->board[row-1][column-1] = character;
-    this->a_play_was_made = true;
-    this->cv.notify_all();
-    this->cv.wait(lk);
 }
 
 void TaTeTi:: check_game_status(char token,std::string& msg){
-    std::unique_lock<std::mutex> lk(this->m);
     bool is_a_loser = false;
        
     is_a_loser = check_rows(token);
@@ -149,23 +124,6 @@ bool TaTeTi:: check_diagonals(char token){
     return false;
 }
 
-void TaTeTi:: notify_winner(){
-    std::unique_lock<std::mutex> lk(this->m);
-    this->cv.notify_all();
-}
-
-TaTeTi &TaTeTi::operator=(const TaTeTi &t){
-    std::unique_lock<std::mutex> lk(this->m);
-    this->name = t.name;
-    this->there_is_a_winner = t.there_is_a_winner;
-    this->a_play_was_made = t.a_play_was_made;
-
-    for (int i=0 ; i<ROW_LENGTH; i++){
-        for (int j=0 ; j<COLUMN_LENGTH ; j++){
-            this->board[i][j] = t.board[i][j];
-        }
-    }
-    return *this;
-}
+void TaTeTi:: notify_winner(){}
 
 TaTeTi:: ~TaTeTi(){}

@@ -1,9 +1,10 @@
 #include "Socket.h"
+#include "AcceptorClosedException.h"
+#include "SocketException.h"
 #include <iostream>
 #include <netdb.h>
 #include <errno.h>
-#include "AcceptorClosedException.h"
-#include "SocketException.h"
+#include <utility>
 
 Socket:: Socket(){}
 
@@ -43,8 +44,8 @@ bool Socket:: bind_and_listen(const char* hostname, const char* servicename){
     }
 
 	if (listen(this->fd, 10) < 0) {
-        std::cout<<"socket_bind_and_listen-->listen: "<<strerror(errno)<<std::endl
-        <<"Presione la tecla 'q' para finalizar"<<std::endl;;
+        std::cout<<"socket_bind_and_listen-->listen: "<<strerror(errno)
+        <<std::endl<<"Presione la tecla 'q' para finalizar"<<std::endl;;
         throw SocketException();
 	}
 

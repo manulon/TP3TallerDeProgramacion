@@ -11,7 +11,7 @@
 
 Server_Protocol:: Server_Protocol(GameContainer* games,Socket* socket):
 token(),final_game_msg(""),socket(socket),comm(this->socket),
-game(nullptr),gc(games){}
+game_wrapper(nullptr),gc(games){}
 
 void Server_Protocol:: set_token(const char& token){
     this->token = token;
@@ -51,8 +51,12 @@ void Server_Protocol:: receive_join_command(){
         os.write(message.data(),game_name_size);
         std::string str(os.str());
 
-        this->game = this->gc->get_game(str);
-        send_board();
+        this->game_wrapper = this->gc->get_game(str);
+        this->game_wrapper->guest_join_game();
+        
+        std::string board(this->game_wrapper->get_board());
+        this->comm.send_size((int)board.length());
+        this->comm.send_message(board.c_str(),board.length());
     }
 }
 
@@ -70,9 +74,9 @@ void Server_Protocol:: receive_create_command(){
         os.write(message.data(),game_name_size);
         std::string str(os.str());
 
-        this->game = this->gc->create_new_game(str);
+        this->game_wrapper = this->gc->create_new_game(str);
         
-        std::string board(this->game->get_board());
+        std::string board(this->game_wrapper->get_board());
         this->comm.send_size((int)board.length());
         this->comm.send_message(board.c_str(),board.length());
     }
@@ -91,23 +95,8 @@ void Server_Protocol::receive_play_command(){
     int bytes_received(comm.receive_message(1,&message));
 
     if (bytes_received > 0){
-        makePlay(message,this->game->get_name());
-        send_board();
+        makePlay(message,this->game_wrapper->get_name());
     }
-}
-
-void Server_Protocol:: send_board(){
-        std::string board(this->game->get_board());
-        
-        this->game->check_game_status(this->token,this->final_game_msg);
-
-        if (this->final_game_msg != "")
-            this->game->notify_winner();
-
-        board += this->final_game_msg;
-      
-        this->comm.send_size((int)board.length());
-        this->comm.send_message(board.c_str(),board.length());  
 }
 
 int Server_Protocol::get_execution_mode(char& mode){   
@@ -118,8 +107,18 @@ int Server_Protocol::get_execution_mode(char& mode){
 
 void Server_Protocol:: makePlay
 (char message, const std::string& game_name){
-    this->game->set_new_position
-        (this->token,decode_column(message),decode_row(message));
+    std::string board(this->game_wrapper->set_new_position
+        (this->token,decode_column(message),decode_row(message)));
+    
+    this->game_wrapper->check_game_status(this->token,this->final_game_msg);
+
+    if (this->final_game_msg != "")
+        this->game_wrapper->notify_winner();
+
+    board += this->final_game_msg;
+      
+    this->comm.send_size((int)board.length());
+    this->comm.send_message(board.c_str(),board.length());
 }
 
 int Server_Protocol:: decode_column(char message){

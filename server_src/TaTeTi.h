@@ -13,11 +13,8 @@ private:
     char board[ROW_LENGTH][COLUMN_LENGTH];
     std::string name;
     bool there_is_a_winner;
-    bool a_play_was_made;
     bool first_get_board;
-    std::mutex m;
-    std::condition_variable cv;
-
+    
     //Inicializa el tablero, poniendo todos los valores en espacios
     //vacios.
     void initialize_board();
@@ -35,8 +32,7 @@ private:
     bool game_tied();
 
 public:
-    TaTeTi();
-    explicit TaTeTi(const std::string& name);
+    explicit TaTeTi(const std::string& key);
     ~TaTeTi();
 
     //Devuelve el estado del tablero actual.
@@ -58,8 +54,6 @@ public:
     
     //Notifica que hay un ganador.
     void notify_winner();
-    
-    TaTeTi& operator=(const TaTeTi &t);
 };
 
 #endif

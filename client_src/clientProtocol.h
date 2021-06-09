@@ -22,7 +22,7 @@ class Client_Protocol{
 private:
     //Selecciona el modo de ejecucion entre los cuatro validos.
     //Pre: Se ingresa un comando valido.
-    void select_and_execute_mode(std::string& line);
+    void select_and_execute_mode(const std::string& line);
 
     //Obtiene la primer palabra de la frase recibida por entrada
     //estandar, para asi poder ejecutar el modo buscado.
@@ -51,7 +51,8 @@ private:
     (unsigned char row, unsigned char column);
 
     //Obtiene la palabra clave del comando, es decir el nombre de juego.
-    // Esta funcion se usa en crear y unirse para obtener el nombre de la partida.
+    //Esta funcion se usa en crear y unirse para obtener el nombre 
+    //de la partida.
     void get_game_name
     (std::string& keyword,const std::string& line);
 

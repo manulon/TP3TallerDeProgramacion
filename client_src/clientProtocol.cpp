@@ -25,7 +25,7 @@ void Client_Protocol:: start_communication_protocol(){
     }
 }
 
-void Client_Protocol:: select_and_execute_mode(std::string& line){
+void Client_Protocol:: select_and_execute_mode(const std::string& line){
     std::string mode(get_execution_mode(line));
 
     if (mode == CREAR_KEYWORD){

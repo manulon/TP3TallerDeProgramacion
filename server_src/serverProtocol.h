@@ -9,7 +9,7 @@
 #define GUEST_TOKEN 'X'
 
 #include "../common_src/CommunicationProtocol.h"
-#include "TaTeTi.h"
+#include "TaTeTiWrapper.h"
 #include "serverGameContainer.h"
 #include <atomic>
 #include <string>
@@ -20,7 +20,7 @@ private:
     std::string final_game_msg;
     Socket* socket;
     CommunicationProtocol comm;
-    TaTeTi* game;
+    TaTeTiWrapper* game_wrapper;
     GameContainer* gc;    
     
     //Delega al juego la realizacion un movimiento.
@@ -35,10 +35,7 @@ private:
     //Recibe el mensaje del cliente con la jugada a realizar y ejecuta
     //las funciones necesarias para realizar las jugadas.
     void receive_play_command();
-    
-    //Envia el estado del tablero actual al cliente
-    void send_board();
-    
+        
     //Recibe el mensaje del cliente con la creacion de la partida y 
     //ejecuta las funciones necesarias para llevarla a cabo.
     void receive_create_command();
