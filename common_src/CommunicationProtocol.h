@@ -24,7 +24,7 @@ public:
     ssize_t receive_message(int length, char* buffer);
     
     //Recibe el tamaño de un mensaje
-    int receive_size(uint16_t* size);
+    int receive_size();
 };
 
 #endif

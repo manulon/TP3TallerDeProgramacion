@@ -40,7 +40,7 @@ int Server_Protocol:: select_execution_mode(){
 void Server_Protocol:: receive_join_command(){
     set_token(GUEST_TOKEN);
 
-    uint16_t game_name_size(this->comm.receive_size(&game_name_size));
+    uint16_t game_name_size(this->comm.receive_size());
     
     std::vector<char> message(game_name_size,0);
    
@@ -59,7 +59,7 @@ void Server_Protocol:: receive_join_command(){
 void Server_Protocol:: receive_create_command(){
     set_token(HOST_TOKEN);
 
-    uint16_t game_name_size(this->comm.receive_size(&game_name_size));
+    uint16_t game_name_size(this->comm.receive_size());
     
     std::vector<char> message(game_name_size,0);
     

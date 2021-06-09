@@ -141,7 +141,6 @@ int Socket:: socket_receive(int length, char* buffer){
     while (total_bytes_received < length) {
         ssize_t bytes = recv(this->fd, &buffer[total_bytes_received],
                         remaining_bytes, 0);
-    
         if (bytes == 0) break;
         
         total_bytes_received += bytes;

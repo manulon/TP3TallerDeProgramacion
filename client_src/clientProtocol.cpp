@@ -49,7 +49,7 @@ void Client_Protocol:: mode_join(const std::string& line){
     this->comm.send_size((int)(game_name.length()));
     this->comm.send_message(game_name.c_str(),game_name.length());    
 
-    uint16_t board_size(this->comm.receive_size(&board_size));
+    uint16_t board_size(this->comm.receive_size());
 
     std::vector<char> board(board_size,0);
 
@@ -64,7 +64,7 @@ void Client_Protocol:: mode_list(){
     char key = LISTAR_KEY;
     this->comm.send_message(&key,1);
 
-    uint16_t size(this->comm.receive_size(&size));
+    uint16_t size(this->comm.receive_size());
 
     std::vector<char> all_games_name(size,0);
     int bytes_received(this->comm.receive_message(size,all_games_name.data()));
@@ -85,7 +85,7 @@ void Client_Protocol:: mode_play(const std::string& line){
     this->comm.send_message(&key,1);
     this->comm.send_message(str.c_str(),str.length());
 
-    uint16_t size(this->comm.receive_size(&size));
+    uint16_t size(this->comm.receive_size());
 
     std::vector<char> board(size,0);
     int bytes_received(this->comm.receive_message(size,board.data()));
@@ -116,7 +116,7 @@ void Client_Protocol:: mode_create(const std::string& line){
     this->comm.send_size((int)(game_name.length()));
     this->comm.send_message(game_name.c_str(),game_name.length());
 
-    uint16_t board_size(this->comm.receive_size(&board_size));
+    uint16_t board_size(this->comm.receive_size());
     
     std::vector<char> board(board_size,0);
     int bytes_received(comm.receive_message(board_size,board.data()));
