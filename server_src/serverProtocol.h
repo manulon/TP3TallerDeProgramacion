@@ -37,7 +37,7 @@ private:
     void receive_play_command();
     
     //Envia el estado del tablero actual al cliente
-    void send_board(const std::string& game_name);
+    void send_board();
     
     //Recibe el mensaje del cliente con la creacion de la partida y 
     //ejecuta las funciones necesarias para llevarla a cabo.

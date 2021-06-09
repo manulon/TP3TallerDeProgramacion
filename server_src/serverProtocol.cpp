@@ -52,7 +52,7 @@ void Server_Protocol:: receive_join_command(){
         std::string str(os.str());
 
         this->game = this->gc->get_game(str);
-        send_board(this->game->get_name());
+        send_board();
     }
 }
 
@@ -92,11 +92,11 @@ void Server_Protocol::receive_play_command(){
 
     if (bytes_received > 0){
         makePlay(message,this->game->get_name());
-        send_board(this->game->get_name());
+        send_board();
     }
 }
 
-void Server_Protocol:: send_board(const std::string& game_name){
+void Server_Protocol:: send_board(){
         std::string board(this->game->get_board());
         
         this->game->check_game_status(this->token,this->final_game_msg);
