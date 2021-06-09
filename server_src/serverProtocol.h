@@ -1,12 +1,12 @@
 #ifndef SERVER_PROTOCOL_H
 #define SERVER_PROTOCOL_H
 
-#define LISTAR_KEY "l"
-#define JUGAR_KEY "p"
-#define CREAR_KEY "n"
-#define UNIRSE_KEY "j"
-#define HOST_TOKEN 79
-#define GUEST_TOKEN 88
+#define LISTAR_KEY 'l'
+#define JUGAR_KEY 'p'
+#define CREAR_KEY 'n'
+#define UNIRSE_KEY 'j'
+#define HOST_TOKEN 'O'
+#define GUEST_TOKEN 'X'
 
 #include "../common_src/CommunicationProtocol.h"
 #include "TaTeTi.h"
@@ -30,7 +30,7 @@ private:
     //Recibe un byte que representa el identificador del tipo de jugada
     //a realizar.
     //Pre: El identificador recibido es valido.
-    int get_execution_mode(char* mode);
+    int get_execution_mode(char& mode);
     
     //Recibe el mensaje del cliente con la jugada a realizar y ejecuta
     //las funciones necesarias para realizar las jugadas.

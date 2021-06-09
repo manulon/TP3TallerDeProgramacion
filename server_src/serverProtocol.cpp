@@ -18,21 +18,21 @@ void Server_Protocol:: set_token(const char& token){
 }
 
 int Server_Protocol:: select_execution_mode(){
-    std::vector<char> mode(2,0);
+    char mode(0);
     
-    int bytes_received(get_execution_mode(mode.data()));
+    int bytes_received(get_execution_mode(mode));
 
     while (bytes_received > 0){
-        if (strcmp(mode.data(),CREAR_KEY) == 0){
+        if ( mode == CREAR_KEY ){
             receive_create_command();
-        }else if (strcmp(mode.data(),LISTAR_KEY) == 0){
+        }else if ( mode == LISTAR_KEY ){
             receive_list_command();
-        }else if (strcmp(mode.data(),UNIRSE_KEY) == 0){
+        }else if ( mode == UNIRSE_KEY ){
             receive_join_command();
-        }else if (strcmp(mode.data(),JUGAR_KEY) == 0){
+        }else if ( mode == JUGAR_KEY ){
             receive_play_command();
         }
-        bytes_received = get_execution_mode(mode.data());
+        bytes_received = get_execution_mode(mode);
     }
     return bytes_received;
 }
@@ -110,8 +110,10 @@ void Server_Protocol:: send_board(const std::string& game_name){
         this->comm.send_message(board.c_str(),board.length());  
 }
 
-int Server_Protocol::get_execution_mode(char* mode){   
-    return comm.receive_message(1,mode);
+int Server_Protocol::get_execution_mode(char& mode){   
+    int bytes_received(0);
+    bytes_received = comm.receive_message(1,&mode);
+    return bytes_received;
 }
 
 void Server_Protocol:: makePlay
