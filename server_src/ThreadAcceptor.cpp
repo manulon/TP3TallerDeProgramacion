@@ -22,6 +22,7 @@ void ThreadAcceptor:: run() {
             }
             clients.push_back(new ThreadClient(peer,this->games));
             clients.back()->start();
+            garbage_collector();
         }catch(std::exception& error){
             delete peer;
             keep_running = false;
@@ -30,6 +31,19 @@ void ThreadAcceptor:: run() {
     for (ThreadClient* client : clients) {
         client->join();
 	}
+}
+
+void ThreadAcceptor:: garbage_collector(){
+    std::list<ThreadClient*>::iterator cli = clients.begin();
+    while (cli != clients.end()){
+        if (!(*cli)->is_running()){
+            (*cli)->join();
+            delete (*cli);
+            cli = clients.erase(cli);
+        }else{
+            ++cli;
+        }
+    }
 }
 
 void ThreadAcceptor:: stop_clients() {

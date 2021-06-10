@@ -124,6 +124,4 @@ bool TaTeTi:: check_diagonals(char token){
     return false;
 }
 
-void TaTeTi:: notify_winner(){}
-
 TaTeTi:: ~TaTeTi(){}

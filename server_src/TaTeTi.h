@@ -52,8 +52,6 @@ public:
     //estado si es necesario
     void check_game_status(char token,std::string& msg);
     
-    //Notifica que hay un ganador.
-    void notify_winner();
 };
 
 #endif

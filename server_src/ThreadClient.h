@@ -16,6 +16,7 @@ class ThreadClient: public Thread {
     std::mutex mtx;
     std::atomic<bool> keep_running;
     GameContainer* games;
+    std::atomic<bool> is_still_running;
 
     public:
     ThreadClient(Socket* peer, GameContainer* games);
@@ -28,6 +29,8 @@ class ThreadClient: public Thread {
     
     //Elimina el socket asociado.
     void stop();
+
+    bool is_running();
 };
 
 #endif

@@ -34,6 +34,8 @@ class ThreadAcceptor: public Thread {
     void stop();
 
     void close_socket();
+
+    void garbage_collector();
 };
 
 #endif
