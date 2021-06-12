@@ -24,7 +24,7 @@ private:
     void game_finished_with_a_winner(bool status,std::string& msg);
 
     //Estas funciones verifican si hay un ganador en las filas, columnas
-    //o diagolanes respectivamente. Y finalmente la ultima de estas
+    //o diagonales respectivamente. Y finalmente la ultima de estas
     //chequea si hay un empate.
     bool check_rows(char token);
     bool check_columns(char token);
@@ -51,7 +51,6 @@ public:
     //Chequea el estado actual del juego. Y setea en el parametro msg su
     //estado si es necesario
     void check_game_status(char token,std::string& msg);
-    
 };
 
 #endif

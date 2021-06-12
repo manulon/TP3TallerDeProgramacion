@@ -22,7 +22,7 @@ public:
     GameContainer();
     ~GameContainer();
     
-    //Crea un nuevo juego, lo incluye al
+    //Crea un nuevo juego y a su wrapper,lo wrappea, lo incluye al
     //mapa y luego lo devuelve.
     //Pre: La key, que representa al nombre del juego, es valida.
     TaTeTiWrapper* create_new_game(const std::string& key);
@@ -30,7 +30,7 @@ public:
     //Obtiene todos los valores del mapa.
     std::string get_all_values();
 
-    //Devuelve un puntero al juego de nombre key.
+    //Devuelve un puntero al juego wrappeado de nombre key.
     //Pre: El juego existe con el nombre recibido por parametro.
     TaTeTiWrapper* get_game(const std::string& key);
 };

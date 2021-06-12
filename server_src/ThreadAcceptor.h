@@ -33,8 +33,10 @@ class ThreadAcceptor: public Thread {
     //Deja de correr el hilo.
     void stop();
 
+    //Delega el cierre del socket a la entidad misma.
     void close_socket();
 
+    //Va limpiando a los clientes que ya terminaron sus tareas.
     void garbage_collector();
 };
 

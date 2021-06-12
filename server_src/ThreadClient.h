@@ -30,6 +30,7 @@ class ThreadClient: public Thread {
     //Elimina el socket asociado.
     void stop();
 
+    //Devuelve el estado actual del thread, si esta corriendo o no.
     bool is_running();
 };
 

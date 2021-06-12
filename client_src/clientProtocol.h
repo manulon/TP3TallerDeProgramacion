@@ -20,7 +20,7 @@ class Client_Protocol{
     CommunicationProtocol comm;
 
 private:
-    //Selecciona el modo de ejecucion entre los cuatro validos.
+    //Selecciona y delega el modo de ejecucion entre los cuatro validos.
     //Pre: Se ingresa un comando valido.
     void select_and_execute_mode(const std::string& line);
 
