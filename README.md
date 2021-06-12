@@ -19,17 +19,17 @@ Se plantearon los siguientes:
 
 - COMMUNICATION PROTOCOL: Esta clase es la clase comun del protocolo de comunicacion, se conecta con el protocolo cliente y servidor para poder realizar los envios a traves de un socket.
 
-- SOCKET: Como en los trabajos practicos anteriores, esta clase es un socket con los métodos necesarios para poder efectuar la comunicación entre cliente y servidor: abrir el socket, esperar a una conexión, aceptarla y finalmente cerrar el socket correctamente.
+- SOCKET: Como en los trabajos practicos anteriores, esta clase es un socket con los métodos necesarios para poder efectuar la comunicación entre cliente y servidor: abrir el socket, esperar a una conexión, aceptarla , enviar, recibir y finalmente cerrar el socket correctamente.
 
 - SERVER: Representa al servidor en el juego. Inicia una conexion con el cliente y la realiza, tambien tiene la opcion de que si le escribe el comando 'q' este deja de aceptar conexiones de clientes nuevos y espera a que los que estan conectados terminen para realizar el cierre de este ordenado.
 
 - GAME CONTAINER: Esta clase es la contenedora de todos los juegos que estan ejecutandose en el momento. Es, de manera camuflada, un *MapMonitor* ya que protege las operaciones que se hacen dentro del mapa que contiene a los juegos.
 
-- PROTECTED MAP: Como se menciono anteriormente, este es el mapa que contiene a las partidas. Es un mapa de par *<string,TaTeTi>* y a este se le realizan todas las operaciones necesarias basicas para que pueda ejercer su responsabilidad.
-
 - SERVER PROTOCOL: Una vez que entablece una conexion esta clase se encarga de recibir y enviar los mensajes al cliente respentando el protocolo propuesto, tambien de delegar las operaciones necesarias a cada juego en su instancia de `TaTeTi`.
 
-- TATETI: Esta clase representa al juego en si. Tiene metodos para que todas las operaciones clasicas del juego puedan ser realizadas. Esta clase tambien esta protegida y es *thread safe* ya que hay siempre dos hilos que estan modificando esta de manera concurrente.
+- TATETI: Esta clase representa al juego en si. Tiene metodos para que todas las operaciones clasicas del juego puedan ser realizadas.
+
+- TATETI WRAPPER: Esta clase es un *wrapper* de la clase TaTeTi, para hacerse cargo de que el juego sea *thread safe* y que el TaTeTi solo tenga en su interior la logica de juego. En esta clase siempre hay dos hilos que estan modificando un TaTeTi de manera concurrente.
 
 - THREAD: Esta clase contiene al hilo de la libreria estandar, que sera usado por *Thread Acceptor* y *Thread Client*, contiene tambien la sobrecarga de operadores para que se pueda realizar el trabajo de manera correcta.
 
@@ -41,25 +41,22 @@ Se plantearon los siguientes:
 
 Para la implementacion se busco siempre cumplir con el paradigma de programacion orientada a objetos. En todo momento se intento no romper con el encapsulamiento y delegar comportamientos. Asimismo tambien cumplir con los principios SOLID.
 
-# PROBLEMAS EN PRIMERA ENTREGA.
+# CAMBIOS EN LA REENTREGA.
 
-Para esta entrega se encontro el siguiente problema:
-
-- El programa en la computadora se ejecuta de manera correcta. Es decir siguiendo el *schedule* de las pruebas se obtiene el resultado adecuado y buscado, agregando que todos los recursos son liberados correctamente y no se pierde memoria. El problema ocurre cuando se quiere subir el programa a la plataforma de pruebas provisto por la catedra *sercom*. Aqui se arroja `El programa 'Server' termino con un codigo de error '124' muy posiblemente por timeout.`, lo cual no permite la ejecucion de las pruebas debido a que el programa se queda colgado en alguna parte y debe ejecutarse el cierre forzado. Mostrando, que los mensajes no fueron enviados correctamente y se quedan en la mitad. Lo cual eso en mi computadora no ocurre (corriendo el programa con y sin valgrind). De hecho, cuando se ejecuta *tiburoncin* las salidas de este son tal cual a las esperadas en los casos de prueba. Lo cual me hace notar que esta sucediendo algo raro. 
-Mi hipotesis sobre el mal funcionamiento del programa en el sercom es que debe haber una *race condition* en algun lado. Pero eso cuando lo pruebo localmente no lo puedo ver, ya que mi programa se ejecuta bien. Seguramente sea debido a que cuando se introducen los comandos manualmente se hacen de manera mas lenta que cuando se ejecuta el *script* del sercom, haciendo asi que ocurra la situacion no deseada y generando el mal comportamiento del programa. 
-Adjunto imagenes que comprueban que en la computadora personal los programas se ejecutan correctamente:
-
-Caso 02 - One Match
-![1](https://user-images.githubusercontent.com/45469722/120247742-ee851680-c24a-11eb-8a1f-d7bbbc8adbd1.png)
-
-
-Caso 03 - Two Concurrent Ties
-![2](https://user-images.githubusercontent.com/45469722/120247748-f2189d80-c24a-11eb-86ef-1e26e8394929.png)
-
-
-*ACLARACION:* La 'q' se ejecuto en el servidor en el medio de las partidas. Para que nadie pueda conectarse y el servidor deba esperar a que los clientes terminen para cerrarse. Tambien como aclaracion, corri con tsan el servidor y no me genero en ningun momento una race condition, en ambos casos.
+- Se sacaron los metodos `init` de clases como `CommunicationProtocol`, `ClientProtocol` o `ServerProtocol`.
+- Se cambiaron nombres de algunos metodos ya que estos no eran descriptivos o no representaban lo que estos hacian.
+- Se solucionaron varios problemas de performance, por ejemplo buffers (cada vez que se creaba uno se creaban de un tamaño mayor en una unidad al requerido), concatenaciones de strings e inicializaciones.
+- Las constantes que representan a las key se hicieron char, para simplificar tambien el codigo.
+- Se hizo uso de simetria cuando se encodea y des-encodea la posicion de la jugada realizada por el usuario, ya que antes esas logicas estaban sueltas por el codigo.
+- Se removio el const& de los tipos nativos.
+- Cuando se hizo uso de excepciones, se utilizo stdout para informar el error.
+- Se crearon los metodos `socket_send` y `socket_receive` para que sea responsabilidad del socket el envio y recepcion de bytes. Ya no se rompe mas el encapsulamiento del *file descriptor*
+- Se hizo el socket *movible pero no copiable*. En las demas clases esto no fue necesario ya que en ningun momento se necesito.
+- Se arreglo el "hack" de `get_board`, ahora las jugadas son las que retornan el tablero para evitar race conditions
+- Se hizo uso de `std::stringstream` para no copiar el tablero cada vez que se usaba +=.
+- Se creo el metodo `garbage_collector` que lo que hace es "limpiar" a los clientes que ya se fueron.
+- Se creo la clase `TaTeTiWrapper` para que el TaTeTi tenga solamente logica de juego y esta clase sea la encargada de manejar el acceso concurrente al juego.
 
 
 # Diagrama de clases representativo de la solución final:
 *ACLARACION:* En este diagrama, y como primera entrega. Se muestran solamente las clases y como se relacionan entre ellas para que pueda verse un mayor entendimiento del programa.
-
