@@ -25,7 +25,7 @@ private:
 
 public: 
     Socket();
-    Socket(const int& family,const int& socktype,const int& protocol);
+    Socket(int family,int socktype, int protocol);
     ~Socket();
     Socket(Socket&& other);
     Socket& operator=(Socket &&other);

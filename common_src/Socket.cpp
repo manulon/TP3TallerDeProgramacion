@@ -8,10 +8,8 @@
 
 Socket:: Socket(){}
 
-Socket:: Socket
-(const int& family,const int& socktype,const int& protocol){
-    socket_init(family,socktype,protocol);
-}
+Socket:: Socket(int family,int socktype,int protocol):
+fd(socket(family,socktype,protocol)){}
 
 void Socket:: socket_init(int family,int socktype,int protocol){
     this->fd = socket(family,socktype,protocol);
@@ -52,8 +50,8 @@ bool Socket:: bind_and_listen(const char* hostname, const char* servicename){
 	return true;
 }
 
-int Socket:: socket_accept(Socket* peer){
-	int fd = -1;
+int Socket:: socket_accept(Socket* peer){ 
+	int fd(-1);
     
 	if ((peer->fd = accept(this->fd, NULL, NULL)) == -1) {
         if (errno == EINVAL){
