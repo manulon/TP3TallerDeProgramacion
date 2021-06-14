@@ -3,7 +3,7 @@
 #include <sstream>
 
 TaTeTiWrapper:: TaTeTiWrapper():
-game(nullptr),guest_joined(false){}
+game(nullptr),actual_token(HOST_TOKEN),guest_joined(false){}
 
 std::string TaTeTiWrapper::get_board(){
     std::unique_lock<std::mutex> lk(this->m);
@@ -25,9 +25,26 @@ std::string TaTeTiWrapper::set_new_position(char character,int column,int row){
     std::unique_lock<std::mutex> lk(this->m);
     while (!guest_joined){this->cv.wait(lk);}
     this->game->set_new_position(character,column,row);
-    this->cv.notify_all();
-    this->cv.wait(lk);
+    change_turn();
+    while (!its_player_turn(character)){
+        this->cv.wait(lk);
+    }
     return this->game->get_board(); 
+}
+
+bool TaTeTiWrapper:: its_player_turn(char token){
+    if (actual_token == token)
+        return true;
+    return false;
+}
+
+void TaTeTiWrapper:: change_turn(){
+    if (actual_token == HOST_TOKEN){
+        actual_token = GUEST_TOKEN;
+    }else{
+        actual_token = HOST_TOKEN;
+    }
+    this->cv.notify_all();
 }
 
 void TaTeTiWrapper:: check_game_status(char token,std::string& msg){
@@ -37,7 +54,7 @@ void TaTeTiWrapper:: check_game_status(char token,std::string& msg){
 
 void TaTeTiWrapper:: notify_winner(){
     std::unique_lock<std::mutex> lk(this->m);
-    this->cv.notify_all();
+    change_turn();
 }
 
 void TaTeTiWrapper:: guest_join_game(){

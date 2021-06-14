@@ -5,9 +5,12 @@
 #include <string>
 #include <mutex>
 #include <condition_variable>
+#define HOST_TOKEN 'O'
+#define GUEST_TOKEN 'X'
 
 class TaTeTiWrapper{
     TaTeTi* game;
+    char actual_token;
     bool guest_joined;
     std::mutex m;
     std::condition_variable cv;
@@ -43,6 +46,12 @@ public:
     
     //Se "desenvuelve" al juego que esta siendo envuelto por el wrapper.
     void unwrap();
+
+    //Devuelve true o false dependiendo si es o no el turno del jugador.
+    bool its_player_turn(char token);
+
+    //Cambia el actual token representando asi el cambio de jugador actual.
+    void change_turn();
 };
 
 #endif
