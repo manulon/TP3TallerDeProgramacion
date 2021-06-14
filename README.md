@@ -59,4 +59,5 @@ Para la implementacion se busco siempre cumplir con el paradigma de programacion
 
 
 # Diagrama de clases representativo de la solución final:
-*ACLARACION:* En este diagrama, y como primera entrega. Se muestran solamente las clases y como se relacionan entre ellas para que pueda verse un mayor entendimiento del programa.
+*ACLARACION:* En este diagrama![Diagrama](https://user-images.githubusercontent.com/45469722/121910438-39039a00-cd05-11eb-9732-17edd85efcfc.png)
+. Se muestran solamente las clases y como se relacionan entre ellas para que pueda verse un mayor entendimiento del programa.
